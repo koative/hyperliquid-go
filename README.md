@@ -2,7 +2,7 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/koative/hyperliquid-go.svg)](https://pkg.go.dev/github.com/koative/hyperliquid-go)
 [![CI](https://github.com/koative/hyperliquid-go/actions/workflows/ci.yml/badge.svg)](https://github.com/koative/hyperliquid-go/actions/workflows/ci.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/koative/hyperliquid-go)](https://goreportcard.com/report/github.com/koative/hyperliquid-go)
+[![Live API](https://github.com/koative/hyperliquid-go/actions/workflows/live.yml/badge.svg)](https://github.com/koative/hyperliquid-go/actions/workflows/live.yml)
 [![codecov](https://codecov.io/gh/koative/hyperliquid-go/graph/badge.svg)](https://codecov.io/gh/koative/hyperliquid-go)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/koative/hyperliquid-go/badge)](https://scorecard.dev/viewer/?uri=github.com/koative/hyperliquid-go)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
