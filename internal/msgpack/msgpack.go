@@ -133,14 +133,16 @@ func appendInt(out []byte, s string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("msgpack: %w", err)
 	}
+	// i <= 0 here; the explicit upper bounds make each narrowing provably
+	// in range (two's complement bytes are what msgpack expects).
 	switch {
-	case i >= -32:
+	case -32 <= i && i <= 0:
 		return append(out, byte(i)), nil
-	case i >= -128:
+	case -128 <= i && i <= 0:
 		return append(out, 0xd0, byte(i)), nil
-	case i >= -32768:
+	case -32768 <= i && i <= 0:
 		return binary.BigEndian.AppendUint16(append(out, 0xd1), uint16(i)), nil
-	case i >= -1<<31:
+	case -1<<31 <= i && i <= 0:
 		return binary.BigEndian.AppendUint32(append(out, 0xd2), uint32(i)), nil
 	default:
 		return binary.BigEndian.AppendUint64(append(out, 0xd3), uint64(i)), nil
