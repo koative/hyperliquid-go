@@ -1,0 +1,25 @@
+# Coverage comes from two sources:
+#   unit - `go test ./...` in CI (offline, every commit)
+#   live - the nightly live API checks, which exercise every endpoint and
+#          action against the real API; carried forward to later commits.
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+        informational: true
+
+flag_management:
+  individual_flags:
+    - name: unit
+      carryforward: false
+    - name: live
+      carryforward: true
+
+comment:
+  layout: "diff, flags, files"
+  require_changes: true
