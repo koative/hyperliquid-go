@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      id-token: write # Codecov OIDC upload
     strategy:
       fail-fast: false
       matrix:
@@ -33,7 +32,7 @@ jobs:
       - if: matrix.go == 'stable'
         uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
         with:
-          use_oidc: true
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: cover.out
 
   lint:
