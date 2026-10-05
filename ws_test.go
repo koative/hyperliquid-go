@@ -410,3 +410,25 @@ func TestFastAssetCtxsUnmarshal(t *testing.T) {
 		t.Errorf("ETH = %+v, %v", eth, ok)
 	}
 }
+
+// TestWebSocketOutcomeMetaUpdates pins the documented wire shape: a list of
+// one-key updates whose "settled" variants carry bare IDs.
+func TestWebSocketOutcomeMetaUpdates(t *testing.T) {
+	s := newWSServer(t)
+	ws := dialTest(t, s)
+	handler, ch := collect[[]OutcomeMetaUpdate]()
+	if _, err := ws.OutcomeMetaUpdates(t.Context(), handler); err != nil {
+		t.Fatal(err)
+	}
+	s.push(t, `{"channel":"outcomeMetaUpdates","data":[`+
+		`{"outcomeCreated":{"outcome":7,"name":"BTC above 100k","description":"","sideSpecs":[{"name":"Yes"},{"name":"No"}]}},`+
+		`{"outcomeSettled":7},`+
+		`{"questionUpdated":{"question":3,"name":"Q","description":"","fallbackOutcome":8,"namedOutcomes":[7],"settledNamedOutcomes":[7]}},`+
+		`{"questionSettled":3}]}`)
+
+	got := next(t, ch)
+	if len(got) != 4 || got[0].OutcomeCreated.Outcome != 7 || *got[1].OutcomeSettled != 7 ||
+		got[2].QuestionUpdated.FallbackOutcome != 8 || *got[3].QuestionSettled != 3 {
+		t.Fatalf("got %+v", got)
+	}
+}
