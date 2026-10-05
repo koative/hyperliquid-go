@@ -195,12 +195,12 @@ type Cancel struct {
 // Cancel cancels orders. If some cancels fail, it returns a joined
 // [*StatusError] per failed cancel.
 func (c *ExchangeClient) Cancel(ctx context.Context, a CancelAction) error {
-	return c.cancel(ctx, a)
+	return c.doStatuses(ctx, a)
 }
 
-// cancel submits a cancel-style action whose response is a list of
-// "success" or {"error": msg} statuses.
-func (c *ExchangeClient) cancel(ctx context.Context, a Action) error {
+// doStatuses submits an action whose response data, if any, is a list of
+// "success" or {"error": msg} statuses, and joins the failures.
+func (c *ExchangeClient) doStatuses(ctx context.Context, a Action) error {
 	var data struct {
 		Statuses []OrderResult `json:"statuses"`
 	}
@@ -228,7 +228,7 @@ type CancelByCloid struct {
 // CancelByCloid cancels orders by client order ID. If some cancels fail, it
 // returns a joined [*StatusError] per failed cancel.
 func (c *ExchangeClient) CancelByCloid(ctx context.Context, a CancelByCloidAction) error {
-	return c.cancel(ctx, a)
+	return c.doStatuses(ctx, a)
 }
 
 // OrderRef identifies an order by exchange order ID or, when Cloid is set,
@@ -260,7 +260,7 @@ func (ModifyAction) actionType() string { return "modify" }
 
 // Modify replaces a resting order.
 func (c *ExchangeClient) Modify(ctx context.Context, a ModifyAction) error {
-	return c.do(ctx, a, nil)
+	return c.doStatuses(ctx, a)
 }
 
 // BatchModifyAction replaces several resting orders.
