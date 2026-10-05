@@ -1,0 +1,13 @@
+{
+  "description": "tiered 40x",
+  "marginTiers": [
+    {
+      "lowerBound": "0.0",
+      "maxLeverage": 40
+    },
+    {
+      "lowerBound": "150000000.0",
+      "maxLeverage": 20
+    }
+  ]
+}

@@ -18,4 +18,11 @@ jobs:
       pull-requests: write # release PR
       issues: write # release PR labels
     steps:
-      - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+      - id: release
+        uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
+      # Ask the Go module proxy for the new version so it is cached and
+      # pkg.go.dev indexes it right away.
+      - if: steps.release.outputs.release_created == 'true'
+        env:
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: curl -fsS "https://proxy.golang.org/github.com/koative/hyperliquid-go/@v/${TAG}.info"

@@ -1,0 +1,21 @@
+{
+  "spotState": {
+    "balances": [
+      {
+        "coin": "USDC",
+        "entryNtl": "0.0",
+        "hold": "0.0",
+        "token": 0,
+        "total": "0.0"
+      },
+      {
+        "coin": "USDH",
+        "entryNtl": "0.0",
+        "hold": "0.0",
+        "token": 360,
+        "total": "0.0"
+      }
+    ]
+  },
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

@@ -1,0 +1,165 @@
+{
+  "activeReferralDiscount": "0.0",
+  "activeStakingDiscount": {
+    "bpsOfMaxSupply": "0.0679104974",
+    "discount": "0.15"
+  },
+  "dailyUserVlm": [
+    {
+      "date": "2026-09-21",
+      "exchange": "12166684008.0499992371",
+      "userAdd": "16336.12",
+      "userCross": "12285.68"
+    },
+    {
+      "date": "2026-09-22",
+      "exchange": "7828103385.779999733",
+      "userAdd": "24.35",
+      "userCross": "3588.0"
+    },
+    {
+      "date": "2026-09-23",
+      "exchange": "10568009231.1900005341",
+      "userAdd": "4250.29",
+      "userCross": "12291.19"
+    },
+    {
+      "date": "2026-09-24",
+      "exchange": "9424822576.8999996185",
+      "userAdd": "3126.08",
+      "userCross": "3488.15"
+    },
+    {
+      "date": "2026-09-25",
+      "exchange": "7758060965.1000003815",
+      "userAdd": "0.0",
+      "userCross": "35787.58"
+    },
+    {
+      "date": "2026-09-26",
+      "exchange": "3197216315.7699999809",
+      "userAdd": "0.0",
+      "userCross": "0.0"
+    },
+    {
+      "date": "2026-09-27",
+      "exchange": "4401581552.0",
+      "userAdd": "0.0",
+      "userCross": "0.0"
+    },
+    {
+      "date": "2026-09-28",
+      "exchange": "8861958158.9899997711",
+      "userAdd": "0.0",
+      "userCross": "0.0"
+    }
+  ],
+  "feeSchedule": {
+    "add": "0.00015",
+    "cross": "0.00045",
+    "referralDiscount": "0.04",
+    "spotAdd": "0.0004",
+    "spotCross": "0.0007",
+    "stakingDiscountTiers": [
+      {
+        "bpsOfMaxSupply": "0.0",
+        "discount": "0.0"
+      },
+      {
+        "bpsOfMaxSupply": "0.0001",
+        "discount": "0.05"
+      },
+      {
+        "bpsOfMaxSupply": "0.001",
+        "discount": "0.1"
+      },
+      {
+        "bpsOfMaxSupply": "0.01",
+        "discount": "0.15"
+      },
+      {
+        "bpsOfMaxSupply": "0.1",
+        "discount": "0.2"
+      },
+      {
+        "bpsOfMaxSupply": "1.0",
+        "discount": "0.3"
+      },
+      {
+        "bpsOfMaxSupply": "5.0",
+        "discount": "0.4"
+      }
+    ],
+    "tiers": {
+      "mm": [
+        {
+          "add": "-0.00001",
+          "makerFractionCutoff": "0.005"
+        },
+        {
+          "add": "-0.00002",
+          "makerFractionCutoff": "0.015"
+        },
+        {
+          "add": "-0.00003",
+          "makerFractionCutoff": "0.03"
+        }
+      ],
+      "vip": [
+        {
+          "add": "0.00012",
+          "cross": "0.0004",
+          "ntlCutoff": "5000000.0",
+          "spotAdd": "0.0003",
+          "spotCross": "0.0006"
+        },
+        {
+          "add": "0.00008",
+          "cross": "0.00035",
+          "ntlCutoff": "25000000.0",
+          "spotAdd": "0.0002",
+          "spotCross": "0.0005"
+        },
+        {
+          "add": "0.00004",
+          "cross": "0.0003",
+          "ntlCutoff": "100000000.0",
+          "spotAdd": "0.0001",
+          "spotCross": "0.0004"
+        },
+        {
+          "add": "0.0",
+          "cross": "0.00028",
+          "ntlCutoff": "500000000.0",
+          "spotAdd": "0.0",
+          "spotCross": "0.00035"
+        },
+        {
+          "add": "0.0",
+          "cross": "0.00026",
+          "ntlCutoff": "2000000000.0",
+          "spotAdd": "0.0",
+          "spotCross": "0.0003"
+        },
+        {
+          "add": "0.0",
+          "cross": "0.00024",
+          "ntlCutoff": "7000000000.0",
+          "spotAdd": "0.0",
+          "spotCross": "0.00025"
+        }
+      ]
+    }
+  },
+  "feeTrialEscrow": "0.0",
+  "nextTrialAvailableTimestamp": null,
+  "stakingLink": {
+    "stakingUser": "0x47a1356eab547754580fbd96bbcfbce9ddcac3d8",
+    "type": "tradingUser"
+  },
+  "trial": null,
+  "userAddRate": "0.0001275",
+  "userCrossRate": "0.0003825",
+  "userSpotAddRate": "0.00034",
+  "userSpotCrossRate": "0.000595"
+}

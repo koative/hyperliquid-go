@@ -53,13 +53,6 @@ func (r *recordingTransport) request(ctx context.Context, endpoint string, body 
 	return raw, err
 }
 
-// replayTransport answers every request with a recorded response.
-type replayTransport json.RawMessage
-
-func (r replayTransport) request(context.Context, string, []byte) (json.RawMessage, error) {
-	return json.RawMessage(r), nil
-}
-
 func fixturePath(kind, name string) string {
 	return filepath.Join("testdata", "fixtures", kind, name+".json")
 }

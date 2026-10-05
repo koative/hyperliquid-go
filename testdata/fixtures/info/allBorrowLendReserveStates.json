@@ -1,0 +1,67 @@
+[
+  [
+    0,
+    {
+      "balance": "123230336.2164627463",
+      "borrowYearlyRate": "0.05",
+      "ltv": "0.0",
+      "oraclePx": "1.0",
+      "supplyYearlyRate": "0.0346630665",
+      "totalBorrowed": "413230785.2985575795",
+      "totalSupplied": "536461059.0425586104",
+      "utilization": "0.7702903656"
+    }
+  ],
+  [
+    150,
+    {
+      "balance": "13137116.8372566402",
+      "borrowYearlyRate": "0.05",
+      "ltv": "0.65",
+      "oraclePx": "93.17",
+      "supplyYearlyRate": "0.0",
+      "totalBorrowed": "0.0",
+      "totalSupplied": "13137116.8372566402",
+      "utilization": "0.0"
+    }
+  ],
+  [
+    197,
+    {
+      "balance": "2161.1254826552",
+      "borrowYearlyRate": "0.05",
+      "ltv": "0.5",
+      "oraclePx": "86055.0",
+      "supplyYearlyRate": "0.0",
+      "totalBorrowed": "0.0",
+      "totalSupplied": "2161.1254826552",
+      "utilization": "0.0"
+    }
+  ],
+  [
+    268,
+    {
+      "balance": "1308690.5591974",
+      "borrowYearlyRate": "0.05",
+      "ltv": "0.0",
+      "oraclePx": "0.99989",
+      "supplyYearlyRate": "0.0237430568",
+      "totalBorrowed": "1461748.8581833499",
+      "totalSupplied": "2770439.3377931998",
+      "utilization": "0.5276234849"
+    }
+  ],
+  [
+    360,
+    {
+      "balance": "116991.09141524",
+      "borrowYearlyRate": "0.05",
+      "ltv": "0.0",
+      "oraclePx": "1.0",
+      "supplyYearlyRate": "0.0062662861",
+      "totalBorrowed": "18926.59886485",
+      "totalSupplied": "135917.34077737",
+      "utilization": "0.1392508031"
+    }
+  ]
+]

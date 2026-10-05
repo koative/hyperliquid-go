@@ -1,0 +1,56 @@
+name: Live API
+
+# Checks the SDK against the real Hyperliquid API every night: every Info
+# endpoint and WebSocket channel on Mainnet is decoded strictly, and every
+# exchange action is submitted to Testnet with a fresh key, which must yield
+# an error naming that key's address. A failure means the API changed (or
+# the SDK broke) and opens an "api-drift" issue.
+
+on:
+  schedule:
+    - cron: "41 4 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+      - run: go test -run 'Live' -count=1 -v -timeout 15m .
+        env:
+          HYPERLIQUID_LIVE: "1"
+
+  report:
+    needs: live
+    if: failure() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # open or update the api-drift issue
+    steps:
+      - name: Open or update the api-drift issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          number=$(gh issue list --label api-drift --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "Still failing: $RUN_URL"
+          else
+            gh issue create --label api-drift --title "Live API check failed" \
+              --body "The nightly live API check failed: $RUN_URL. The Hyperliquid API may have changed; failing subtests name the endpoint or action."
+          fi

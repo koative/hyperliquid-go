@@ -1,0 +1,92 @@
+{
+  "blockDetails": {
+    "blockTime": 1791190861853,
+    "hash": "0xa7a2417d0a158f669811a2097dbc130d6919119cc9333e472c6d8281c6bc198f",
+    "height": 1172452096,
+    "numTxs": 3278,
+    "proposer": "0x4a900e9266b00e3d5310e09bb49520b80f2bd417",
+    "txs": [
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0x801383e04e858b5d818d0445e2330000004e9bc5e988aa2f23dc2f330d896548",
+        "time": 1791190861853,
+        "user": "0x7839e2f2c375dd2935193f2736167514efff9916"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0x32e6fa7b6816cdd934600445e2330001010012610319ecabd6afa5ce271aa7c3",
+        "time": 1791190861853,
+        "user": "0x7839e2f2c375dd2935193f2736167514efff9916"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0xe5ba711681a81054e7340445e2330001020088fc1cab2f2689831c6940abea3f",
+        "time": 1791190861853,
+        "user": "0x1dc67adaf9f163c5b1a95043addbdfa1af58e512"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0x988de7b19b3952d09a070445e23300010300ff97363c71a23c5693045a3d2cbb",
+        "time": 1791190861853,
+        "user": "0x1dc67adaf9f163c5b1a95043addbdfa1af58e512"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0x4b615e4cb4ca954c4cdb0445e2330001040076324fcdb41eef2a099f73ce6f36",
+        "time": 1791190861853,
+        "user": "0x1c1c270b573d55b68b3d14722b5d5d401511bed0"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0xfe34d4e7ce5bd7c7ffae0445e23300010500eccd695ef69aa1fd803a8d5fb1b2",
+        "time": 1791190861853,
+        "user": "0x1c1c270b573d55b68b3d14722b5d5d401511bed0"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0xb1084b82e7ed1a43b2820445e23300010600636882e0391554d0f6d5a6e0f42e",
+        "time": 1791190861853,
+        "user": "0x1dc67adaf9f163c5b1a95043addbdfa1af58e512"
+      },
+      {
+        "action": {
+          "type": "noop"
+        },
+        "block": 1172452096,
+        "error": null,
+        "hash": "0x63dbc21e017e5cbf65550445e23300010700da039c717b9107a46d70c07236aa",
+        "time": 1791190861853,
+        "user": "0x7839e2f2c375dd2935193f2736167514efff9916"
+      }
+    ]
+  },
+  "type": "blockDetails"
+}

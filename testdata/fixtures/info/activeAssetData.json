@@ -1,0 +1,17 @@
+{
+  "availableToTrade": [
+    "4962.482671",
+    "6255.060313"
+  ],
+  "coin": "BTC",
+  "leverage": {
+    "type": "cross",
+    "value": 10
+  },
+  "markPx": "86057.1",
+  "maxTradeSzs": [
+    "0.57665",
+    "0.72685"
+  ],
+  "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+}

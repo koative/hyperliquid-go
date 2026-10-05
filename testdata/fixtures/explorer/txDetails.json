@@ -1,0 +1,21 @@
+{
+  "tx": {
+    "action": {
+      "twap": {
+        "a": 110062,
+        "b": true,
+        "m": 270,
+        "r": false,
+        "s": "80.8",
+        "t": false
+      },
+      "type": "twapOrder"
+    },
+    "block": 1172452096,
+    "error": null,
+    "hash": "0x24f6681e54afb42b26700445e233000204b20003efa2d2fdc8bf137113a38e15",
+    "time": 1791190861853,
+    "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+  },
+  "type": "txDetails"
+}

@@ -1,0 +1,47 @@
+{
+  "perpDexStates": [
+    {
+      "perpsAtOpenInterestCap": [
+        "CANTO",
+        "FTM",
+        "JELLY",
+        "LOOM",
+        "RLB",
+        "VINE",
+        "ZEREBRO"
+      ],
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    },
+    {
+      "totalVaultEquity": "0.0"
+    }
+  ],
+  "userState": {
+    "abstraction": "disabled",
+    "agentAddress": null,
+    "agentValidUntil": null,
+    "cumLedger": "-130798.0",
+    "dexAbstractionEnabled": false,
+    "isVault": false,
+    "serverTime": 1791195475996,
+    "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+  }
+}

@@ -1,0 +1,170 @@
+[
+  {
+    "state": {
+      "coin": "xyz:RKLB",
+      "executedNtl": "0.0",
+      "executedSz": "0.0",
+      "minutes": 270,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "80.8",
+      "timestamp": 1791190861853,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "activated"
+    },
+    "time": 1791190861,
+    "twapId": 2285902
+  },
+  {
+    "state": {
+      "coin": "BTC",
+      "executedNtl": "0.0",
+      "executedSz": "0.0",
+      "minutes": 270,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "0.17365",
+      "timestamp": 1791188680748,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "activated"
+    },
+    "time": 1791188680,
+    "twapId": 2285824
+  },
+  {
+    "state": {
+      "coin": "BTC",
+      "executedNtl": "3008.41232",
+      "executedSz": "0.0348",
+      "minutes": 270,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "0.0348",
+      "timestamp": 1790931560649,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "finished"
+    },
+    "time": 1790947672,
+    "twapId": 2278411
+  },
+  {
+    "state": {
+      "coin": "BTC",
+      "executedNtl": "0.0",
+      "executedSz": "0.0",
+      "minutes": 270,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "0.0348",
+      "timestamp": 1790931560649,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "activated"
+    },
+    "time": 1790931560,
+    "twapId": 2278411
+  },
+  {
+    "state": {
+      "coin": "ETH",
+      "executedNtl": "4021.97014",
+      "executedSz": "1.4797",
+      "minutes": 510,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "1.4797",
+      "timestamp": 1790895547828,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "finished"
+    },
+    "time": 1790925939,
+    "twapId": 2276993
+  },
+  {
+    "state": {
+      "coin": "BTC",
+      "executedNtl": "6045.47743",
+      "executedSz": "0.07083",
+      "minutes": 510,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "0.07083",
+      "timestamp": 1790894580988,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "finished"
+    },
+    "time": 1790925092,
+    "twapId": 2276968
+  },
+  {
+    "state": {
+      "coin": "ETH",
+      "executedNtl": "0.0",
+      "executedSz": "0.0",
+      "minutes": 510,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "1.4797",
+      "timestamp": 1790895547828,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "activated"
+    },
+    "time": 1790895547,
+    "twapId": 2276993
+  },
+  {
+    "state": {
+      "coin": "BTC",
+      "executedNtl": "0.0",
+      "executedSz": "0.0",
+      "minutes": 510,
+      "randomize": false,
+      "reduceOnly": false,
+      "side": "B",
+      "stopPx": null,
+      "sz": "0.07083",
+      "timestamp": 1790894580988,
+      "trigger": null,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    "status": {
+      "status": "activated"
+    },
+    "time": 1790894580,
+    "twapId": 2276968
+  }
+]

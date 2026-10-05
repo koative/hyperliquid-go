@@ -1,0 +1,45 @@
+{
+  "health": "healthy",
+  "healthFactor": "1.7762931905",
+  "tokenToState": [
+    [
+      0,
+      {
+        "borrow": {
+          "basis": "13109.27994598",
+          "value": "13109.280226"
+        },
+        "supply": {
+          "basis": "0.0",
+          "value": "0.0"
+        }
+      }
+    ],
+    [
+      150,
+      {
+        "borrow": {
+          "basis": "0.0",
+          "value": "0.0"
+        },
+        "supply": {
+          "basis": "384.50681882",
+          "value": "384.50681882"
+        }
+      }
+    ],
+    [
+      360,
+      {
+        "borrow": {
+          "basis": "0.0",
+          "value": "0.0"
+        },
+        "supply": {
+          "basis": "0.0",
+          "value": "0.0"
+        }
+      }
+    ]
+  ]
+}

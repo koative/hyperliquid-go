@@ -1,0 +1,9 @@
+{
+  "category": "crypto",
+  "description": "TOTAL2 tracks the aggregate market capitalization of the top 125 crypto assets excluding Bitcoin. It serves as the primary benchmark for overall altcoin market health and direction.",
+  "displayName": "TOTAL2",
+  "keywords": [
+    "altcoin",
+    "index"
+  ]
+}

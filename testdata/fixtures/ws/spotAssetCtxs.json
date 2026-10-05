@@ -1,0 +1,82 @@
+[
+  {
+    "circulatingSupply": "594789356.4683899879",
+    "coin": "PURR/USDC",
+    "dayBaseVlm": "10051872.0",
+    "dayNtlVlm": "1691375.4230100005",
+    "markPx": "0.16483",
+    "midPx": "0.16475",
+    "prevDayPx": "0.17254",
+    "totalSupply": "594789367.7749099731"
+  },
+  {
+    "circulatingSupply": "995725.08886101",
+    "coin": "@1",
+    "dayBaseVlm": "712.17",
+    "dayNtlVlm": "8843.36154",
+    "markPx": "12.516",
+    "midPx": "12.5165",
+    "prevDayPx": "12.345",
+    "totalSupply": "995725.13968717"
+  },
+  {
+    "circulatingSupply": "4870362714.3791103363",
+    "coin": "@2",
+    "dayBaseVlm": "0.0",
+    "dayNtlVlm": "0.0",
+    "markPx": "0.00006342",
+    "midPx": "0.00006351",
+    "prevDayPx": "0.00006342",
+    "totalSupply": "6868368507.6862602234"
+  },
+  {
+    "circulatingSupply": "9776852.82522",
+    "coin": "@3",
+    "dayBaseVlm": "0.0",
+    "dayNtlVlm": "0.0",
+    "markPx": "0.0010009",
+    "midPx": "0.00549995",
+    "prevDayPx": "0.0010006",
+    "totalSupply": "9776852.9858199991"
+  },
+  {
+    "circulatingSupply": "989433.50324",
+    "coin": "@4",
+    "dayBaseVlm": "1542.0",
+    "dayNtlVlm": "5095.9415",
+    "markPx": "3.4245",
+    "midPx": "3.4246",
+    "prevDayPx": "3.2512",
+    "totalSupply": "994111.1216900001"
+  },
+  {
+    "circulatingSupply": "6658400.6332807504",
+    "coin": "@5",
+    "dayBaseVlm": "0.0",
+    "dayNtlVlm": "0.0",
+    "markPx": "0.67873",
+    "midPx": "0.679745",
+    "prevDayPx": "0.67873",
+    "totalSupply": "6658400.6332807504"
+  },
+  {
+    "circulatingSupply": "367138540.9722414613",
+    "coin": "@6",
+    "dayBaseVlm": "90895.06",
+    "dayNtlVlm": "9.72577142",
+    "markPx": "0.000107",
+    "midPx": "0.000152",
+    "prevDayPx": "0.000107",
+    "totalSupply": "367138542.0862375498"
+  },
+  {
+    "circulatingSupply": "982689191.17208004",
+    "coin": "@7",
+    "dayBaseVlm": "0.0",
+    "dayNtlVlm": "0.0",
+    "markPx": "0.00000743",
+    "midPx": "0.00001129",
+    "prevDayPx": "0.0000175",
+    "totalSupply": "982724447.8431999683"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "details": "",
+  "question": {
+    "description": "The question resolves by assigning Yes to exactly one of Below 4.3%, Exactly 4.3%, or Above 4.3% based on the Bureau of Labor Statistics Consumer Price Index news release for May 2026, currently scheduled for June 10, 2026 at 8:30 AM ET. The relevant value is the non-seasonally adjusted all items Consumer Price Index for All Urban Consumers (CPI-U) percent change over the 12 months ending May 2026, as reported to one decimal place in the official monthly CPI news release. If BLS has not published the May 2026 all items CPI-U figure by July 15, 2026, or if BLS announces that it will not publish the May 2026 all items CPI-U figure, the question instead resolves to the most recently published month's non-seasonally adjusted all items CPI-U 12-month percent change available at that time. If the May 2026 release occurs on a date other than the scheduled date, the rescheduled release is still used for resolution, provided the figure is published by July 15, 2026. Resolution uses the initial published value, not subsequent revisions.",
+    "name": "May CPI year-over-year",
+    "question": {
+      "settled": 19
+    }
+  },
+  "settleFraction": "0.0",
+  "spec": {
+    "description": "",
+    "name": "Fallback",
+    "outcome": 100,
+    "quoteToken": "USDC",
+    "sideSpecs": [
+      {
+        "name": "Yes"
+      },
+      {
+        "name": "No"
+      }
+    ]
+  }
+}

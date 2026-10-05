@@ -1,0 +1,106 @@
+{
+  "balances": [
+    {
+      "borrowed": "2222.33799792",
+      "coin": "USDC",
+      "entryNtl": "0.0",
+      "hold": "-5619.6811439",
+      "ltv": "0.0",
+      "spotHold": "-672.95442491",
+      "token": 0,
+      "total": "-672.95442491"
+    },
+    {
+      "coin": "PURR",
+      "entryNtl": "0.0",
+      "hold": "0.0",
+      "token": 1,
+      "total": "0.0"
+    },
+    {
+      "coin": "KNTQ",
+      "entryNtl": "0.01059702",
+      "hold": "0.0",
+      "token": 124,
+      "total": "0.06237369"
+    },
+    {
+      "coin": "HYPE",
+      "entryNtl": "0.0",
+      "hold": "36.73549677",
+      "ltv": "0.65",
+      "supplied": "118.5054451",
+      "token": 150,
+      "total": "118.5054451"
+    },
+    {
+      "coin": "SENT",
+      "entryNtl": "500.0",
+      "hold": "0.0",
+      "token": 186,
+      "total": "500.0"
+    },
+    {
+      "coin": "NEKO",
+      "entryNtl": "0.29086725",
+      "hold": "0.0",
+      "token": 190,
+      "total": "3504.42477876"
+    },
+    {
+      "coin": "UBTC",
+      "entryNtl": "0.0",
+      "hold": "0.0",
+      "ltv": "0.5",
+      "token": 197,
+      "total": "0.0"
+    },
+    {
+      "coin": "UETH",
+      "entryNtl": "0.0",
+      "hold": "0.0",
+      "token": 221,
+      "total": "0.0"
+    }
+  ],
+  "portfolioMarginEnabled": true,
+  "portfolioMarginRatio": "0.1890603402",
+  "tokenToAvailableAfterMaintenance": [
+    [
+      0,
+      "7444.68147999"
+    ],
+    [
+      150,
+      "96.9574833"
+    ],
+    [
+      197,
+      "0.0"
+    ],
+    [
+      268,
+      "7445.50048504"
+    ],
+    [
+      360,
+      "0.0"
+    ]
+  ],
+  "tokenToPortfolioBorrowRatio": [
+    [
+      0,
+      "0.0000444468"
+    ],
+    [
+      360,
+      "0.0"
+    ]
+  ],
+  "tokenToPortfolioSupplyRatio": [
+    [
+      150,
+      "0.0001185054"
+    ]
+  ]
+}

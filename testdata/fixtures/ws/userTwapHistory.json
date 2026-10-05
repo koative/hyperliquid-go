@@ -1,0 +1,46 @@
+{
+  "history": [
+    {
+      "state": {
+        "coin": "BTC",
+        "executedNtl": "0.0",
+        "executedSz": "0.0",
+        "minutes": 5,
+        "randomize": false,
+        "reduceOnly": false,
+        "side": "B",
+        "stopPx": null,
+        "sz": "4.51117",
+        "timestamp": 1758243619533,
+        "trigger": null,
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "status": {
+        "status": "activated"
+      },
+      "time": 1758243619
+    },
+    {
+      "state": {
+        "coin": "BTC",
+        "executedNtl": "530106.33268",
+        "executedSz": "4.51117",
+        "minutes": 5,
+        "randomize": false,
+        "reduceOnly": false,
+        "side": "B",
+        "stopPx": null,
+        "sz": "4.51117",
+        "timestamp": 1758243619533,
+        "trigger": null,
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "status": {
+        "status": "finished"
+      },
+      "time": 1758243921
+    }
+  ],
+  "isSnapshot": true,
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

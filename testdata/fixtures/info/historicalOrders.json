@@ -1,0 +1,178 @@
+[
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "ETH",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "2448.8",
+      "oid": 563950207239,
+      "orderType": "Market",
+      "origSz": "1.4797",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "0.0",
+      "tif": "FrontendMarket",
+      "timestamp": 1790979466849,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "filled",
+    "statusTimestamp": 1790979466849
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "ETH",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "2448.8",
+      "oid": 563950207239,
+      "orderType": "Market",
+      "origSz": "1.4797",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "1.4797",
+      "tif": "FrontendMarket",
+      "timestamp": 1790979466849,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "open",
+    "statusTimestamp": 1790979466849
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "BTC",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "77729.0",
+      "oid": 563950207238,
+      "orderType": "Market",
+      "origSz": "0.10577",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "0.0",
+      "tif": "FrontendMarket",
+      "timestamp": 1790979466849,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "filled",
+    "statusTimestamp": 1790979466849
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "BTC",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "77729.0",
+      "oid": 563950207238,
+      "orderType": "Market",
+      "origSz": "0.10577",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "0.10577",
+      "tif": "FrontendMarket",
+      "timestamp": 1790979466849,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "open",
+    "statusTimestamp": 1790979466849
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "HYPE",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "79.278",
+      "oid": 560799736374,
+      "orderType": "Market",
+      "origSz": "33.87",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "0.0",
+      "tif": "FrontendMarket",
+      "timestamp": 1790738166881,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "filled",
+    "statusTimestamp": 1790738166881
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "HYPE",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "79.278",
+      "oid": 560799736374,
+      "orderType": "Market",
+      "origSz": "33.87",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "33.87",
+      "tif": "FrontendMarket",
+      "timestamp": 1790738166881,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "open",
+    "statusTimestamp": 1790738166881
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "ETH",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "2460.2",
+      "oid": 560799736373,
+      "orderType": "Market",
+      "origSz": "1.8714",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "0.0",
+      "tif": "FrontendMarket",
+      "timestamp": 1790738166881,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "filled",
+    "statusTimestamp": 1790738166881
+  },
+  {
+    "order": {
+      "children": [],
+      "cloid": null,
+      "coin": "ETH",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "2460.2",
+      "oid": 560799736373,
+      "orderType": "Market",
+      "origSz": "1.8714",
+      "reduceOnly": true,
+      "side": "A",
+      "sz": "1.8714",
+      "tif": "FrontendMarket",
+      "timestamp": 1790738166881,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    "status": "open",
+    "statusTimestamp": 1790738166881
+  }
+]

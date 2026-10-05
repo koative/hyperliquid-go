@@ -1,0 +1,86 @@
+{
+  "isSnapshot": true,
+  "nonFundingLedgerUpdates": [
+    {
+      "delta": {
+        "destination": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71",
+        "type": "subAccountTransfer",
+        "usdc": "25000.0",
+        "user": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464"
+      },
+      "hash": "0x7ad6f3b10a0fe83a7c50042bd186fd0205c70096a503070c1e9f9f03c903c225",
+      "time": 1758243394852
+    },
+    {
+      "delta": {
+        "destination": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464",
+        "type": "subAccountTransfer",
+        "usdc": "8003.0",
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "hash": "0x84a7ede5fd527f158621042bd767bf02027a00cb98559de728709938bc565900",
+      "time": 1758274019946
+    },
+    {
+      "delta": {
+        "destination": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464",
+        "type": "subAccountTransfer",
+        "usdc": "7847.0",
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "hash": "0x6530bad7a688fb3666aa042bd7a29702034d00bd418c1a0808f9662a658cd521",
+      "time": 1758275213852
+    },
+    {
+      "delta": {
+        "destination": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71",
+        "type": "subAccountTransfer",
+        "usdc": "8002.0",
+        "user": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464"
+      },
+      "hash": "0xd1e3254d707e366fd35c042bd7e16202010d00330b71554175abd0a02f72105a",
+      "time": 1758276512109
+    },
+    {
+      "delta": {
+        "destination": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71",
+        "type": "subAccountTransfer",
+        "usdc": "8002.0",
+        "user": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464"
+      },
+      "hash": "0x6322e49052211c52649c042bd80eb602013c0075ed243b2406eb8fe31124f63d",
+      "time": 1758277418685
+    },
+    {
+      "delta": {
+        "destination": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464",
+        "type": "subAccountTransfer",
+        "usdc": "8003.0",
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "hash": "0xdf5b620146341057e0d5042bd9848a02050100e6e1372f2983240d540537ea42",
+      "time": 1758285053322
+    },
+    {
+      "delta": {
+        "destination": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71",
+        "type": "subAccountTransfer",
+        "usdc": "50000.0",
+        "user": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464"
+      },
+      "hash": "0xa72bfb9ac98a4c53a8a5042be21f9c0203240080648d6b254af4a6ed888e263e",
+      "time": 1758330391047
+    },
+    {
+      "delta": {
+        "destination": "0xeeb56331b6a250fe2dbc123f08bdb87aa9840464",
+        "type": "subAccountTransfer",
+        "usdc": "29880.0",
+        "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+      },
+      "hash": "0x506dc20c608e754b51e7042be36da002010000f1fb81941df4366d5f1f824f35",
+      "time": 1758337225291
+    }
+  ],
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

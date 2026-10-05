@@ -1,0 +1,182 @@
+{
+  "isSnapshot": true,
+  "orderHistory": [
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098529",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.1",
+        "oid": 565703214582,
+        "orderType": "Limit",
+        "origSz": "1.4431",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "1.4431",
+        "tif": "Alo",
+        "timestamp": 1791195475584,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475584
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098528",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.1",
+        "oid": 565703214583,
+        "orderType": "Limit",
+        "origSz": "2.8861",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "2.8861",
+        "tif": "Alo",
+        "timestamp": 1791195475584,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475584
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173310975320000000000006531807",
+        "coin": "BTC",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "86035.0",
+        "oid": 565703216603,
+        "orderType": "Limit",
+        "origSz": "0.04067",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.04067",
+        "tif": "Alo",
+        "timestamp": 1791195475663,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475663
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173310975320000000000006531806",
+        "coin": "BTC",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "86035.0",
+        "oid": 565703216604,
+        "orderType": "Limit",
+        "origSz": "0.04067",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.04067",
+        "tif": "Alo",
+        "timestamp": 1791195475663,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475663
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098543",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.2",
+        "oid": 565703219702,
+        "orderType": "Limit",
+        "origSz": "0.2943",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.2943",
+        "tif": "Alo",
+        "timestamp": 1791195475996,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475996
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098542",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.2",
+        "oid": 565703219703,
+        "orderType": "Limit",
+        "origSz": "0.2943",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.2943",
+        "tif": "Alo",
+        "timestamp": 1791195475996,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475996
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098541",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.2",
+        "oid": 565703219704,
+        "orderType": "Limit",
+        "origSz": "0.2943",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.2943",
+        "tif": "Alo",
+        "timestamp": 1791195475996,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475996
+    },
+    {
+      "order": {
+        "children": [],
+        "cloid": "0x16173321378108000000000003098540",
+        "coin": "ETH",
+        "isPositionTpsl": false,
+        "isTrigger": false,
+        "limitPx": "2717.2",
+        "oid": 565703219705,
+        "orderType": "Limit",
+        "origSz": "0.2943",
+        "reduceOnly": false,
+        "side": "B",
+        "sz": "0.2943",
+        "tif": "Alo",
+        "timestamp": 1791195475996,
+        "triggerCondition": "N/A",
+        "triggerPx": "0.0"
+      },
+      "status": "badAloPxRejected",
+      "statusTimestamp": 1791195475996
+    }
+  ],
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

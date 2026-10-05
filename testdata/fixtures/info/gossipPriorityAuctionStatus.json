@@ -1,0 +1,22 @@
+[
+  [
+    "13.158.244.192",
+    "18.180.228.50"
+  ],
+  [
+    {
+      "currentGas": "12.23179239",
+      "durationSeconds": 180,
+      "endGas": null,
+      "startGas": "14.4727425",
+      "startTimeSeconds": 1791195660
+    },
+    {
+      "currentGas": "1.30651321",
+      "durationSeconds": 180,
+      "endGas": null,
+      "startGas": "1.5293769",
+      "startTimeSeconds": 1791195660
+    }
+  ]
+]

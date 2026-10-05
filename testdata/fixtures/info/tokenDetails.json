@@ -1,0 +1,72 @@
+{
+  "circulatingSupply": "298481743.9774784446",
+  "deployGas": "0.0",
+  "deployTime": "2024-11-29T06:45:52.532",
+  "deployer": null,
+  "futureEmissions": "411010485.334960103",
+  "genesis": {
+    "blacklistUsers": [],
+    "existingTokenBalances": [],
+    "userBalances": [
+      [
+        "0x000000000077cdff30a1b5d7c12f3587f921e519",
+        "1819.26"
+      ],
+      [
+        "0x00000000051cbce3fd04148cce2c0adc7c651829",
+        "8197.37"
+      ],
+      [
+        "0x0000000005d8508109bbdc10b508c4291da70102",
+        "149.82"
+      ],
+      [
+        "0x0000000020b888feabe8f1438e49c8a898292abc",
+        "700.95"
+      ],
+      [
+        "0x00000000a8d1978e29ae96063e137aaab61c1be7",
+        "2022.59"
+      ],
+      [
+        "0x0000000188e3604489698ea73de28524f2bea6c6",
+        "1129.01"
+      ],
+      [
+        "0x000000087f00ae6e6b0da6d4125096cbe2138f25",
+        "6372.76"
+      ],
+      [
+        "0x000000209e0a892842bc06c354e7d097392cbbbb",
+        "5757.42"
+      ]
+    ]
+  },
+  "markPx": "93.047",
+  "maxSupply": "1000000000.0",
+  "midPx": "93.0465",
+  "name": "HYPE",
+  "nonCirculatingUserBalances": [
+    [
+      "0x43e9abea1910387c4292bca4b94de81462f8a251",
+      "241566421.8150326312"
+    ],
+    [
+      "0xfefefefefefefefefefefefefefefefefefefefe",
+      "47825107.5147392303"
+    ],
+    [
+      "0x0000000000000000000000000000000000000000",
+      "1673.78676325"
+    ],
+    [
+      "0x000000000000000000000000000000000000dead",
+      "2.71671343"
+    ]
+  ],
+  "prevDayPx": "90.833",
+  "seededUsdc": "0.0",
+  "szDecimals": 2,
+  "totalSupply": "998885435.1456869841",
+  "weiDecimals": 8
+}

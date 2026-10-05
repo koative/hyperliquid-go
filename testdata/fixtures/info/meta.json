@@ -1,0 +1,96 @@
+{
+  "collateralToken": 0,
+  "marginTables": [
+    [
+      50,
+      {
+        "description": "",
+        "marginTiers": [
+          {
+            "lowerBound": "0.0",
+            "maxLeverage": 50
+          }
+        ]
+      }
+    ]
+  ],
+  "universe": [
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginTableId": 30,
+      "maxLeverage": 30,
+      "name": "xyz:XYZ100",
+      "szDecimals": 4
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginTableId": 20,
+      "maxLeverage": 20,
+      "name": "xyz:TSLA",
+      "szDecimals": 3
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginTableId": 20,
+      "maxLeverage": 20,
+      "name": "xyz:NVDA",
+      "szDecimals": 3
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+      "marginTableId": 25,
+      "maxLeverage": 25,
+      "name": "xyz:GOLD",
+      "szDecimals": 4
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginMode": "noCross",
+      "marginTableId": 10,
+      "maxLeverage": 10,
+      "name": "xyz:HOOD",
+      "onlyIsolated": true,
+      "szDecimals": 3
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginTableId": 10,
+      "maxLeverage": 10,
+      "name": "xyz:INTC",
+      "szDecimals": 2
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginMode": "noCross",
+      "marginTableId": 10,
+      "maxLeverage": 10,
+      "name": "xyz:PLTR",
+      "onlyIsolated": true,
+      "szDecimals": 3
+    },
+    {
+      "deployerFeeScale": "1.0",
+      "growthMode": "enabled",
+      "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+      "marginMode": "noCross",
+      "marginTableId": 10,
+      "maxLeverage": 10,
+      "name": "xyz:COIN",
+      "onlyIsolated": true,
+      "szDecimals": 3
+    }
+  ]
+}

@@ -40,9 +40,34 @@ go test -run='^$' -fuzz='^FuzzFromJSON$' -fuzztime=1m ./internal/msgpack
 - Prices, sizes and amounts are `Decimal`, never `float64`.
 - Action struct field order and JSON tags are the signed bytes: they must
   match the wire order of the Hyperliquid API exactly.
-- New exchange actions need proof the signature is right: a golden vector
-  from the official Python SDK, or a Testnet submission whose error message
-  names the signer's address.
+- New endpoints, channels and actions need a case in the live API tables
+  (`live_info_test.go`, `live_ws_test.go`, `live_exchange_test.go`) and,
+  for exchange actions, a golden vector from the official Python SDK where
+  it supports the action.
+
+## Live API checks
+
+The live tests call the real API and are skipped unless
+`HYPERLIQUID_LIVE=1`. They run nightly in the "Live API" workflow, which
+opens an `api-drift` issue when they fail:
+
+- every Info endpoint and WebSocket channel is called on Mainnet and decoded
+  strictly, so a field the SDK does not model fails the check;
+- every exchange action is submitted to Testnet with a fresh, unfunded key,
+  and the error must name that key's address, which proves the exchange
+  re-derived exactly the bytes we signed.
+
+```sh
+HYPERLIQUID_LIVE=1 go test -run Live -count=1 .
+```
+
+Info and WebSocket responses are also recorded under `testdata/fixtures`
+and decoded offline on every `go test`. After changing a response type,
+re-record them:
+
+```sh
+HYPERLIQUID_LIVE=1 HYPERLIQUID_RECORD=1 go test -run 'LiveInfo|LiveWebSocket' -count=1 .
+```
 
 ## Signing vectors
 

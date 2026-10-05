@@ -1,0 +1,42 @@
+{
+  "dex": "",
+  "orders": [
+    {
+      "children": [],
+      "cloid": "0x16173310975320000000000006531599",
+      "coin": "BTC",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "86034.0",
+      "oid": 565702991948,
+      "orderType": "Limit",
+      "origSz": "0.08196",
+      "reduceOnly": false,
+      "side": "B",
+      "sz": "0.06408",
+      "tif": "Alo",
+      "timestamp": 1791195453955,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    },
+    {
+      "children": [],
+      "cloid": "0x16173321378108000000000003097830",
+      "coin": "ETH",
+      "isPositionTpsl": false,
+      "isTrigger": false,
+      "limitPx": "2717.0",
+      "oid": 565702718116,
+      "orderType": "Limit",
+      "origSz": "0.5772",
+      "reduceOnly": false,
+      "side": "B",
+      "sz": "0.5772",
+      "tif": "Alo",
+      "timestamp": 1791195429525,
+      "triggerCondition": "N/A",
+      "triggerPx": "0.0"
+    }
+  ],
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

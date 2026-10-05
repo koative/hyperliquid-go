@@ -1,0 +1,84 @@
+[
+  {
+    "clearinghouseState": {
+      "assetPositions": [],
+      "crossMaintenanceMarginUsed": "0.0",
+      "crossMarginSummary": {
+        "accountValue": "0.0",
+        "totalMarginUsed": "0.0",
+        "totalNtlPos": "0.0",
+        "totalRawUsd": "0.0"
+      },
+      "marginSummary": {
+        "accountValue": "0.0",
+        "totalMarginUsed": "0.0",
+        "totalNtlPos": "0.0",
+        "totalRawUsd": "0.0"
+      },
+      "time": 1791195704645,
+      "withdrawable": "0.0"
+    },
+    "master": "0x58859ef6937084f88f5d8bb087fdb1cc041ba60a",
+    "name": "Liminal_Site",
+    "spotState": {
+      "balances": [
+        {
+          "coin": "USDC",
+          "entryNtl": "0.0",
+          "hold": "0.0",
+          "token": 0,
+          "total": "0.8417376"
+        },
+        {
+          "coin": "HYPE",
+          "entryNtl": "0.32488259",
+          "hold": "0.0",
+          "token": 150,
+          "total": "0.0075763"
+        },
+        {
+          "coin": "USOL",
+          "entryNtl": "0.38808756",
+          "hold": "0.0",
+          "token": 254,
+          "total": "0.00173118"
+        }
+      ]
+    },
+    "subAccountUser": "0x278103e4ae572dc4886ed71587efe69ac201b9b4"
+  },
+  {
+    "clearinghouseState": {
+      "assetPositions": [],
+      "crossMaintenanceMarginUsed": "0.0",
+      "crossMarginSummary": {
+        "accountValue": "0.0",
+        "totalMarginUsed": "0.0",
+        "totalNtlPos": "0.0",
+        "totalRawUsd": "0.0"
+      },
+      "marginSummary": {
+        "accountValue": "0.0",
+        "totalMarginUsed": "0.0",
+        "totalNtlPos": "0.0",
+        "totalRawUsd": "0.0"
+      },
+      "time": 1791195704645,
+      "withdrawable": "0.0"
+    },
+    "master": "0x58859ef6937084f88f5d8bb087fdb1cc041ba60a",
+    "name": "Margin",
+    "spotState": {
+      "balances": [
+        {
+          "coin": "USDC",
+          "entryNtl": "0.0",
+          "hold": "0.0",
+          "token": 0,
+          "total": "0.00000043"
+        }
+      ]
+    },
+    "subAccountUser": "0x9a00375c3f7a4f34291548c47661eef892a725e9"
+  }
+]

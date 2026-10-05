@@ -1,0 +1,898 @@
+[
+  {
+    "collateralToken": 0,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ],
+      [
+        51,
+        {
+          "description": "tiered 10x",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 10
+            },
+            {
+              "lowerBound": "3000000.0",
+              "maxLeverage": 5
+            }
+          ]
+        }
+      ],
+      [
+        52,
+        {
+          "description": "tiered 10x (2)",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 10
+            },
+            {
+              "lowerBound": "20000000.0",
+              "maxLeverage": 5
+            }
+          ]
+        }
+      ],
+      [
+        53,
+        {
+          "description": "tiered 20x",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 20
+            },
+            {
+              "lowerBound": "40000000.0",
+              "maxLeverage": 10
+            }
+          ]
+        }
+      ],
+      [
+        54,
+        {
+          "description": "tiered 20x (2)",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 20
+            },
+            {
+              "lowerBound": "70000000.0",
+              "maxLeverage": 10
+            }
+          ]
+        }
+      ],
+      [
+        55,
+        {
+          "description": "tiered 25x",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 25
+            },
+            {
+              "lowerBound": "100000000.0",
+              "maxLeverage": 15
+            }
+          ]
+        }
+      ],
+      [
+        56,
+        {
+          "description": "tiered 40x",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 40
+            },
+            {
+              "lowerBound": "150000000.0",
+              "maxLeverage": 20
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "marginTableId": 56,
+        "maxLeverage": 40,
+        "name": "BTC",
+        "szDecimals": 5
+      },
+      {
+        "marginTableId": 55,
+        "maxLeverage": 25,
+        "name": "ETH",
+        "szDecimals": 4
+      },
+      {
+        "marginTableId": 5,
+        "maxLeverage": 5,
+        "name": "ATOM",
+        "szDecimals": 2
+      },
+      {
+        "isDelisted": true,
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "MATIC",
+        "szDecimals": 1
+      },
+      {
+        "marginTableId": 5,
+        "maxLeverage": 5,
+        "name": "DYDX",
+        "szDecimals": 1
+      },
+      {
+        "marginTableId": 54,
+        "maxLeverage": 20,
+        "name": "SOL",
+        "szDecimals": 2
+      },
+      {
+        "marginTableId": 52,
+        "maxLeverage": 10,
+        "name": "AVAX",
+        "szDecimals": 2
+      },
+      {
+        "marginTableId": 51,
+        "maxLeverage": 10,
+        "name": "BNB",
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 0,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginTableId": 30,
+        "maxLeverage": 30,
+        "name": "xyz:XYZ100",
+        "szDecimals": 4
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "xyz:TSLA",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "xyz:NVDA",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "xyz:GOLD",
+        "szDecimals": 4
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginMode": "noCross",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "xyz:HOOD",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "xyz:INTC",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginMode": "noCross",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "xyz:PLTR",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "lastFeeScaleChangeTime": "2025-11-23T17:37:10.033211662",
+        "marginMode": "noCross",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "xyz:COIN",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 360,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ],
+      [
+        51,
+        {
+          "description": "5x leverage for small positions, 3x for large positions (\u003e$1M)",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 5
+            },
+            {
+              "lowerBound": "1000000.0",
+              "maxLeverage": 3
+            }
+          ]
+        }
+      ],
+      [
+        52,
+        {
+          "description": "3x leverage for small positions, 2x for large positions (\u003e$1M)",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 3
+            },
+            {
+              "lowerBound": "1000000.0",
+              "maxLeverage": 2
+            }
+          ]
+        }
+      ],
+      [
+        53,
+        {
+          "description": "10x/5x/3x leverage tiers based on position size",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 10
+            },
+            {
+              "lowerBound": "500000.0",
+              "maxLeverage": 5
+            },
+            {
+              "lowerBound": "2000000.0",
+              "maxLeverage": 3
+            }
+          ]
+        }
+      ],
+      [
+        54,
+        {
+          "description": "20x/15x/10x leverage tiers based on position size",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 20
+            },
+            {
+              "lowerBound": "1000000.0",
+              "maxLeverage": 15
+            },
+            {
+              "lowerBound": "2000000.0",
+              "maxLeverage": 10
+            }
+          ]
+        }
+      ],
+      [
+        55,
+        {
+          "description": "20x/10x leverage tiers based on position size",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 20
+            },
+            {
+              "lowerBound": "5000000.0",
+              "maxLeverage": 10
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2025-11-24T21:19:25.980742012",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "flx:TSLA",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-03-08T03:42:24.011287219",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "flx:NVDA",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2025-11-24T21:19:25.980742012",
+        "marginMode": "strictIsolated",
+        "marginTableId": 5,
+        "maxLeverage": 5,
+        "name": "flx:CRCL",
+        "onlyIsolated": true,
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2025-11-24T21:19:25.980742012",
+        "marginMode": "strictIsolated",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "flx:COIN",
+        "onlyIsolated": true,
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "flx:XMR",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "flx:GOLD",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-29T17:27:22.852183500",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "flx:SILVER",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-29T17:27:22.852183500",
+        "marginMode": "strictIsolated",
+        "marginTableId": 15,
+        "maxLeverage": 15,
+        "name": "flx:OIL",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 360,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginMode": "strictIsolated",
+        "marginTableId": 3,
+        "maxLeverage": 3,
+        "name": "vntl:SPACEX",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginMode": "strictIsolated",
+        "marginTableId": 3,
+        "maxLeverage": 3,
+        "name": "vntl:OPENAI",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "1970-01-01T00:00:00",
+        "marginMode": "strictIsolated",
+        "marginTableId": 3,
+        "maxLeverage": 3,
+        "name": "vntl:ANTHROPIC",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-03T15:00:07.650980965",
+        "marginMode": "noCross",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "vntl:MAG7",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-03T15:01:01.425832988",
+        "marginMode": "noCross",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "vntl:SEMIS",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-03T15:01:01.425832988",
+        "marginMode": "noCross",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "vntl:ROBOT",
+        "onlyIsolated": true,
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-03T15:01:01.425832988",
+        "marginMode": "noCross",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "vntl:INFOTECH",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-03T15:01:01.425832988",
+        "marginMode": "noCross",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "vntl:NUCLEAR",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 235,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 40,
+        "maxLeverage": 40,
+        "name": "hyna:BTC",
+        "szDecimals": 5
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "hyna:ETH",
+        "szDecimals": 4
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "hyna:HYPE",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "hyna:SOL",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginMode": "noCross",
+        "marginTableId": 3,
+        "maxLeverage": 3,
+        "name": "hyna:LIT",
+        "onlyIsolated": true,
+        "szDecimals": 4
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "hyna:ZEC",
+        "szDecimals": 2
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "hyna:XRP",
+        "szDecimals": 0
+      },
+      {
+        "deployerFeeScale": "0.1111",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T15:56:29.934742459",
+        "marginMode": "noCross",
+        "marginTableId": 5,
+        "maxLeverage": 5,
+        "name": "hyna:LIGHTER",
+        "onlyIsolated": true,
+        "szDecimals": 0
+      }
+    ]
+  },
+  {
+    "collateralToken": 360,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-07T14:08:58.174529333",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "km:US500",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-15T10:39:50.000152098",
+        "marginMode": "strictIsolated",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "km:BABA",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-04-23T12:09:04.697161186",
+        "marginMode": "strictIsolated",
+        "marginTableId": 50,
+        "maxLeverage": 50,
+        "name": "km:EUR",
+        "onlyIsolated": true,
+        "szDecimals": 1
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-21T11:32:39.402272041",
+        "marginMode": "strictIsolated",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "km:USBOND",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-07T14:09:17.348525241",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "km:SMALL2000",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-07T14:09:09.168663326",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "km:USTECH",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-02-04T11:29:14.348781496",
+        "marginMode": "strictIsolated",
+        "marginTableId": 15,
+        "maxLeverage": 15,
+        "name": "km:USENERGY",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-22T11:37:51.048804683",
+        "marginMode": "strictIsolated",
+        "marginTableId": 10,
+        "maxLeverage": 10,
+        "name": "km:USOIL",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 0,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-13T17:26:02.918999799",
+        "marginMode": "strictIsolated",
+        "marginTableId": 25,
+        "maxLeverage": 25,
+        "name": "abcd:USA500",
+        "onlyIsolated": true,
+        "szDecimals": 3
+      }
+    ]
+  },
+  {
+    "collateralToken": 268,
+    "marginTables": [
+      [
+        50,
+        {
+          "description": "",
+          "marginTiers": [
+            {
+              "lowerBound": "0.0",
+              "maxLeverage": 50
+            }
+          ]
+        }
+      ]
+    ],
+    "universe": [
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-20T16:37:37.464961308",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:USA500",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-22T13:54:11.523102133",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:TSLA",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-23T15:49:18.228070291",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:NVDA",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-27T15:39:19.622343576",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:HOOD",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-27T15:39:19.622343576",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:GOOGL",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-27T15:39:19.622343576",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:INTC",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-27T15:39:19.622343576",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:AMZN",
+        "szDecimals": 3
+      },
+      {
+        "deployerFeeScale": "1.0",
+        "growthMode": "enabled",
+        "isDelisted": true,
+        "lastFeeScaleChangeTime": "2026-01-27T15:39:19.622343576",
+        "marginTableId": 20,
+        "maxLeverage": 20,
+        "name": "cash:MSFT",
+        "szDecimals": 3
+      }
+    ]
+  }
+]

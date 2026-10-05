@@ -1,0 +1,70 @@
+{
+  "fundings": [
+    {
+      "coin": "xyz:SKHY",
+      "fundingRate": "-0.0000468072",
+      "nSamples": null,
+      "szi": "1.84",
+      "time": 1791075600041,
+      "usdc": "0.016717"
+    },
+    {
+      "coin": "BTC",
+      "fundingRate": "0.0000085085",
+      "nSamples": null,
+      "szi": "2.06896",
+      "time": 1791079200043,
+      "usdc": "-1.492973"
+    },
+    {
+      "coin": "ETH",
+      "fundingRate": "0.0000125",
+      "nSamples": null,
+      "szi": "-9.5176",
+      "time": 1791079200043,
+      "usdc": "0.3206"
+    },
+    {
+      "coin": "xyz:SKHY",
+      "fundingRate": "-0.0000159611",
+      "nSamples": null,
+      "szi": "1.84",
+      "time": 1791079200043,
+      "usdc": "0.005694"
+    },
+    {
+      "coin": "BTC",
+      "fundingRate": "0.0000122036",
+      "nSamples": null,
+      "szi": "2.0276",
+      "time": 1791082800032,
+      "usdc": "-2.098343"
+    },
+    {
+      "coin": "ETH",
+      "fundingRate": "0.0000125",
+      "nSamples": null,
+      "szi": "-9.5176",
+      "time": 1791082800032,
+      "usdc": "0.320341"
+    },
+    {
+      "coin": "xyz:SKHY",
+      "fundingRate": "0.00000625",
+      "nSamples": null,
+      "szi": "1.84",
+      "time": 1791082800032,
+      "usdc": "-0.00223"
+    },
+    {
+      "coin": "BTC",
+      "fundingRate": "0.0000125",
+      "nSamples": null,
+      "szi": "2.0276",
+      "time": 1791086400055,
+      "usdc": "-2.150366"
+    }
+  ],
+  "isSnapshot": true,
+  "user": "0xd72cfd2424e26ba32e46b7b2aff95eff34247a71"
+}

@@ -1,0 +1,160 @@
+{
+  "txs": [
+    {
+      "action": {
+        "twap": {
+          "a": 110062,
+          "b": true,
+          "m": 270,
+          "r": false,
+          "s": "80.8",
+          "t": false
+        },
+        "type": "twapOrder"
+      },
+      "block": 1172452096,
+      "error": null,
+      "hash": "0x24f6681e54afb42b26700445e233000204b20003efa2d2fdc8bf137113a38e15",
+      "time": 1791190861853,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "twap": {
+          "a": 0,
+          "b": true,
+          "m": 270,
+          "r": false,
+          "s": "0.17365",
+          "t": false
+        },
+        "type": "twapOrder"
+      },
+      "block": 1172421581,
+      "error": null,
+      "hash": "0x18af4807e295b96a1a290445e1bbcd02032800ed7d98d83cbc77f35aa1999354",
+      "time": 1791188680748,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "agentAddress": "0xa83bad681bc38903dc93dbe24a57c11def97c519",
+        "agentName": null,
+        "hyperliquidChain": "Mainnet",
+        "nonce": 1791188673571,
+        "signatureChainId": "0xa4b1",
+        "type": "approveAgent"
+      },
+      "block": 1172421553,
+      "error": null,
+      "hash": "0x45c23931d74fcb10473b0445e1bbb102033700177242e9e2e98ae4849643a4fa",
+      "time": 1791188678674,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "grouping": "na",
+        "orders": [
+          {
+            "a": 1,
+            "b": false,
+            "p": "2448.8",
+            "r": true,
+            "s": "1.4797",
+            "t": {
+              "limit": {
+                "tif": "FrontendMarket"
+              }
+            }
+          }
+        ],
+        "type": "order"
+      },
+      "block": 1169497553,
+      "error": null,
+      "hash": "0xb9f4254798d1d5dbbb6d0445b51dd102020b010133d4f4ad5dbcd09a57d5afc6",
+      "time": 1790979466849,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "grouping": "na",
+        "orders": [
+          {
+            "a": 0,
+            "b": false,
+            "p": "77729",
+            "r": true,
+            "s": "0.10577",
+            "t": {
+              "limit": {
+                "tif": "FrontendMarket"
+              }
+            }
+          }
+        ],
+        "type": "order"
+      },
+      "block": 1169497553,
+      "error": null,
+      "hash": "0x0b513f1cfc82c2840cca0445b51dd102020b00029785e156af19ea6fbb869c6e",
+      "time": 1790979466849,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "twap": {
+          "a": 0,
+          "b": true,
+          "m": 270,
+          "r": false,
+          "s": "0.0348",
+          "t": false
+        },
+        "type": "twapOrder"
+      },
+      "block": 1168830629,
+      "error": null,
+      "hash": "0xf97cda0df8ccc73cfaf60445aaf0a502014b00f393cfe60f9d458560b7c0a127",
+      "time": 1790931560649,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "twap": {
+          "a": 1,
+          "b": true,
+          "m": 510,
+          "r": false,
+          "s": "1.4797",
+          "t": false
+        },
+        "type": "twapOrder"
+      },
+      "block": 1168328640,
+      "error": null,
+      "hash": "0xfc193e25e9a75825fd920445a347c00202c2000b84aa76f89fe1e978a8ab3210",
+      "time": 1790895547828,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    },
+    {
+      "action": {
+        "twap": {
+          "a": 0,
+          "b": true,
+          "m": 510,
+          "r": false,
+          "s": "0.07083",
+          "t": false
+        },
+        "type": "twapOrder"
+      },
+      "block": 1168315006,
+      "error": null,
+      "hash": "0x3cd2cdefc9cd7b493e4c0445a3127e0203de00d564c09a1be09b794288c15533",
+      "time": 1790894580988,
+      "user": "0x0116a3d95994bcc7d6a84380ed6256fbb32cd25d"
+    }
+  ],
+  "type": "userDetails"
+}

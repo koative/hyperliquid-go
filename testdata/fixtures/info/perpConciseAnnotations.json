@@ -1,0 +1,50 @@
+[
+  [
+    "flx:BTC",
+    {
+      "category": "crypto"
+    }
+  ],
+  [
+    "flx:COIN",
+    {
+      "category": "stocks"
+    }
+  ],
+  [
+    "flx:COPPER",
+    {
+      "category": "commodities"
+    }
+  ],
+  [
+    "flx:CRCL",
+    {
+      "category": "stocks"
+    }
+  ],
+  [
+    "flx:GAS",
+    {
+      "category": "commodities"
+    }
+  ],
+  [
+    "flx:GOLD",
+    {
+      "category": "commodities"
+    }
+  ],
+  [
+    "flx:NVDA",
+    {
+      "category": "stocks"
+    }
+  ],
+  [
+    "flx:OIL",
+    {
+      "category": "commodities"
+    }
+  ]
+]

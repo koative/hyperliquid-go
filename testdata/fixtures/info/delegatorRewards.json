@@ -1,0 +1,42 @@
+[
+  {
+    "source": "delegation",
+    "time": 1791158400121,
+    "totalAmount": "0.59001738"
+  },
+  {
+    "source": "commission",
+    "time": 1791158400121,
+    "totalAmount": "15.78468647"
+  },
+  {
+    "source": "delegation",
+    "time": 1791072000002,
+    "totalAmount": "0.59084671"
+  },
+  {
+    "source": "commission",
+    "time": 1791072000002,
+    "totalAmount": "15.78448624"
+  },
+  {
+    "source": "delegation",
+    "time": 1790985600106,
+    "totalAmount": "0.58977764"
+  },
+  {
+    "source": "commission",
+    "time": 1790985600106,
+    "totalAmount": "15.78250836"
+  },
+  {
+    "source": "delegation",
+    "time": 1790899200027,
+    "totalAmount": "0.58941563"
+  },
+  {
+    "source": "commission",
+    "time": 1790899200027,
+    "totalAmount": "15.77403911"
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "builderRewards": "0.0",
+  "claimedRewards": "0.0",
+  "cumVlm": "47112186.0799999982",
+  "referredBy": {
+    "code": "LIMINAL",
+    "referrer": "0x3151fdc528e6d88f54ce1aba3e6d8d3244cb2c8b"
+  },
+  "referrerState": {
+    "data": {
+      "code": "URIBO",
+      "nReferrals": 0,
+      "referralStates": []
+    },
+    "stage": "ready"
+  },
+  "rewardHistory": [],
+  "tokenToState": [
+    [
+      0,
+      {
+        "builderRewards": "0.0",
+        "claimedRewards": "0.0",
+        "cumVlm": "47112186.0799999982",
+        "unclaimedRewards": "0.0"
+      }
+    ],
+    [
+      360,
+      {
+        "builderRewards": "0.0",
+        "claimedRewards": "0.0",
+        "cumVlm": "1394.59",
+        "unclaimedRewards": "0.0"
+      }
+    ]
+  ],
+  "unclaimedRewards": "0.0"
+}

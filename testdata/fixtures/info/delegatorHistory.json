@@ -1,0 +1,85 @@
+[
+  {
+    "delta": {
+      "withdrawal": {
+        "amount": "30.0",
+        "phase": "initiated"
+      }
+    },
+    "hash": "0x21f74adf7a3e064923710445d447c10201ee00c51531251bc5bff6323931e033",
+    "time": 1791125722711
+  },
+  {
+    "delta": {
+      "delegate": {
+        "amount": "30.0",
+        "isUndelegate": true,
+        "validator": "0x000000000056f99d36b6f2e0c51fd41496bbacb8"
+      }
+    },
+    "hash": "0xa13cf74eb748d4daa2b60445d447070202090034524bf3ac4505a2a1764caec5",
+    "time": 1791125709526
+  },
+  {
+    "delta": {
+      "withdrawal": {
+        "amount": "15.0",
+        "phase": "initiated"
+      }
+    },
+    "hash": "0x53e742e5f632c91855600445acf7250203ba00cb9135e7eaf7afee38b536a302",
+    "time": 1790941082447
+  },
+  {
+    "delta": {
+      "delegate": {
+        "amount": "15.0",
+        "isUndelegate": true,
+        "validator": "0x000000000056f99d36b6f2e0c51fd41496bbacb8"
+      }
+    },
+    "hash": "0x643b91c4bfeba99865b50445acf6ab0203ef00aa5aeec86a08043d177eef8383",
+    "time": 1790941074161
+  },
+  {
+    "delta": {
+      "withdrawal": {
+        "amount": "30.0",
+        "phase": "finalized"
+      }
+    },
+    "hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "time": 1790936028075
+  },
+  {
+    "delta": {
+      "withdrawal": {
+        "amount": "100.0",
+        "phase": "initiated"
+      }
+    },
+    "hash": "0x93b249eb7ac94326952c04459445d302040500d115cc61f8377af53e39cd1d11",
+    "time": 1790825247547
+  },
+  {
+    "delta": {
+      "delegate": {
+        "amount": "100.0",
+        "isUndelegate": true,
+        "validator": "0x000000000056f99d36b6f2e0c51fd41496bbacb8"
+      }
+    },
+    "hash": "0xe217bae8208a7f9ce39104459445620202b600cdbb8d9e6e85e0663adf8e5987",
+    "time": 1790825238967
+  },
+  {
+    "delta": {
+      "withdrawal": {
+        "amount": "50.0",
+        "phase": "finalized"
+      }
+    },
+    "hash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "time": 1790758178089
+  }
+]

@@ -1,0 +1,58 @@
+[
+  {
+    "borrow": "2.05257162",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1788652800000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.10269296",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1788739200000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.21681998",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1788825600000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.2157005",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1788912000000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.25299512",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1788998400000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.22737452",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1789084800000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.22769071",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1789171200000,
+    "token": "USDC"
+  },
+  {
+    "borrow": "2.22800178",
+    "nSamples": 24,
+    "supply": "0.0",
+    "time": 1789257600000,
+    "token": "USDC"
+  }
+]

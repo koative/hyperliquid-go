@@ -184,8 +184,11 @@ More examples are in the [package documentation](https://pkg.go.dev/github.com/k
   MessagePack are implemented in the package.
 - **Verified signing.** Signatures are tested byte for byte against golden
   vectors generated with the official
-  [Python SDK](https://github.com/hyperliquid-dex/hyperliquid-python-sdk),
-  and every exchange action has been submitted to Testnet.
+  [Python SDK](https://github.com/hyperliquid-dex/hyperliquid-python-sdk).
+- **Checked against the live API every night.** Every Info endpoint and
+  WebSocket channel is decoded strictly on Mainnet, and every exchange action
+  is submitted to Testnet, where the exchange must recover our signer's
+  address. API changes surface as an issue, usually before users hit them.
 - **Idiomatic Go.** `context.Context` on every call; clients are safe for
   concurrent use; nonces are strictly increasing per process; errors are typed
   (`*APIError` for rejected requests, `*StatusError` per failed item of a
