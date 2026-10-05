@@ -20,7 +20,10 @@ func TestFromJSONMatchesPython(t *testing.T) {
 	defer f.Close()
 	sc := bufio.NewScanner(f)
 	for sc.Scan() {
-		var v struct{ JSON, Msgpack string }
+		var v struct {
+			JSON    string `json:"json"`
+			Msgpack string `json:"msgpack"`
+		}
 		if err := json.Unmarshal(sc.Bytes(), &v); err != nil {
 			t.Fatal(err)
 		}

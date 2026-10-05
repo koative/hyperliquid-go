@@ -93,13 +93,23 @@ type multiSigPayloader interface {
 	multiSigPayload() Action
 }
 
-// encodeAction returns the wire JSON of a: {"type", …fields} for L1 actions,
-// and {"type", "signatureChainId", "hyperliquidChain", …fields, nonce} for
-// user-signed actions.
+// l1NonceAction is implemented by L1 actions whose body ends with a "nonce"
+// field that must equal the request nonce, such as [CreateVaultAction].
+type l1NonceAction interface {
+	Action
+	l1Nonce()
+}
+
+// encodeAction returns the wire JSON of a: {"type", …fields[, nonce]} for L1
+// actions, and {"type", "signatureChainId", "hyperliquidChain", …fields,
+// nonce} for user-signed actions.
 func encodeAction(a Action, nonce uint64, network Network) ([]byte, error) {
 	typ := `"type":` + strconv.Quote(a.actionType())
 	us, ok := a.(userSignedAction)
 	if !ok {
+		if _, ok := a.(l1NonceAction); ok {
+			return typedJSON(typ, a, `"nonce":`+strconv.FormatUint(nonce, 10))
+		}
 		return typedJSON(typ, a, "")
 	}
 	chain := "Testnet"

@@ -1,0 +1,53 @@
+version: "2"
+
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - errorlint
+    - exhaustive
+    - gocritic
+    - godoclint
+    - gosec
+    - misspell
+    - modernize
+    - musttag
+    - nilerr
+    - noctx
+    - nolintlint
+    - perfsprint
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - usetesting
+  settings:
+    staticcheck:
+      checks: ["all"]
+    exhaustive:
+      default-signifies-exhaustive: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+  exclusions:
+    # Not the "comments" preset: missing doc comments must be reported.
+    presets:
+      - std-error-handling
+      - common-false-positives
+    rules:
+      # Range-checked integer narrowing is the point of the msgpack encoder.
+      - path: internal/msgpack/
+        linters: [gosec]
+        text: G115
+      # Test fixtures contain token IDs that look like credentials, and test
+      # structs rely on case-insensitive field matching.
+      - path: _test\.go
+        linters: [gosec, musttag]
+
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - github.com/koative/hyperliquid-go

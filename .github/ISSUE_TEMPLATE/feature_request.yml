@@ -1,0 +1,17 @@
+name: Feature request
+description: Missing endpoint, action, subscription or API improvement.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What do you want to do?
+      description: Describe the use case. Link the Hyperliquid docs for missing endpoints or actions.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: Optional. How you would like it to look in Go.
+      render: go

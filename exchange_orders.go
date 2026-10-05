@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 // OrderAction places one or more orders.
@@ -153,6 +154,11 @@ type FilledOrder struct {
 // If some orders are rejected, the statuses are returned together with a
 // joined [*StatusError] per rejected order.
 func (c *ExchangeClient) Order(ctx context.Context, a OrderAction) ([]OrderStatus, error) {
+	return c.placeOrders(ctx, a)
+}
+
+// placeOrders submits an action whose response is a list of order statuses.
+func (c *ExchangeClient) placeOrders(ctx context.Context, a Action) ([]OrderStatus, error) {
 	var data struct {
 		Statuses []OrderStatus `json:"statuses"`
 	}
@@ -173,6 +179,8 @@ func orderStatusErrors(statuses []OrderStatus) error {
 // CancelAction cancels orders by order ID.
 type CancelAction struct {
 	Cancels []Cancel `json:"cancels"`
+	// Fast prioritizes the cancel in the mempool.
+	Fast bool `json:"f,omitempty"`
 }
 
 func (CancelAction) actionType() string { return "cancel" }
@@ -199,4 +207,142 @@ func (c *ExchangeClient) cancel(ctx context.Context, a Action) error {
 		return err
 	}
 	return orderStatusErrors(data.Statuses)
+}
+
+// CancelByCloidAction cancels orders by client order ID.
+type CancelByCloidAction struct {
+	Cancels []CancelByCloid `json:"cancels"`
+	// Fast prioritizes the cancel in the mempool.
+	Fast bool `json:"f,omitempty"`
+}
+
+func (CancelByCloidAction) actionType() string { return "cancelByCloid" }
+
+// CancelByCloid identifies an order to cancel by its client order ID.
+type CancelByCloid struct {
+	Asset int   `json:"asset"`
+	Cloid Cloid `json:"cloid"`
+}
+
+// CancelByCloid cancels orders by client order ID. If some cancels fail, it
+// returns a joined [*StatusError] per failed cancel.
+func (c *ExchangeClient) CancelByCloid(ctx context.Context, a CancelByCloidAction) error {
+	return c.cancel(ctx, a)
+}
+
+// OrderRef identifies an order by exchange order ID or, when Cloid is set,
+// by client order ID.
+type OrderRef struct {
+	Oid   int64
+	Cloid *Cloid
+}
+
+// MarshalJSON encodes r as the order ID number or the client order ID string.
+func (r OrderRef) MarshalJSON() ([]byte, error) {
+	if r.Cloid != nil {
+		return json.Marshal(r.Cloid)
+	}
+	return strconv.AppendInt(nil, r.Oid, 10), nil
+}
+
+// ModifyAction replaces a resting order with a new one.
+type ModifyAction struct {
+	Oid   OrderRef `json:"oid"`
+	Order Order    `json:"order"`
+	// AlwaysPlace places the new order even if canceling the old one fails.
+	// Otherwise the new order must be a non-trigger ALO order or a
+	// non-marketable GTC order.
+	AlwaysPlace bool `json:"a,omitempty"`
+}
+
+func (ModifyAction) actionType() string { return "modify" }
+
+// Modify replaces a resting order.
+func (c *ExchangeClient) Modify(ctx context.Context, a ModifyAction) error {
+	return c.do(ctx, a, nil)
+}
+
+// BatchModifyAction replaces several resting orders.
+type BatchModifyAction struct {
+	Modifies []Modify `json:"modifies"`
+	// AlwaysPlace places the new orders even if canceling the old ones fails.
+	AlwaysPlace bool `json:"a,omitempty"`
+}
+
+func (BatchModifyAction) actionType() string { return "batchModify" }
+
+// Modify is one replacement of a [BatchModifyAction].
+type Modify struct {
+	Oid   OrderRef `json:"oid"`
+	Order Order    `json:"order"`
+}
+
+// BatchModify replaces orders and returns one status per new order, like
+// [ExchangeClient.Order].
+func (c *ExchangeClient) BatchModify(ctx context.Context, a BatchModifyAction) ([]OrderStatus, error) {
+	return c.placeOrders(ctx, a)
+}
+
+// ScheduleCancelAction sets or clears a dead man's switch that cancels all
+// open orders at a given time. At most 10 triggers are allowed per day.
+type ScheduleCancelAction struct {
+	// Time is when to cancel, in Unix milliseconds, at least 5 seconds in
+	// the future. Zero clears the scheduled cancel.
+	Time int64 `json:"time,omitempty"`
+}
+
+func (ScheduleCancelAction) actionType() string { return "scheduleCancel" }
+
+// ScheduleCancel sets or clears the scheduled cancel of all open orders.
+func (c *ExchangeClient) ScheduleCancel(ctx context.Context, a ScheduleCancelAction) error {
+	return c.do(ctx, a, nil)
+}
+
+// TrailingStopAction places a trailing stop order, which follows the price
+// by Retracement once ActivationPx is reached.
+type TrailingStopAction struct {
+	Asset      int     `json:"asset"`
+	IsBuy      bool    `json:"isBuy"`
+	Size       Decimal `json:"sz"`
+	ReduceOnly bool    `json:"reduceOnly"`
+	// Retracement is the distance the stop trails the best price by.
+	Retracement Retracement `json:"retracement"`
+	// ActivationPx, if set, starts trailing only once the price reaches it.
+	ActivationPx *Decimal `json:"activationPx"`
+}
+
+func (TrailingStopAction) actionType() string { return "trailingStop" }
+
+// Retracement is the trailing distance of a [TrailingStopAction]. Set
+// exactly one field.
+type Retracement struct {
+	// Pct is a percentage of the price, such as "1.5" for 1.5%.
+	Pct *Decimal
+	// Px is an absolute price distance.
+	Px *Decimal
+}
+
+// MarshalJSON encodes r as {"pct":"<Pct>%"} or {"px":"<Px>"}.
+func (r Retracement) MarshalJSON() ([]byte, error) {
+	if r.Pct == nil {
+		return json.Marshal(struct {
+			Px *Decimal `json:"px"`
+		}{r.Px})
+	}
+	pct, err := r.Pct.MarshalJSON()
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(struct {
+		Pct string `json:"pct"`
+	}{string(pct[1:len(pct)-1]) + "%"})
+}
+
+// TrailingStop places a trailing stop order and returns its order ID.
+func (c *ExchangeClient) TrailingStop(ctx context.Context, a TrailingStopAction) (int64, error) {
+	var data struct {
+		Oid int64 `json:"oid"`
+	}
+	err := c.do(ctx, a, &data)
+	return data.Oid, err
 }

@@ -1,0 +1,19 @@
+# Coverage and test output
+*.out
+*.test
+/coverage.*
+
+# Generated docs site (doc2go)
+/_site/
+
+# Python virtualenv for testdata/gen_signing_vectors.py
+/.venv/
+
+# Local secrets
+.env
+.env.*
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store

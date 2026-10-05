@@ -46,11 +46,6 @@ func TestActionEncodingMatchesPython(t *testing.T) {
 	for _, tc := range v.L1 {
 		want[tc.Name] = tc.Action
 	}
-	for _, tc := range v.UserSigned {
-		if tc.Mainnet {
-			want[tc.Name] = tc.Action
-		}
-	}
 	cloid := MustParseCloid("0x00000000000000000000000000000001")
 	for name, a := range map[string]Action{
 		"order": vectorOrder,
@@ -63,8 +58,7 @@ func TestActionEncodingMatchesPython(t *testing.T) {
 			Grouping: GroupingNormalTpsl,
 			Builder:  &Builder{Address: vectorDest, Fee: 10},
 		},
-		"cancel":  CancelAction{Cancels: []Cancel{{Asset: 110000, Oid: 123456789012}}},
-		"usdSend": UsdSendAction{Destination: vectorDest, Amount: "1.5"},
+		"cancel": CancelAction{Cancels: []Cancel{{Asset: 110000, Oid: 123456789012}}},
 	} {
 		got, err := encodeAction(a, 1700000000000, Mainnet)
 		if err != nil {
@@ -81,6 +75,9 @@ func TestMultiSigMatchesPython(t *testing.T) {
 	actions := map[string]Action{
 		"l1 order": vectorOrder,
 		"usdSend":  UsdSendAction{Destination: vectorDest, Amount: "1"},
+		// Signed with the long mode name, sent as "i".
+		"userSetAbstraction":         UserSetAbstractionAction{User: vectorVault, Abstraction: AbstractionDisabled},
+		"convertToMultiSigUser null": ConvertToMultiSigUserAction{},
 	}
 	for _, tc := range v.MultiSig {
 		rt := &recordTransport{resp: `{"status":"ok","response":{"type":"default"}}`}

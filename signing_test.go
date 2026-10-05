@@ -106,18 +106,91 @@ func TestL1SigningMatchesPython(t *testing.T) {
 	}
 }
 
-func TestUserSignedSigningMatchesPython(t *testing.T) {
+// TestUserSignedActionsMatchPython checks every user-signed action type
+// against the Python SDK (or, for actions it lacks, nktkas/hyperliquid's
+// EIP-712 types signed by eth_account): EIP-712 type, wire JSON and
+// signature.
+func TestUserSignedActionsMatchPython(t *testing.T) {
 	v, signer := loadSigningVectors(t)
+	dest, vault := vectorDest, vectorVault
+	usdc := "USDC:0x6d1e7cde53ba9467b783cb7c530ce054"
+	evm := SendToEvmWithDataAction{
+		Token: "USDC", Amount: "1.0", DestinationRecipient: dest.String(), AddressEncoding: AddressEncodingHex,
+		DestinationChainID: 42161, GasLimit: 200000, Data: []byte{0xde, 0xad, 0xbe, 0xef},
+	}
+	evmEmpty := evm
+	evmEmpty.Data = nil
+	actions := map[string]userSignedAction{
+		"usdSend":                     UsdSendAction{Destination: dest, Amount: "1.50"},
+		"spotSend":                    SpotSendAction{Destination: dest, Token: "PURR:0xc4bf3f870c0e9465323c0b6ed28096c2", Amount: "0.5"},
+		"withdraw3":                   Withdraw3Action{Destination: dest, Amount: "10"},
+		"usdClassTransfer":            UsdClassTransferAction{Amount: "2.0"},
+		"usdClassTransfer subaccount": UsdClassTransferAction{Amount: "2", ToPerp: true, SubAccount: &vault},
+		"sendAsset":                   SendAssetAction{Destination: dest, DestinationDex: "spot", Token: usdc, Amount: "3.25"},
+		"sendAsset subaccount": SendAssetAction{
+			Destination: dest, SourceDex: "spot", DestinationDex: "xyz", Token: usdc, Amount: "3.25", FromSubAccount: &vault,
+		},
+		"tokenDelegate":        TokenDelegateAction{Validator: dest, Wei: 123000000},
+		"approveAgent":         ApproveAgentAction{AgentAddress: dest, AgentName: "bot"},
+		"approveAgent unnamed": ApproveAgentAction{AgentAddress: dest},
+		"approveBuilderFee":    ApproveBuilderFeeAction{MaxFeeRate: "0.001%", Builder: dest},
+		"convertToMultiSigUser": ConvertToMultiSigUserAction{Signers: &MultiSigSigners{
+			AuthorizedUsers: []Address{dest, vault}, Threshold: 2, // sorted on the wire
+		}},
+		"convertToMultiSigUser null":    ConvertToMultiSigUserAction{},
+		"userDexAbstraction":            UserDexAbstractionAction{User: dest, Enabled: true},
+		"userSetAbstraction":            UserSetAbstractionAction{User: dest, Abstraction: AbstractionUnifiedAccount},
+		"cDeposit":                      CDepositAction{Wei: 100000000},
+		"cWithdraw":                     CWithdrawAction{Wei: 100000000},
+		"linkStakingUser":               LinkStakingUserAction{User: dest, IsFinalize: true},
+		"stakingLinkDisableTradingUser": StakingLinkDisableTradingUserAction{TradingUser: dest},
+		"userPortfolioMargin":           UserPortfolioMarginAction{User: dest},
+		"sendToEvmWithData":             evm,
+		"sendToEvmWithData empty data":  evmEmpty,
+	}
+	seen := map[string]bool{}
 	for _, tc := range v.UserSigned {
-		types := tc.Types
-		spec := &userSignedSpec{PrimaryType: tc.PrimaryType, Fields: types[1 : len(types)-1], NonceField: types[len(types)-1].Name}
-		d, err := userSignedDigest(spec, tc.Action, false, nil)
+		a, ok := actions[tc.Name]
+		if !ok {
+			t.Errorf("%s: no Go action for vector", tc.Name)
+			continue
+		}
+		seen[tc.Name] = true
+		spec := a.userSignedSpec()
+		if got, _ := json.Marshal(spec.types(false)); spec.PrimaryType != tc.PrimaryType || string(got) != string(mustJSON(t, tc.Types)) {
+			t.Errorf("%s: EIP-712 type %s %s, want %s %s", tc.Name, spec.PrimaryType, got, tc.PrimaryType, mustJSON(t, tc.Types))
+		}
+		network := Testnet
+		if tc.Mainnet {
+			network = Mainnet
+		}
+		wire, err := encodeAction(a, 1700000000000, network)
 		if err != nil {
 			t.Fatalf("%s: %v", tc.Name, err)
 		}
-		sig, _ := signer.SignHash(context.Background(), d)
+		if g, w := compact(t, wire), compact(t, tc.Action); g != w {
+			t.Errorf("%s: wire\n got %s\nwant %s", tc.Name, g, w)
+		}
+		sig, err := NewExchangeClient(network, signer).sign(context.Background(), a, wire, 1700000000000)
+		if err != nil {
+			t.Fatalf("%s: %v", tc.Name, err)
+		}
 		assertSignature(t, tc.Name, sig, tc.Signature)
 	}
+	for name := range actions {
+		if !seen[name] {
+			t.Errorf("%s: no vector", name)
+		}
+	}
+}
+
+func mustJSON(t *testing.T, v any) []byte {
+	t.Helper()
+	b, err := json.Marshal(v)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return b
 }
 
 // TestL1HashMatchesNktkas cross-checks expiresAfter handling against the

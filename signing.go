@@ -6,7 +6,9 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"maps"
 	"math/big"
 	"strconv"
 	"strings"
@@ -46,8 +48,9 @@ func (s Signature) MarshalJSON() ([]byte, error) {
 // UnmarshalJSON decodes {"r":"0x…","s":"0x…","v":27}.
 func (s *Signature) UnmarshalJSON(b []byte) error {
 	var w struct {
-		R, S string
-		V    byte
+		R string `json:"r"`
+		S string `json:"s"`
+		V byte   `json:"v"`
 	}
 	if err := json.Unmarshal(b, &w); err != nil {
 		return err
@@ -89,12 +92,13 @@ type PrivateKeySigner struct {
 func NewPrivateKeySigner(hexKey string) (*PrivateKeySigner, error) {
 	b, err := hex.DecodeString(strings.TrimPrefix(hexKey, "0x"))
 	if err != nil || len(b) != 32 {
-		return nil, fmt.Errorf("hyperliquid: private key must be 32 hex-encoded bytes")
+		return nil, errors.New("hyperliquid: private key must be 32 hex-encoded bytes")
 	}
-	key := secp256k1.PrivKeyFromBytes(b)
-	if key.Key.IsZero() {
-		return nil, fmt.Errorf("hyperliquid: invalid private key")
+	var k secp256k1.ModNScalar
+	if overflow := k.SetByteSlice(b); overflow || k.IsZero() {
+		return nil, errors.New("hyperliquid: private key out of range")
 	}
+	key := secp256k1.NewPrivateKey(&k)
 	pub := key.PubKey().SerializeUncompressed()
 	h := keccak256(pub[1:])
 	s := &PrivateKeySigner{key: key}
@@ -295,9 +299,7 @@ func userSignedDigest(spec *userSignedSpec, action []byte, multiSig bool, extra 
 	if err := json.Unmarshal(action, &msg); err != nil {
 		return [32]byte{}, err
 	}
-	for k, v := range extra {
-		msg[k] = v
-	}
+	maps.Copy(msg, extra)
 	return eip712Digest(userSignedDomainName, signatureChainIDInt, spec.PrimaryType, spec.types(multiSig), msg)
 }
 

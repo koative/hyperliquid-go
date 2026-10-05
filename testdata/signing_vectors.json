@@ -587,6 +587,88 @@
    }
   },
   {
+   "name": "spotSend",
+   "primaryType": "HyperliquidTransaction:SpotSend",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "time",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "spotSend",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "token": "PURR:0xc4bf3f870c0e9465323c0b6ed28096c2",
+    "amount": "0.5",
+    "time": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xb9de309c930cc08a4b5e65cf7a81c718a458497964137732265b3eb88d0bf98b",
+    "s": "0x75e989d2025fb24aa5be89bf1fdde0c42054c551cdd08e0fd802d0130da7f7e7",
+    "v": 28
+   }
+  },
+  {
+   "name": "spotSend",
+   "primaryType": "HyperliquidTransaction:SpotSend",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "time",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "spotSend",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "token": "PURR:0xc4bf3f870c0e9465323c0b6ed28096c2",
+    "amount": "0.5",
+    "time": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x7f2c9545a2414625ee3994e2519c146ce23209a4742ba63bbf26e957219f2a6f",
+    "s": "0x682e87b4bb07444af949a90c1b25bfe9b412e367a068223a6d63420f196d0765",
+    "v": 28
+   }
+  },
+  {
    "name": "withdraw3",
    "primaryType": "HyperliquidTransaction:Withdraw",
    "types": [
@@ -683,6 +765,78 @@
     "type": "usdClassTransfer",
     "signatureChainId": "0x66eee",
     "hyperliquidChain": "Mainnet",
+    "amount": "2",
+    "toPerp": false,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xa9620919a221e5295bd3e80765a522067207a6fa3989105ae989ff30538a86b9",
+    "s": "0x765149a65949ba9431e84eead962c37ab1bd67a3012fcef33d15bfd41e7dcb4e",
+    "v": 28
+   }
+  },
+  {
+   "name": "usdClassTransfer",
+   "primaryType": "HyperliquidTransaction:UsdClassTransfer",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "toPerp",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "usdClassTransfer",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "amount": "2",
+    "toPerp": false,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x99de5b09347970c12c0cf8db5a2f2ca0e631656be50bad8996a97d9bc385f783",
+    "s": "0x5b342bce205dd77ef08a8425e0042baa66c25da8bec63ccd408df8b518676e67",
+    "v": 28
+   }
+  },
+  {
+   "name": "usdClassTransfer subaccount",
+   "primaryType": "HyperliquidTransaction:UsdClassTransfer",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "toPerp",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "usdClassTransfer",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
     "amount": "2 subaccount:0x1719884eb866cb12b2287399b15f7db5e7d775ea",
     "toPerp": true,
     "nonce": 1700000000000
@@ -695,7 +849,7 @@
    }
   },
   {
-   "name": "usdClassTransfer",
+   "name": "usdClassTransfer subaccount",
    "primaryType": "HyperliquidTransaction:UsdClassTransfer",
    "types": [
     {
@@ -728,6 +882,230 @@
     "r": "0xee686e5f84305ecd7610cbf7503b7b9eaa13e853c221cfce40fd9e70fe32d827",
     "s": "0x46e7b7efffb841f5bd59191c7d50b692a190a50c64f11e9ede58f9e6fd663f30",
     "v": 28
+   }
+  },
+  {
+   "name": "sendAsset",
+   "primaryType": "HyperliquidTransaction:SendAsset",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationDex",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "fromSubAccount",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendAsset",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "sourceDex": "",
+    "destinationDex": "spot",
+    "token": "USDC:0x6d1e7cde53ba9467b783cb7c530ce054",
+    "amount": "3.25",
+    "fromSubAccount": "",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xe009cff3cdc79438122cec7c42dbaf377a3eb11dca81a4b51425b76895188d0f",
+    "s": "0x5bfb4e4e47bc431f1b509bf4fd938215111b190e6e0e635469af51e4ee0c513e",
+    "v": 28
+   }
+  },
+  {
+   "name": "sendAsset",
+   "primaryType": "HyperliquidTransaction:SendAsset",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationDex",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "fromSubAccount",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendAsset",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "sourceDex": "",
+    "destinationDex": "spot",
+    "token": "USDC:0x6d1e7cde53ba9467b783cb7c530ce054",
+    "amount": "3.25",
+    "fromSubAccount": "",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x81ac11c898ae16d144e8584a2d2b70cf2953eda828002bada55b305dbc35674",
+    "s": "0x77ba8f8a9d8d0517be6f0bdc107a00663a6f9c2d90d32b67197ab2b0bbf7553",
+    "v": 28
+   }
+  },
+  {
+   "name": "sendAsset subaccount",
+   "primaryType": "HyperliquidTransaction:SendAsset",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationDex",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "fromSubAccount",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendAsset",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "sourceDex": "spot",
+    "destinationDex": "xyz",
+    "token": "USDC:0x6d1e7cde53ba9467b783cb7c530ce054",
+    "amount": "3.25",
+    "fromSubAccount": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xcb55b9aed4ce9e3068b69763fd8ec6b04ed7dfeab17f7efe92511f4b73b72237",
+    "s": "0x582598ef8ab74c45ce6b4421920711358a38f728a2ab2a49351eb6971488b285",
+    "v": 28
+   }
+  },
+  {
+   "name": "sendAsset subaccount",
+   "primaryType": "HyperliquidTransaction:SendAsset",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "destination",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationDex",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "fromSubAccount",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendAsset",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "destination": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "sourceDex": "spot",
+    "destinationDex": "xyz",
+    "token": "USDC:0x6d1e7cde53ba9467b783cb7c530ce054",
+    "amount": "3.25",
+    "fromSubAccount": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x3045572e87995c2c0c26c1e4c3892d3d4901e80ae47640ba9c1e50b494e084cd",
+    "s": "0x3cfbe0c0b400cb0744311090bafdc156285b19c7b93b08e4582531577ea1c74a",
+    "v": 27
    }
   },
   {
@@ -809,6 +1187,1084 @@
    "signature": {
     "r": "0xdc1bb0a92e7051b1338262ec4456a27e40a936664e96ab43531f6c3c374986b7",
     "s": "0x58d4a6ccd27a72957444a6ba527f28d620edce8325751f841a690cbb88bc8874",
+    "v": 27
+   }
+  },
+  {
+   "name": "approveAgent",
+   "primaryType": "HyperliquidTransaction:ApproveAgent",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "agentAddress",
+     "type": "address"
+    },
+    {
+     "name": "agentName",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveAgent",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "agentAddress": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "agentName": "bot",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xe0e0ca6626748dd3b7bcb4bab1e5e6db8f07020fbd071a44975be1d887eb72f5",
+    "s": "0x518a012c64582e01a24c493c2ab81c96a475cd9d9af28e7d2e59938353e0fb1c",
+    "v": 27
+   }
+  },
+  {
+   "name": "approveAgent",
+   "primaryType": "HyperliquidTransaction:ApproveAgent",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "agentAddress",
+     "type": "address"
+    },
+    {
+     "name": "agentName",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveAgent",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "agentAddress": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "agentName": "bot",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0xe2d81623c42180a48a7d684b35f65bc9139f4a80368150a4bf872e9e0005e700",
+    "s": "0x31142081fd1222981a77461fb2aeacb72696ff7ff1bc1f9d0ac078fcc8bbad58",
+    "v": 27
+   }
+  },
+  {
+   "name": "approveAgent unnamed",
+   "primaryType": "HyperliquidTransaction:ApproveAgent",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "agentAddress",
+     "type": "address"
+    },
+    {
+     "name": "agentName",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveAgent",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "agentAddress": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "agentName": "",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x39b38d050a63b34e54a8ec5a82a8312729dc8e367f11271054e69017af9e1dd1",
+    "s": "0x5c4a5676db9655d570d6ad57fad9bb410534790522092f070fc4a56a2786eba7",
+    "v": 28
+   }
+  },
+  {
+   "name": "approveAgent unnamed",
+   "primaryType": "HyperliquidTransaction:ApproveAgent",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "agentAddress",
+     "type": "address"
+    },
+    {
+     "name": "agentName",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveAgent",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "agentAddress": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "agentName": "",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x524862e2b34223c4eb528fc24097be7cfc62eae3341856ee0eb2146948511ad6",
+    "s": "0x5fe72cee4d895e2632e457f9b42ee7688b3737950e188cd6a936713b992cf109",
+    "v": 28
+   }
+  },
+  {
+   "name": "approveBuilderFee",
+   "primaryType": "HyperliquidTransaction:ApproveBuilderFee",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "maxFeeRate",
+     "type": "string"
+    },
+    {
+     "name": "builder",
+     "type": "address"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveBuilderFee",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "maxFeeRate": "0.001%",
+    "builder": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xc5aa2452721539f69826a5b8c5e01070d04f0491118ffb8da85dfa6330dce25e",
+    "s": "0x30c7005dd51f27901390630500f1eb5f01d5a93800cc724e1e38cf38eb29fb92",
+    "v": 27
+   }
+  },
+  {
+   "name": "approveBuilderFee",
+   "primaryType": "HyperliquidTransaction:ApproveBuilderFee",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "maxFeeRate",
+     "type": "string"
+    },
+    {
+     "name": "builder",
+     "type": "address"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "approveBuilderFee",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "maxFeeRate": "0.001%",
+    "builder": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x879ee66b34f2c1a240c531965f4c2809598624afac4e0b4b266b8c2f99751083",
+    "s": "0x5fba51c58dc056ee3ec773cdb52677f7995b7355c9900e5f8cf73a223938c80c",
+    "v": 27
+   }
+  },
+  {
+   "name": "convertToMultiSigUser",
+   "primaryType": "HyperliquidTransaction:ConvertToMultiSigUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "signers",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "convertToMultiSigUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "signers": "{\"authorizedUsers\": [\"0x1719884eb866cb12b2287399b15f7db5e7d775ea\", \"0x5e9ee1089755c3435139848e47e6635505d5a13a\"], \"threshold\": 2}",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x2aa543e3fc7f8b50f2fa3631b0765786f6d7a73baa2716da0202827ce8b12761",
+    "s": "0x5f95a9e1e10b8fdfbd57758e89b10d53efe9b6a7010e91fe4d45172353369934",
+    "v": 28
+   }
+  },
+  {
+   "name": "convertToMultiSigUser",
+   "primaryType": "HyperliquidTransaction:ConvertToMultiSigUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "signers",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "convertToMultiSigUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "signers": "{\"authorizedUsers\": [\"0x1719884eb866cb12b2287399b15f7db5e7d775ea\", \"0x5e9ee1089755c3435139848e47e6635505d5a13a\"], \"threshold\": 2}",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0xc2d238dafd3f8ce00b35b21fda43b4ccf3a8354cf94d554216e3617ded8fc112",
+    "s": "0x74137c16756a3c2976459179d327336c085827bb543810b1d5e1c7e79d0a3be3",
+    "v": 28
+   }
+  },
+  {
+   "name": "convertToMultiSigUser null",
+   "primaryType": "HyperliquidTransaction:ConvertToMultiSigUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "signers",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "convertToMultiSigUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "signers": "null",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x60732743e9ed024fb954187d1965025de3cfb2f47eeb578df4be8dd35a3ec76a",
+    "s": "0x31a86675c72ecc65905c4a53e9a350ce90de82326ceed49876e47f345c6cc2ec",
+    "v": 28
+   }
+  },
+  {
+   "name": "convertToMultiSigUser null",
+   "primaryType": "HyperliquidTransaction:ConvertToMultiSigUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "signers",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "convertToMultiSigUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "signers": "null",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0xe30355e06faecf0fc225f7728230ee0674315e31afb6ee96a44d84f4cd328109",
+    "s": "0x598a4ef833c35f27c4d27873c432fddebc7d5c889b5aae192563a0b64bb0f9cb",
+    "v": 28
+   }
+  },
+  {
+   "name": "userDexAbstraction",
+   "primaryType": "HyperliquidTransaction:UserDexAbstraction",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "enabled",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userDexAbstraction",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "enabled": true,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x2ced5c5561f3aa87fdd39655082a30de86133458a9dc456bdf0a1e125cfeadb1",
+    "s": "0x2147d908677a03ece096fce643501bb0c001e9574959ee6992cb04710faa6d1d",
+    "v": 28
+   }
+  },
+  {
+   "name": "userDexAbstraction",
+   "primaryType": "HyperliquidTransaction:UserDexAbstraction",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "enabled",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userDexAbstraction",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "enabled": true,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x575896e1ae7307faef4bee049402ba3c8f6ea2fb78549a776724c0baf93700bb",
+    "s": "0x348de7f369713ce21c35133a30f8d929156e620a7573c5da456418c21b5e595f",
+    "v": 27
+   }
+  },
+  {
+   "name": "userSetAbstraction",
+   "primaryType": "HyperliquidTransaction:UserSetAbstraction",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "abstraction",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userSetAbstraction",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "abstraction": "unifiedAccount",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x984629fe91fd3b4104e8579eacd7ace258f70a79742598409e3685c3793919ec",
+    "s": "0x56fb8404cc7468a826a1e5ec53661f8651581f796e214adb8b348863cbb0d97",
+    "v": 28
+   }
+  },
+  {
+   "name": "userSetAbstraction",
+   "primaryType": "HyperliquidTransaction:UserSetAbstraction",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "abstraction",
+     "type": "string"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userSetAbstraction",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "abstraction": "unifiedAccount",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0xee7be37e47a1ad42268aa9f107115d1546e61b4103207442bd55c5dadc3ae42d",
+    "s": "0x684a557acd67d9bfcaa0250c6b9adc84c2c899ee46a8976eaf37a18eaeee926",
+    "v": 28
+   }
+  },
+  {
+   "name": "cDeposit",
+   "primaryType": "HyperliquidTransaction:CDeposit",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "wei",
+     "type": "uint64"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "cDeposit",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "wei": 100000000,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x9e05d03871ee070fba04df5287eee8fd0de5ed259809bc179565b3bbd949a4",
+    "s": "0x5b961f85ff278a5e473269f91a2020b0c129545feb80528438c06631186dccba",
+    "v": 27
+   }
+  },
+  {
+   "name": "cDeposit",
+   "primaryType": "HyperliquidTransaction:CDeposit",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "wei",
+     "type": "uint64"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "cDeposit",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "wei": 100000000,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0xce565b18b7825a83ddb5cd6950b78429b76bf85458ec830954b0a0e58ce5fdb7",
+    "s": "0x26cca9c05d08d9f72d772394ed9fe33d7b19106f29f7a1f3cdffae7aacb512ea",
+    "v": 28
+   }
+  },
+  {
+   "name": "cWithdraw",
+   "primaryType": "HyperliquidTransaction:CWithdraw",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "wei",
+     "type": "uint64"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "cWithdraw",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "wei": 100000000,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xe75751e34d0a6f080b76cb43f96ea9ea85b33a346ff773672e98f2925f27a4c4",
+    "s": "0x1ca097754433e19821f250c86d76bf486884edc70b7198797e9b6fd506b62827",
+    "v": 28
+   }
+  },
+  {
+   "name": "cWithdraw",
+   "primaryType": "HyperliquidTransaction:CWithdraw",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "wei",
+     "type": "uint64"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "cWithdraw",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "wei": 100000000,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x19b1735d7056ef0db533a6bac2acae4753595aba31a5c4713a0bff8c27e928d5",
+    "s": "0x171e0684da1d9419dda11e4e1773b948702fe05b3a90e665b37dd126b70035cc",
+    "v": 27
+   }
+  },
+  {
+   "name": "linkStakingUser",
+   "primaryType": "HyperliquidTransaction:LinkStakingUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "isFinalize",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "linkStakingUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "isFinalize": true,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x753448e085d7d6a7eb9669851f6648b14afd0e3c6539a9ad2e9a6f603787f396",
+    "s": "0x340ed48eda5a8826f8827b99126c5bd48e8c17e89f7ac493a1e866932fce36de",
+    "v": 27
+   }
+  },
+  {
+   "name": "linkStakingUser",
+   "primaryType": "HyperliquidTransaction:LinkStakingUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "isFinalize",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "linkStakingUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "isFinalize": true,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x9231f6ac4d07107b2c2143a49ba392dbe8cfcf01f2612565ac53f99060a831ae",
+    "s": "0x73e31ffa544479647327ec95411af6a7f434f9d8c102f15611d6e17a5f95dcf6",
+    "v": 28
+   }
+  },
+  {
+   "name": "stakingLinkDisableTradingUser",
+   "primaryType": "HyperliquidTransaction:StakingLinkDisableTradingUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "tradingUser",
+     "type": "address"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "stakingLinkDisableTradingUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "tradingUser": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0x5d09c9b4f1dfbc36e477c82fbcf07b9c8172d86bab9974c563a833ab466f9cbb",
+    "s": "0x52566ad4a4e8f90ceba327c9432ad34140825aa6b9ce31de23ac62f3c5e70c76",
+    "v": 28
+   }
+  },
+  {
+   "name": "stakingLinkDisableTradingUser",
+   "primaryType": "HyperliquidTransaction:StakingLinkDisableTradingUser",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "tradingUser",
+     "type": "address"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "stakingLinkDisableTradingUser",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "tradingUser": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x66805f1fea75594af5895372e0637782a4f18f5fb4250afb1337abc661c09a36",
+    "s": "0x5d743c59f5a3300ce51b5c8fa2703468c49b20fc08fb271b17642c9cc3a765ef",
+    "v": 28
+   }
+  },
+  {
+   "name": "userPortfolioMargin",
+   "primaryType": "HyperliquidTransaction:UserPortfolioMargin",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "enabled",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userPortfolioMargin",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "enabled": false,
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xe1a7bad6253e4fbdba370ea73387bd90cf339b1eb4c4376186c75d717ec0d12a",
+    "s": "0x66efa36ad10ff41daf43c859d9580c521d5f8191d642d52285cd14c5df877913",
+    "v": 27
+   }
+  },
+  {
+   "name": "userPortfolioMargin",
+   "primaryType": "HyperliquidTransaction:UserPortfolioMargin",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "user",
+     "type": "address"
+    },
+    {
+     "name": "enabled",
+     "type": "bool"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "userPortfolioMargin",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "user": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "enabled": false,
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x90b98b1eae8fefb2b9b0dd0a5b0ceb5d1a710cf8cdd6455c0dd96beadd80681d",
+    "s": "0x75c0ebd788d49c28bd520443f19f7cba0c303ac4c4ce9759324b21d82950e943",
+    "v": 27
+   }
+  },
+  {
+   "name": "sendToEvmWithData",
+   "primaryType": "HyperliquidTransaction:SendToEvmWithData",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationRecipient",
+     "type": "string"
+    },
+    {
+     "name": "addressEncoding",
+     "type": "string"
+    },
+    {
+     "name": "destinationChainId",
+     "type": "uint32"
+    },
+    {
+     "name": "gasLimit",
+     "type": "uint64"
+    },
+    {
+     "name": "data",
+     "type": "bytes"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendToEvmWithData",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "token": "USDC",
+    "amount": "1",
+    "sourceDex": "",
+    "destinationRecipient": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "addressEncoding": "hex",
+    "destinationChainId": 42161,
+    "gasLimit": 200000,
+    "data": "0xdeadbeef",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xa0e03ffb4dc857b0145781431c0efdf074e4e6fef074534d35b8d271aa755cd0",
+    "s": "0x21e5ace220ab9395d238a8779e6c6c51d9b1783ed1a7c82d78c98b2e82b963b2",
+    "v": 27
+   }
+  },
+  {
+   "name": "sendToEvmWithData",
+   "primaryType": "HyperliquidTransaction:SendToEvmWithData",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationRecipient",
+     "type": "string"
+    },
+    {
+     "name": "addressEncoding",
+     "type": "string"
+    },
+    {
+     "name": "destinationChainId",
+     "type": "uint32"
+    },
+    {
+     "name": "gasLimit",
+     "type": "uint64"
+    },
+    {
+     "name": "data",
+     "type": "bytes"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendToEvmWithData",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "token": "USDC",
+    "amount": "1",
+    "sourceDex": "",
+    "destinationRecipient": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "addressEncoding": "hex",
+    "destinationChainId": 42161,
+    "gasLimit": 200000,
+    "data": "0xdeadbeef",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x7883edd1afe0144ae9fe5da4c932d66776840936e86f8aeac62fedf529ccaa4f",
+    "s": "0x4e67d0505b55fe0e9b3de6f8a3f71baff70790ef835ae7947d52aa6a34070b23",
+    "v": 27
+   }
+  },
+  {
+   "name": "sendToEvmWithData empty data",
+   "primaryType": "HyperliquidTransaction:SendToEvmWithData",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationRecipient",
+     "type": "string"
+    },
+    {
+     "name": "addressEncoding",
+     "type": "string"
+    },
+    {
+     "name": "destinationChainId",
+     "type": "uint32"
+    },
+    {
+     "name": "gasLimit",
+     "type": "uint64"
+    },
+    {
+     "name": "data",
+     "type": "bytes"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendToEvmWithData",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Mainnet",
+    "token": "USDC",
+    "amount": "1",
+    "sourceDex": "",
+    "destinationRecipient": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "addressEncoding": "hex",
+    "destinationChainId": 42161,
+    "gasLimit": 200000,
+    "data": "0x",
+    "nonce": 1700000000000
+   },
+   "mainnet": true,
+   "signature": {
+    "r": "0xc2e057e23837f972bc550219c3c8bec9dce73b0dfcbfc93bc61e3b97aee451f6",
+    "s": "0x5c5a0513bb4a305a8b37318f3a1d8452f07e9d7b3034ff0ce1f7301d17ec9bd0",
+    "v": 27
+   }
+  },
+  {
+   "name": "sendToEvmWithData empty data",
+   "primaryType": "HyperliquidTransaction:SendToEvmWithData",
+   "types": [
+    {
+     "name": "hyperliquidChain",
+     "type": "string"
+    },
+    {
+     "name": "token",
+     "type": "string"
+    },
+    {
+     "name": "amount",
+     "type": "string"
+    },
+    {
+     "name": "sourceDex",
+     "type": "string"
+    },
+    {
+     "name": "destinationRecipient",
+     "type": "string"
+    },
+    {
+     "name": "addressEncoding",
+     "type": "string"
+    },
+    {
+     "name": "destinationChainId",
+     "type": "uint32"
+    },
+    {
+     "name": "gasLimit",
+     "type": "uint64"
+    },
+    {
+     "name": "data",
+     "type": "bytes"
+    },
+    {
+     "name": "nonce",
+     "type": "uint64"
+    }
+   ],
+   "action": {
+    "type": "sendToEvmWithData",
+    "signatureChainId": "0x66eee",
+    "hyperliquidChain": "Testnet",
+    "token": "USDC",
+    "amount": "1",
+    "sourceDex": "",
+    "destinationRecipient": "0x5e9ee1089755c3435139848e47e6635505d5a13a",
+    "addressEncoding": "hex",
+    "destinationChainId": 42161,
+    "gasLimit": 200000,
+    "data": "0x",
+    "nonce": 1700000000000
+   },
+   "mainnet": false,
+   "signature": {
+    "r": "0x4a25d750a8de0b2c00d7f5dbc66708b14233ade19230daa2a538c59a43f49a6a",
+    "s": "0x4d7d662c66fef6c93d2acdcae3dd56fd2866f6ecf13117c7be6f9db9ea6e730b",
     "v": 27
    }
   }
@@ -902,6 +2358,85 @@
     "r": "0xa1a85ce15fb4e6432e9c9ddcfe1f38a6128056576f35d7dc1bb5dd7e54f95b66",
     "s": "0xe4df5e1abf34a60ea66e62c97c2d9e753d70c46f1b8951a7f466687c5365553",
     "v": 27
+   }
+  },
+  {
+   "name": "userSetAbstraction",
+   "multiSigUser": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+   "outerSigner": "0x14791697260e4c9a71f18484c9f997b308e59325",
+   "nonce": 1700000000000,
+   "mainnet": false,
+   "innerSignature": {
+    "r": "0x476f36c7215768338dba7899a084b9b8581230ab566b91def631cf4dbbf963cc",
+    "s": "0x295fbbf9b034d9eb629f00cdb8c2ab68f022f6ba7f01d11c19d3ce5c9af6d248",
+    "v": 28
+   },
+   "action": {
+    "type": "multiSig",
+    "signatureChainId": "0x66eee",
+    "signatures": [
+     {
+      "r": "0x476f36c7215768338dba7899a084b9b8581230ab566b91def631cf4dbbf963cc",
+      "s": "0x295fbbf9b034d9eb629f00cdb8c2ab68f022f6ba7f01d11c19d3ce5c9af6d248",
+      "v": 28
+     }
+    ],
+    "payload": {
+     "multiSigUser": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+     "outerSigner": "0x14791697260e4c9a71f18484c9f997b308e59325",
+     "action": {
+      "type": "userSetAbstraction",
+      "signatureChainId": "0x66eee",
+      "hyperliquidChain": "Testnet",
+      "user": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+      "abstraction": "i",
+      "nonce": 1700000000000
+     }
+    }
+   },
+   "signature": {
+    "r": "0x8510592b5b8f50154d85014a0b338d3da763896c0aac1f78dcec74a3a4066d6c",
+    "s": "0x4298081c9a191efb05d1da3600ac320fc95478f807471c83588f2273d1697ad1",
+    "v": 28
+   }
+  },
+  {
+   "name": "convertToMultiSigUser null",
+   "multiSigUser": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+   "outerSigner": "0x14791697260e4c9a71f18484c9f997b308e59325",
+   "nonce": 1700000000000,
+   "mainnet": false,
+   "innerSignature": {
+    "r": "0xd0deb51f96efe27912afa2504e87e9da5ca35802ecf19efccfb4eb78830edcae",
+    "s": "0x3742fb70a900d235635fbfe73ace28af4b0ebadbd9c6e86ae7223e5c2112c32f",
+    "v": 27
+   },
+   "action": {
+    "type": "multiSig",
+    "signatureChainId": "0x66eee",
+    "signatures": [
+     {
+      "r": "0xd0deb51f96efe27912afa2504e87e9da5ca35802ecf19efccfb4eb78830edcae",
+      "s": "0x3742fb70a900d235635fbfe73ace28af4b0ebadbd9c6e86ae7223e5c2112c32f",
+      "v": 27
+     }
+    ],
+    "payload": {
+     "multiSigUser": "0x1719884eb866cb12b2287399b15f7db5e7d775ea",
+     "outerSigner": "0x14791697260e4c9a71f18484c9f997b308e59325",
+     "action": {
+      "type": "convertToMultiSigUser",
+      "signatureChainId": "0x66eee",
+      "hyperliquidChain": "Testnet",
+      "signers": "null",
+      "nonce": 1700000000000
+     }
+    }
+   },
+   "signature": {
+    "r": "0x844d8efe9420b138561efc7ed2b767092e938893b0dea5ddd505f9cbcde597cd",
+    "s": "0x357287901cd476997cd6ccafd60e4a8989927154e1112b912fdddf889ecd7220",
+    "v": 28
    }
   }
  ]
