@@ -254,27 +254,14 @@ type WebData3PerpDexState struct {
 	LeadingVaults          []LeadingVault `json:"leadingVaults,omitempty"`
 }
 
-// OutcomeMetaUpdatesEvent is a message of
-// [WebSocketClient.OutcomeMetaUpdates].
-type OutcomeMetaUpdatesEvent struct {
-	Updates []OutcomeMetaUpdate `json:"updates"`
-}
-
-// OutcomeMetaUpdate is a change to outcome market metadata. Exactly one
-// field is set.
+// OutcomeMetaUpdate is a change to outcome market metadata; the
+// [WebSocketClient.OutcomeMetaUpdates] stream delivers them in lists.
+// Exactly one field is set.
 type OutcomeMetaUpdate struct {
-	OutcomeCreated  *OutcomeSpec     `json:"outcomeCreated,omitempty"`
-	OutcomeSettled  *OutcomeSettled  `json:"outcomeSettled,omitempty"`
+	OutcomeCreated *OutcomeSpec `json:"outcomeCreated,omitempty"`
+	// OutcomeSettled is the ID of an outcome that settled.
+	OutcomeSettled  *int             `json:"outcomeSettled,omitempty"`
 	QuestionUpdated *OutcomeQuestion `json:"questionUpdated,omitempty"`
-	QuestionSettled *QuestionSettled `json:"questionSettled,omitempty"`
-}
-
-// OutcomeSettled reports that an outcome settled.
-type OutcomeSettled struct {
-	Outcome int `json:"outcome"`
-}
-
-// QuestionSettled reports that a question settled.
-type QuestionSettled struct {
-	Question int `json:"question"`
+	// QuestionSettled is the ID of a question that settled.
+	QuestionSettled *int `json:"questionSettled,omitempty"`
 }

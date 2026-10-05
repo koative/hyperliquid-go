@@ -79,7 +79,7 @@ end a subscription with `Unsubscribe` or `Close`.
 | [`Bbo`](/docs/reference#WebSocketClient.Bbo) | `BboEvent` | Best bid and offer on every change |
 | [`Trades`](/docs/reference#WebSocketClient.Trades) | `[]Trade` | |
 | [`Candle`](/docs/reference#WebSocketClient.Candle) | `Candle` | The current candle on every change |
-| [`OutcomeMetaUpdates`](/docs/reference#WebSocketClient.OutcomeMetaUpdates) | `OutcomeMetaUpdatesEvent` | HIP-4 outcome metadata changes |
+| [`OutcomeMetaUpdates`](/docs/reference#WebSocketClient.OutcomeMetaUpdates) | `[]OutcomeMetaUpdate` | HIP-4 outcome metadata changes; no snapshot |
 
 **User data** (every request takes a `User` address)
 

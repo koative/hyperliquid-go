@@ -330,8 +330,9 @@ func (c *WebSocketClient) WebData3(ctx context.Context, req WebData3Subscription
 		func(p *wsProbe) bool { return strings.EqualFold(p.UserState.User, req.User.String()) }, handler)
 }
 
-// OutcomeMetaUpdates streams changes to outcome market metadata.
-func (c *WebSocketClient) OutcomeMetaUpdates(ctx context.Context, handler func(OutcomeMetaUpdatesEvent)) (*Subscription, error) {
+// OutcomeMetaUpdates streams changes to outcome market metadata. It sends
+// no snapshot; each message lists the updates since the previous one.
+func (c *WebSocketClient) OutcomeMetaUpdates(ctx context.Context, handler func([]OutcomeMetaUpdate)) (*Subscription, error) {
 	return subscribe(ctx, c, "outcomeMetaUpdates", "outcomeMetaUpdates", noParams{}, nil, handler)
 }
 
