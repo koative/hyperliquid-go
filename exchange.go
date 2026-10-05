@@ -21,7 +21,6 @@ type ExchangeClient struct {
 	tr           transport
 	vault        *Address
 	expiresAfter *uint64
-	nonces       *nonceClock
 }
 
 // NewExchangeClient returns a client that signs with signer on network.
@@ -30,7 +29,7 @@ type ExchangeClient struct {
 // and withdrawals require the account's own key.
 func NewExchangeClient(network Network, signer Signer, opts ...Option) *ExchangeClient {
 	o := newOptions(opts)
-	c := &ExchangeClient{network: network, signer: signer, tr: o.transport, nonces: new(nonceClock)}
+	c := &ExchangeClient{network: network, signer: signer, tr: o.transport}
 	if c.tr == nil {
 		c.tr = &httpTransport{baseURL: network.APIURL, client: o.httpClient}
 	}
@@ -58,16 +57,22 @@ func (c *ExchangeClient) WithExpiresAfter(t time.Time) *ExchangeClient {
 	return &cp
 }
 
-// nonceClock issues strictly increasing millisecond timestamps, so concurrent
-// actions from one signer never reuse a nonce.
-type nonceClock struct{ last atomic.Uint64 }
+// nonceClock issues strictly increasing millisecond timestamps. It is shared
+// by every ExchangeClient in the process, so concurrent actions from one
+// signer never reuse a nonce, even across separately constructed clients.
+var nonceClock atomic.Uint64
 
-func (n *nonceClock) next() uint64 {
+// NextNonce returns a fresh nonce: the current time in milliseconds, or one
+// more than the last nonce issued in this process if that is later. Use it
+// for the explicit nonces of [ExchangeClient.SignMultiSig],
+// [ExchangeClient.MultiSig] and [ExchangeClient.Noop], so they never collide
+// with the nonces the client draws for other actions.
+func NextNonce() uint64 {
 	now := uint64(time.Now().UnixMilli())
 	for {
-		last := n.last.Load()
+		last := nonceClock.Load()
 		next := max(now, last+1)
-		if n.last.CompareAndSwap(last, next) {
+		if nonceClock.CompareAndSwap(last, next) {
 			return next
 		}
 	}
@@ -152,7 +157,7 @@ type exchangeRequest struct {
 // do signs a with a fresh nonce, submits it and decodes the response data
 // into out (which may be nil).
 func (c *ExchangeClient) do(ctx context.Context, a Action, out any) error {
-	return c.send(ctx, a, c.nonces.next(), out)
+	return c.send(ctx, a, NextNonce(), out)
 }
 
 func (c *ExchangeClient) send(ctx context.Context, a Action, nonce uint64, out any) error {
@@ -279,7 +284,9 @@ var sendMultiSigSpec = userSignedSpec{
 // MultiSig submits action a for the multi-sig account multiSigUser, with c's
 // signer as the leader (outer signer). signatures are the authorized users'
 // approvals from [ExchangeClient.SignMultiSig], made with the same nonce.
-// It returns the raw response data of the inner action, if any.
+// It returns the raw response data of the inner action, if any. When that
+// data is a batch result ({"statuses":[...]}), rejected items are also
+// returned as a joined [*StatusError] each, like [ExchangeClient.Order].
 func (c *ExchangeClient) MultiSig(ctx context.Context, multiSigUser Address, a Action, nonce uint64, signatures []Signature) (json.RawMessage, error) {
 	payload := a
 	if p, ok := a.(multiSigPayloader); ok {
@@ -319,6 +326,13 @@ func (c *ExchangeClient) MultiSig(ctx context.Context, multiSigUser Address, a A
 	wire := append(append([]byte(`{"type":"multiSig",`), body...), '}')
 	var data json.RawMessage
 	err = c.post(ctx, wire, sig, nonce, multiSigAction{}, &data)
+	var st struct {
+		Statuses []OrderResult `json:"statuses"`
+	}
+	// Only batch results decode; other data is returned as is.
+	if err == nil && json.Unmarshal(data, &st) == nil {
+		err = orderResultErrors(st.Statuses)
+	}
 	return data, err
 }
 

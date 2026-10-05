@@ -34,9 +34,9 @@ type SpotDeployAction struct {
 	FreezeUser *FreezeUser `json:"freezeUser,omitempty"`
 	// RevokeFreezePrivilege permanently gives up the freeze privilege.
 	RevokeFreezePrivilege *SpotDeployToken `json:"revokeFreezePrivilege,omitempty"`
-	// RequestEvmContract requests a link to an ERC-20 contract on the
-	// HyperEVM, completed with [ExchangeClient.FinalizeEvmContract].
-	RequestEvmContract *RequestEvmContract `json:"requestEvmContract,omitempty"`
+	// RequestEVMContract requests a link to an ERC-20 contract on the
+	// HyperEVM, completed with [ExchangeClient.FinalizeEVMContract].
+	RequestEVMContract *RequestEVMContract `json:"requestEvmContract,omitempty"`
 	// SetTokenAnnotation sets the token's display metadata, at most once
 	// per day.
 	SetTokenAnnotation *SetTokenAnnotation `json:"setTokenAnnotation,omitempty"`
@@ -154,14 +154,14 @@ type SetDeployerTradingFeeShare struct {
 
 // MarshalJSON encodes Share with the trailing "%" the exchange expects.
 func (s SetDeployerTradingFeeShare) MarshalJSON() ([]byte, error) {
-	share, err := s.Share.MarshalJSON()
+	share, err := percent(s.Share)
 	if err != nil {
 		return nil, err
 	}
 	return json.Marshal(struct {
 		Token int    `json:"token"`
 		Share string `json:"share"`
-	}{s.Token, string(share[1:len(share)-1]) + "%"})
+	}{s.Token, share})
 }
 
 // SpotDeployToken names the token of a token-only [SpotDeployAction]
@@ -177,14 +177,14 @@ type FreezeUser struct {
 	Freeze bool    `json:"freeze"`
 }
 
-// RequestEvmContract requests a link between a spot token and an ERC-20
+// RequestEVMContract requests a link between a spot token and an ERC-20
 // contract on the HyperEVM.
-type RequestEvmContract struct {
+type RequestEVMContract struct {
 	Token   int     `json:"token"`
 	Address Address `json:"address"`
-	// EvmExtraWeiDecimals is the EVM token's decimals minus the spot
+	// EVMExtraWeiDecimals is the EVM token's decimals minus the spot
 	// token's wei decimals, between -2 and 18.
-	EvmExtraWeiDecimals int `json:"evmExtraWeiDecimals"`
+	EVMExtraWeiDecimals int `json:"evmExtraWeiDecimals"`
 }
 
 // SetTokenAnnotation sets a spot token's display metadata.

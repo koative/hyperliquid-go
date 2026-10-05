@@ -87,10 +87,7 @@ func (t *httpTransport) request(ctx context.Context, endpoint string, body []byt
 	if err != nil {
 		return nil, fmt.Errorf("hyperliquid: read %s response: %w", endpoint, err)
 	}
-	if resp.StatusCode != http.StatusOK {
-		return nil, &APIError{StatusCode: resp.StatusCode, Message: string(bytes.TrimSpace(b))}
-	}
-	if !json.Valid(b) {
+	if resp.StatusCode != http.StatusOK || !json.Valid(b) {
 		return nil, &APIError{StatusCode: resp.StatusCode, Message: string(bytes.TrimSpace(b))}
 	}
 	return b, nil
@@ -98,8 +95,8 @@ func (t *httpTransport) request(ctx context.Context, endpoint string, body []byt
 
 // APIError is an error reported by the Hyperliquid API.
 type APIError struct {
-	// StatusCode is the HTTP status code, or 0 when the error was reported
-	// in a successful response body or over WebSocket.
+	// StatusCode is the HTTP status code. It is 0 only for errors reported
+	// inside an ok /exchange response body or over WebSocket.
 	StatusCode int
 	// Message is the server's error message.
 	Message string

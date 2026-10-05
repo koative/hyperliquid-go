@@ -74,7 +74,7 @@ func TestMultiSigMatchesPython(t *testing.T) {
 	v, signer := loadSigningVectors(t)
 	actions := map[string]Action{
 		"l1 order": vectorOrder,
-		"usdSend":  UsdSendAction{Destination: vectorDest, Amount: "1"},
+		"usdSend":  USDSendAction{Destination: vectorDest, Amount: "1"},
 		// Signed with the long mode name, sent as "i".
 		"userSetAbstraction":         UserSetAbstractionAction{User: vectorVault, Abstraction: AbstractionDisabled},
 		"convertToMultiSigUser null": ConvertToMultiSigUserAction{},
@@ -134,7 +134,7 @@ func TestExchangeEnvelope(t *testing.T) {
 	}
 
 	// User-signed actions never carry a vault.
-	if err := c.UsdSend(context.Background(), UsdSendAction{Destination: vectorDest, Amount: "1"}); err != nil {
+	if err := c.USDSend(context.Background(), USDSendAction{Destination: vectorDest, Amount: "1"}); err != nil {
 		t.Fatal(err)
 	}
 	if bytes.Contains(rt.body, []byte("vaultAddress")) {
@@ -170,11 +170,10 @@ func TestExchangeErrors(t *testing.T) {
 	}
 }
 
-func TestNonceClockIsStrictlyIncreasing(t *testing.T) {
-	var n nonceClock
-	prev := n.next()
+func TestNextNonceIsStrictlyIncreasing(t *testing.T) {
+	prev := NextNonce()
 	for range 1000 {
-		next := n.next()
+		next := NextNonce()
 		if next <= prev {
 			t.Fatalf("nonce %d after %d", next, prev)
 		}

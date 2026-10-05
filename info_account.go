@@ -97,7 +97,7 @@ type ClearinghouseState struct {
 type MarginSummary struct {
 	AccountValue    Decimal `json:"accountValue"`
 	TotalNtlPos     Decimal `json:"totalNtlPos"`
-	TotalRawUsd     Decimal `json:"totalRawUsd"`
+	TotalRawUSD     Decimal `json:"totalRawUsd"`
 	TotalMarginUsed Decimal `json:"totalMarginUsed"`
 }
 
@@ -130,8 +130,8 @@ type Leverage struct {
 	// Type is "cross" or "isolated".
 	Type  string `json:"type"`
 	Value int    `json:"value"`
-	// RawUsd is the isolated margin's raw USD value; empty for cross.
-	RawUsd Decimal `json:"rawUsd,omitempty"`
+	// RawUSD is the isolated margin's raw USD value; empty for cross.
+	RawUSD Decimal `json:"rawUsd,omitempty"`
 }
 
 // CumFunding is the cumulative funding paid by a position (negative when
@@ -157,8 +157,8 @@ type SpotClearinghouseStateRequest struct {
 type SpotClearinghouseState struct {
 	PortfolioMarginEnabled bool          `json:"portfolioMarginEnabled,omitempty"`
 	Balances               []SpotBalance `json:"balances"`
-	// EvmEscrows are balances in transit from HyperEVM.
-	EvmEscrows                       []EvmEscrow            `json:"evmEscrows,omitempty"`
+	// EVMEscrows are balances in transit from HyperEVM.
+	EVMEscrows                       []EVMEscrow            `json:"evmEscrows,omitempty"`
 	PortfolioMarginRatio             Decimal                `json:"portfolioMarginRatio,omitempty"`
 	TokenToPortfolioBorrowRatio      TupleMap[int, Decimal] `json:"tokenToPortfolioBorrowRatio,omitempty"`
 	TokenToPortfolioSupplyRatio      TupleMap[int, Decimal] `json:"tokenToPortfolioSupplyRatio,omitempty"`
@@ -180,8 +180,8 @@ type SpotBalance struct {
 	Supplied Decimal `json:"supplied,omitempty"`
 }
 
-// EvmEscrow is a token amount in transit from HyperEVM to HyperCore.
-type EvmEscrow struct {
+// EVMEscrow is a token amount in transit from HyperEVM to HyperCore.
+type EVMEscrow struct {
 	Coin  string  `json:"coin"`
 	Token int     `json:"token"`
 	Total Decimal `json:"total"`
@@ -237,8 +237,8 @@ type FundingDelta struct {
 	// Type is always "funding".
 	Type string `json:"type"`
 	Coin string `json:"coin"`
-	// Usdc is the amount paid (negative) or received (positive).
-	Usdc        Decimal `json:"usdc"`
+	// USDC is the amount paid (negative) or received (positive).
+	USDC        Decimal `json:"usdc"`
 	Szi         Decimal `json:"szi"`
 	FundingRate Decimal `json:"fundingRate"`
 	// NSamples is the number of premium samples, or nil.
@@ -271,30 +271,30 @@ type LedgerUpdate struct {
 // LedgerDelta is the content of a [LedgerUpdate]. Type names the variant and
 // selects which other fields are set:
 //
-//   - "accountClassTransfer": Usdc, ToPerp
-//   - "deposit": Usdc
-//   - "internalTransfer": Usdc, User, Destination, Fee
+//   - "accountClassTransfer": USDC, ToPerp
+//   - "deposit": USDC
+//   - "internalTransfer": USDC, User, Destination, Fee
 //   - "liquidation": LiquidatedNtlPos, AccountValue, LeverageType,
 //     LiquidatedPositions
 //   - "rewardsClaim": Amount, Token
-//   - "spotTransfer": Token, Amount, UsdcValue, User, Destination, Fee,
+//   - "spotTransfer": Token, Amount, USDCValue, User, Destination, Fee,
 //     NativeTokenFee, Nonce, FeeToken
-//   - "subAccountTransfer": Usdc, User, Destination
-//   - "vaultCreate": Vault, Usdc, Fee
-//   - "vaultDeposit", "vaultDistribution": Vault, Usdc
-//   - "vaultWithdraw": Vault, User, RequestedUsd, Commission, ClosingCost,
-//     Basis, NetWithdrawnUsd
-//   - "withdraw": Usdc, Nonce, Fee
+//   - "subAccountTransfer": USDC, User, Destination
+//   - "vaultCreate": Vault, USDC, Fee
+//   - "vaultDeposit", "vaultDistribution": Vault, USDC
+//   - "vaultWithdraw": Vault, User, RequestedUSD, Commission, ClosingCost,
+//     Basis, NetWithdrawnUSD
+//   - "withdraw": USDC, Nonce, Fee
 //   - "send": User, Destination, SourceDex, DestinationDex, Token, Amount,
-//     UsdcValue, Fee, NativeTokenFee, Nonce, FeeToken
+//     USDCValue, Fee, NativeTokenFee, Nonce, FeeToken
 //   - "deployGasAuction", "spotGenesis": Token, Amount
 //   - "cStakingTransfer": Token, Amount, IsDeposit
 //   - "borrowLend": Token, Operation, Amount, InterestAmount
 //   - "activateDexAbstraction": Dex, Token, Amount
-//   - "vaultLeaderCommission": User, Usdc
+//   - "vaultLeaderCommission": User, USDC
 type LedgerDelta struct {
 	Type        string  `json:"type"`
-	Usdc        Decimal `json:"usdc,omitempty"`
+	USDC        Decimal `json:"usdc,omitempty"`
 	ToPerp      bool    `json:"toPerp,omitempty"`
 	User        Address `json:"user,omitzero"`
 	Destination Address `json:"destination,omitzero"`
@@ -306,7 +306,7 @@ type LedgerDelta struct {
 	Dex                 string               `json:"dex,omitempty"`
 	Token               string               `json:"token,omitempty"`
 	Amount              Decimal              `json:"amount,omitempty"`
-	UsdcValue           Decimal              `json:"usdcValue,omitempty"`
+	USDCValue           Decimal              `json:"usdcValue,omitempty"`
 	NativeTokenFee      Decimal              `json:"nativeTokenFee,omitempty"`
 	Nonce               int64                `json:"nonce,omitempty"`
 	FeeToken            string               `json:"feeToken,omitempty"`
@@ -315,11 +315,11 @@ type LedgerDelta struct {
 	LeverageType        string               `json:"leverageType,omitempty"` // "Cross" or "Isolated"
 	LiquidatedPositions []LiquidatedPosition `json:"liquidatedPositions,omitempty"`
 	Vault               Address              `json:"vault,omitzero"`
-	RequestedUsd        Decimal              `json:"requestedUsd,omitempty"`
+	RequestedUSD        Decimal              `json:"requestedUsd,omitempty"`
 	Commission          Decimal              `json:"commission,omitempty"`
 	ClosingCost         Decimal              `json:"closingCost,omitempty"`
 	Basis               Decimal              `json:"basis,omitempty"`
-	NetWithdrawnUsd     Decimal              `json:"netWithdrawnUsd,omitempty"`
+	NetWithdrawnUSD     Decimal              `json:"netWithdrawnUsd,omitempty"`
 	IsDeposit           bool                 `json:"isDeposit,omitempty"`
 	// Operation is "supply", "withdraw", "repay" or "borrow".
 	Operation      string  `json:"operation,omitempty"`

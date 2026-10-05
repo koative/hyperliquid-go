@@ -16,8 +16,8 @@ type BorrowLendReserveState struct {
 	Balance          Decimal `json:"balance"`
 	Utilization      Decimal `json:"utilization"`
 	OraclePx         Decimal `json:"oraclePx"`
-	// Ltv is the loan-to-value ratio of the token as collateral.
-	Ltv           Decimal `json:"ltv"`
+	// LTV is the loan-to-value ratio of the token as collateral.
+	LTV           Decimal `json:"ltv"`
 	TotalSupplied Decimal `json:"totalSupplied"`
 	TotalBorrowed Decimal `json:"totalBorrowed"`
 }

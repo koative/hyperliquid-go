@@ -61,33 +61,6 @@ func (c *ExchangeClient) UserSetAbstraction(ctx context.Context, a UserSetAbstra
 	return c.do(ctx, a, nil)
 }
 
-// UserDexAbstractionAction enables or disables HIP-3 dex abstraction, which
-// lets builder-deployed perp dexes use the spot balance as collateral. It
-// must be signed by the account's own key.
-//
-// Deprecated: Use [UserSetAbstractionAction].
-type UserDexAbstractionAction struct {
-	User    Address `json:"user"`
-	Enabled bool    `json:"enabled"`
-}
-
-func (UserDexAbstractionAction) actionType() string { return "userDexAbstraction" }
-
-var userDexAbstractionSpec = userSignedSpec{
-	PrimaryType: "HyperliquidTransaction:UserDexAbstraction",
-	Fields:      []typedField{{"user", "address"}, {"enabled", "bool"}},
-	NonceField:  "nonce",
-}
-
-func (UserDexAbstractionAction) userSignedSpec() *userSignedSpec { return &userDexAbstractionSpec }
-
-// UserDexAbstraction enables or disables dex abstraction.
-//
-// Deprecated: Use [ExchangeClient.UserSetAbstraction].
-func (c *ExchangeClient) UserDexAbstraction(ctx context.Context, a UserDexAbstractionAction) error {
-	return c.do(ctx, a, nil)
-}
-
 // UserPortfolioMarginAction enables or disables portfolio margin for an
 // account. It must be signed by the account's own key.
 type UserPortfolioMarginAction struct {

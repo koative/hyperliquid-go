@@ -71,10 +71,13 @@ func (TwapCancelAction) actionType() string { return "twapCancel" }
 // TwapCancel cancels a TWAP order. A failed cancel returns a [*StatusError].
 func (c *ExchangeClient) TwapCancel(ctx context.Context, a TwapCancelAction) error {
 	var data struct {
-		Status OrderStatus `json:"status"`
+		Status OrderResult `json:"status"`
 	}
 	if err := c.do(ctx, a, &data); err != nil {
 		return err
 	}
-	return statusErrors([]string{data.Status.Error})
+	if m := data.Status.Error; m != "" {
+		return &StatusError{Message: m}
+	}
+	return nil
 }

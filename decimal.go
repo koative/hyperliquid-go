@@ -59,7 +59,18 @@ func (d Decimal) MarshalJSON() ([]byte, error) {
 	return strconv.AppendQuote(make([]byte, 0, len(n)+2), n), nil
 }
 
-// UnmarshalJSON accepts a JSON string or a JSON number.
+// percent returns d in normalized form with the "%" suffix that percentage
+// fields carry on the wire, such as "1.5%".
+func percent(d Decimal) (string, error) {
+	n, ok := normalizeDecimal(string(d))
+	if !ok {
+		return "", fmt.Errorf("hyperliquid: invalid percentage %q", string(d))
+	}
+	return n + "%", nil
+}
+
+// UnmarshalJSON accepts a JSON string or a JSON number. Numbers in exponent
+// form, such as 1.5e-05, are converted exactly to plain form ("0.000015").
 func (d *Decimal) UnmarshalJSON(b []byte) error {
 	if bytes.Equal(b, []byte("null")) {
 		return nil
@@ -72,8 +83,46 @@ func (d *Decimal) UnmarshalJSON(b []byte) error {
 		*d = Decimal(s)
 		return nil
 	}
-	*d = Decimal(b)
+	if _, ok := normalizeDecimal(string(b)); ok {
+		*d = Decimal(b)
+		return nil
+	}
+	n, ok := expandExponent(string(b))
+	if !ok {
+		return fmt.Errorf("hyperliquid: invalid decimal %s", b)
+	}
+	*d = Decimal(n)
 	return nil
+}
+
+// expandExponent converts a number in exponent form, such as "-1.5e-05", to
+// the canonical plain decimal by shifting its digits.
+func expandExponent(s string) (string, bool) {
+	i := strings.IndexAny(s, "eE")
+	if i < 0 {
+		return "", false
+	}
+	exp, err := strconv.Atoi(s[i+1:])
+	// The bound keeps a hostile exponent from allocating a huge string.
+	if err != nil || exp < -1000 || exp > 1000 {
+		return "", false
+	}
+	m := s[:i]
+	if _, ok := normalizeDecimal(m); !ok {
+		return "", false
+	}
+	sign := ""
+	if strings.HasPrefix(m, "-") {
+		sign, m = "-", m[1:]
+	}
+	intPart, frac, _ := strings.Cut(m, ".")
+	digits, point := intPart+frac, len(intPart)+exp
+	if point < 0 {
+		digits, point = strings.Repeat("0", -point)+digits, 0
+	} else if point > len(digits) {
+		digits += strings.Repeat("0", point-len(digits))
+	}
+	return normalizeDecimal(sign + digits[:point] + "." + digits[point:])
 }
 
 // normalizeDecimal reports whether s is a plain decimal (optional '-', digits,

@@ -67,7 +67,7 @@ the changelog and the next version from them:
 
 - `feat: add vaultTransfer action` → new minor version
 - `fix: decode null cloid in userFills` → new patch version
-- `feat!: rename OrderStatus fields` → breaking change (minor version while in v0)
+- `feat!: rename OrderResult fields` → breaking change (minor version while in v0)
 - `docs:`, `test:`, `refactor:`, `chore:`, `ci:` → no release
 
 By contributing you agree that your contributions are licensed under the

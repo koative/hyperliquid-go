@@ -114,18 +114,18 @@ func TestUserSignedActionsMatchPython(t *testing.T) {
 	v, signer := loadSigningVectors(t)
 	dest, vault := vectorDest, vectorVault
 	usdc := "USDC:0x6d1e7cde53ba9467b783cb7c530ce054"
-	evm := SendToEvmWithDataAction{
+	evm := SendToEVMWithDataAction{
 		Token: "USDC", Amount: "1.0", DestinationRecipient: dest.String(), AddressEncoding: AddressEncodingHex,
 		DestinationChainID: 42161, GasLimit: 200000, Data: []byte{0xde, 0xad, 0xbe, 0xef},
 	}
 	evmEmpty := evm
 	evmEmpty.Data = nil
 	actions := map[string]userSignedAction{
-		"usdSend":                     UsdSendAction{Destination: dest, Amount: "1.50"},
+		"usdSend":                     USDSendAction{Destination: dest, Amount: "1.50"},
 		"spotSend":                    SpotSendAction{Destination: dest, Token: "PURR:0xc4bf3f870c0e9465323c0b6ed28096c2", Amount: "0.5"},
-		"withdraw3":                   Withdraw3Action{Destination: dest, Amount: "10"},
-		"usdClassTransfer":            UsdClassTransferAction{Amount: "2.0"},
-		"usdClassTransfer subaccount": UsdClassTransferAction{Amount: "2", ToPerp: true, SubAccount: &vault},
+		"withdraw3":                   WithdrawAction{Destination: dest, Amount: "10"},
+		"usdClassTransfer":            USDClassTransferAction{Amount: "2.0"},
+		"usdClassTransfer subaccount": USDClassTransferAction{Amount: "2", ToPerp: true, SubAccount: &vault},
 		"sendAsset":                   SendAssetAction{Destination: dest, DestinationDex: "spot", Token: usdc, Amount: "3.25"},
 		"sendAsset subaccount": SendAssetAction{
 			Destination: dest, SourceDex: "spot", DestinationDex: "xyz", Token: usdc, Amount: "3.25", FromSubAccount: &vault,
@@ -133,12 +133,11 @@ func TestUserSignedActionsMatchPython(t *testing.T) {
 		"tokenDelegate":        TokenDelegateAction{Validator: dest, Wei: 123000000},
 		"approveAgent":         ApproveAgentAction{AgentAddress: dest, AgentName: "bot"},
 		"approveAgent unnamed": ApproveAgentAction{AgentAddress: dest},
-		"approveBuilderFee":    ApproveBuilderFeeAction{MaxFeeRate: "0.001%", Builder: dest},
+		"approveBuilderFee":    ApproveBuilderFeeAction{MaxFeeRate: "0.001", Builder: dest},
 		"convertToMultiSigUser": ConvertToMultiSigUserAction{Signers: &MultiSigSigners{
 			AuthorizedUsers: []Address{dest, vault}, Threshold: 2, // sorted on the wire
 		}},
 		"convertToMultiSigUser null":    ConvertToMultiSigUserAction{},
-		"userDexAbstraction":            UserDexAbstractionAction{User: dest, Enabled: true},
 		"userSetAbstraction":            UserSetAbstractionAction{User: dest, Abstraction: AbstractionUnifiedAccount},
 		"cDeposit":                      CDepositAction{Wei: 100000000},
 		"cWithdraw":                     CWithdrawAction{Wei: 100000000},

@@ -3,6 +3,7 @@ package hyperliquid
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 )
@@ -116,9 +117,9 @@ type Builder struct {
 	Fee int `json:"f"`
 }
 
-// OrderStatus is the outcome of one order. Exactly one of Resting, Filled,
+// OrderResult is the outcome of one order. Exactly one of Resting, Filled,
 // Error and Status is set.
-type OrderStatus struct {
+type OrderResult struct {
 	Resting *RestingOrder `json:"resting,omitempty"`
 	Filled  *FilledOrder  `json:"filled,omitempty"`
 	Error   string        `json:"error,omitempty"`
@@ -128,11 +129,11 @@ type OrderStatus struct {
 }
 
 // UnmarshalJSON accepts both object statuses and plain string statuses.
-func (s *OrderStatus) UnmarshalJSON(b []byte) error {
+func (s *OrderResult) UnmarshalJSON(b []byte) error {
 	if len(b) > 0 && b[0] == '"' {
 		return json.Unmarshal(b, &s.Status)
 	}
-	type plain OrderStatus
+	type plain OrderResult
 	return json.Unmarshal(b, (*plain)(s))
 }
 
@@ -153,22 +154,22 @@ type FilledOrder struct {
 // Order places orders and returns one status per order, in request order.
 // If some orders are rejected, the statuses are returned together with a
 // joined [*StatusError] per rejected order.
-func (c *ExchangeClient) Order(ctx context.Context, a OrderAction) ([]OrderStatus, error) {
+func (c *ExchangeClient) Order(ctx context.Context, a OrderAction) ([]OrderResult, error) {
 	return c.placeOrders(ctx, a)
 }
 
 // placeOrders submits an action whose response is a list of order statuses.
-func (c *ExchangeClient) placeOrders(ctx context.Context, a Action) ([]OrderStatus, error) {
+func (c *ExchangeClient) placeOrders(ctx context.Context, a Action) ([]OrderResult, error) {
 	var data struct {
-		Statuses []OrderStatus `json:"statuses"`
+		Statuses []OrderResult `json:"statuses"`
 	}
 	if err := c.do(ctx, a, &data); err != nil {
 		return nil, err
 	}
-	return data.Statuses, orderStatusErrors(data.Statuses)
+	return data.Statuses, orderResultErrors(data.Statuses)
 }
 
-func orderStatusErrors(statuses []OrderStatus) error {
+func orderResultErrors(statuses []OrderResult) error {
 	msgs := make([]string, len(statuses))
 	for i, s := range statuses {
 		msgs[i] = s.Error
@@ -201,12 +202,12 @@ func (c *ExchangeClient) Cancel(ctx context.Context, a CancelAction) error {
 // "success" or {"error": msg} statuses.
 func (c *ExchangeClient) cancel(ctx context.Context, a Action) error {
 	var data struct {
-		Statuses []OrderStatus `json:"statuses"`
+		Statuses []OrderResult `json:"statuses"`
 	}
 	if err := c.do(ctx, a, &data); err != nil {
 		return err
 	}
-	return orderStatusErrors(data.Statuses)
+	return orderResultErrors(data.Statuses)
 }
 
 // CancelByCloidAction cancels orders by client order ID.
@@ -279,7 +280,7 @@ type Modify struct {
 
 // BatchModify replaces orders and returns one status per new order, like
 // [ExchangeClient.Order].
-func (c *ExchangeClient) BatchModify(ctx context.Context, a BatchModifyAction) ([]OrderStatus, error) {
+func (c *ExchangeClient) BatchModify(ctx context.Context, a BatchModifyAction) ([]OrderResult, error) {
 	return c.placeOrders(ctx, a)
 }
 
@@ -324,18 +325,21 @@ type Retracement struct {
 
 // MarshalJSON encodes r as {"pct":"<Pct>%"} or {"px":"<Px>"}.
 func (r Retracement) MarshalJSON() ([]byte, error) {
-	if r.Pct == nil {
-		return json.Marshal(struct {
-			Px *Decimal `json:"px"`
-		}{r.Px})
+	if (r.Pct == nil) == (r.Px == nil) {
+		return nil, errors.New("hyperliquid: set exactly one of Retracement.Pct and Retracement.Px")
 	}
-	pct, err := r.Pct.MarshalJSON()
+	if r.Px != nil {
+		return json.Marshal(struct {
+			Px Decimal `json:"px"`
+		}{*r.Px})
+	}
+	pct, err := percent(*r.Pct)
 	if err != nil {
 		return nil, err
 	}
 	return json.Marshal(struct {
 		Pct string `json:"pct"`
-	}{string(pct[1:len(pct)-1]) + "%"})
+	}{pct})
 }
 
 // TrailingStop places a trailing stop order and returns its order ID.

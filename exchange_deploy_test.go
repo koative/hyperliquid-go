@@ -87,17 +87,17 @@ func TestDeployActionEncoding(t *testing.T) {
 		// Python SDK examples/evm_erc20.py.
 		{
 			"spot requestEvmContract",
-			SpotDeployAction{RequestEvmContract: &RequestEvmContract{Token: 1234, Address: user, EvmExtraWeiDecimals: 13}},
+			SpotDeployAction{RequestEVMContract: &RequestEVMContract{Token: 1234, Address: user, EVMExtraWeiDecimals: 13}},
 			`{"type":"spotDeploy","requestEvmContract":{"token":1234,"address":"0x5e9ee1089755c3435139848e47e6635505d5a13a","evmExtraWeiDecimals":13}}`,
 		},
 		{
 			"finalizeEvmContract create",
-			FinalizeEvmContractAction{Token: 1234, Input: FinalizeCreate(0)},
+			FinalizeEVMContractAction{Token: 1234, Input: FinalizeCreate(0)},
 			`{"type":"finalizeEvmContract","token":1234,"input":{"create":{"nonce":0}}}`,
 		},
 		{
 			"finalizeEvmContract slot",
-			FinalizeEvmContractAction{Token: 1234, Input: FinalizeFirstStorageSlot},
+			FinalizeEVMContractAction{Token: 1234, Input: FinalizeFirstStorageSlot},
 			`{"type":"finalizeEvmContract","token":1234,"input":"firstStorageSlot"}`,
 		},
 		// Official API docs and nktkas schemas.

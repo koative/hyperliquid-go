@@ -28,7 +28,7 @@ type SpotTokenMeta struct {
 	// TokenID is the 0x-prefixed 32-hex-digit token ID.
 	TokenID     string       `json:"tokenId"`
 	IsCanonical bool         `json:"isCanonical"`
-	EvmContract *EvmContract `json:"evmContract"`
+	EVMContract *EVMContract `json:"evmContract"`
 	FullName    *string      `json:"fullName"`
 	// DeployerTradingFeeShare is the fraction of trading fees paid to the
 	// token deployer.
@@ -37,12 +37,12 @@ type SpotTokenMeta struct {
 	DeployerLabel string `json:"deployerLabel,omitempty"`
 }
 
-// EvmContract is the HyperEVM contract linked to a spot token.
-type EvmContract struct {
+// EVMContract is the HyperEVM contract linked to a spot token.
+type EVMContract struct {
 	Address Address `json:"address"`
-	// EvmExtraWeiDecimals is the EVM token's decimals minus the spot token's
+	// EVMExtraWeiDecimals is the EVM token's decimals minus the spot token's
 	// wei decimals.
-	EvmExtraWeiDecimals int `json:"evm_extra_wei_decimals"`
+	EVMExtraWeiDecimals int `json:"evm_extra_wei_decimals"`
 }
 
 // SpotMeta returns spot metadata.
@@ -102,7 +102,7 @@ type TokenDetails struct {
 	Deployer                   *Address                   `json:"deployer"`
 	DeployGas                  *Decimal                   `json:"deployGas"`
 	DeployTime                 *string                    `json:"deployTime"`
-	SeededUsdc                 Decimal                    `json:"seededUsdc"`
+	SeededUSDC                 Decimal                    `json:"seededUsdc"`
 	NonCirculatingUserBalances TupleMap[Address, Decimal] `json:"nonCirculatingUserBalances"`
 	FutureEmissions            Decimal                    `json:"futureEmissions"`
 }

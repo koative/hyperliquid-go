@@ -8,9 +8,9 @@ type CreateVaultAction struct {
 	Name string `json:"name"`
 	// Description is 10 to 250 characters.
 	Description string `json:"description"`
-	// InitialUsd is the leader's initial deposit in USDC times 1e6; at least
+	// InitialUSD is the leader's initial deposit in USDC times 1e6; at least
 	// 100 USDC.
-	InitialUsd uint64 `json:"initialUsd"`
+	InitialUSD uint64 `json:"initialUsd"`
 }
 
 func (CreateVaultAction) actionType() string { return "createVault" }
@@ -39,8 +39,8 @@ func (c *ExchangeClient) VaultModify(ctx context.Context, a VaultModifyAction) e
 // VaultDistributeAction distributes vault funds to its followers.
 type VaultDistributeAction struct {
 	VaultAddress Address `json:"vaultAddress"`
-	// Usd is the USDC amount times 1e6; 0 closes the vault.
-	Usd uint64 `json:"usd"`
+	// USD is the USDC amount times 1e6; 0 closes the vault.
+	USD uint64 `json:"usd"`
 }
 
 func (VaultDistributeAction) actionType() string { return "vaultDistribute" }
@@ -54,8 +54,8 @@ func (c *ExchangeClient) VaultDistribute(ctx context.Context, a VaultDistributeA
 type VaultTransferAction struct {
 	VaultAddress Address `json:"vaultAddress"`
 	IsDeposit    bool    `json:"isDeposit"`
-	// Usd is the USDC amount times 1e6.
-	Usd uint64 `json:"usd"`
+	// USD is the USDC amount times 1e6.
+	USD uint64 `json:"usd"`
 }
 
 func (VaultTransferAction) actionType() string { return "vaultTransfer" }

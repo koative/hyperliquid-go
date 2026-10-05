@@ -31,6 +31,27 @@ func TestDecimalUnmarshal(t *testing.T) {
 	if v.A != "1.50" || v.B != "2.25" || v.C != "" {
 		t.Errorf("got %+v", v)
 	}
+	for _, tc := range []struct{ in, want string }{
+		{`1.5e-05`, "0.000015"},
+		{`-1.5E+3`, "-1500"},
+		{`12e0`, "12"},
+		{`1.25e1`, "12.5"},
+		{`0.001e3`, "1"},
+		{`5e-1`, "0.5"},
+		{`-0e5`, "0"},
+		{`7`, "7"},
+	} {
+		var d Decimal
+		if err := json.Unmarshal([]byte(tc.in), &d); err != nil || d != Decimal(tc.want) {
+			t.Errorf("Unmarshal(%s) = %q, %v; want %q", tc.in, d, err, tc.want)
+		}
+	}
+	for _, bad := range []string{`true`, `false`, `{}`, `[1,2]`, `{"a":1}`, `1e99999`} {
+		var d Decimal
+		if err := json.Unmarshal([]byte(bad), &d); err == nil {
+			t.Errorf("Unmarshal(%s) = %q; want error", bad, d)
+		}
+	}
 }
 
 func TestFormatPrice(t *testing.T) {

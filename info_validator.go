@@ -28,7 +28,7 @@ type ValidatorStats struct {
 	// Period is "day", "week" or "month".
 	Period         string  `json:"-"`
 	UptimeFraction Decimal `json:"uptimeFraction"`
-	PredictedApr   Decimal `json:"predictedApr"`
+	PredictedAPR   Decimal `json:"predictedApr"`
 	NSamples       int     `json:"nSamples"`
 }
 
@@ -60,9 +60,9 @@ func (c *InfoClient) ValidatorL1Votes(ctx context.Context) ([]ValidatorL1Vote, e
 	return infoRequest[[]ValidatorL1Vote](ctx, c, "validatorL1Votes", noParams{})
 }
 
-// GossipRootIps returns the IPv4 addresses of the gossip root peers that
+// GossipRootIPs returns the IPv4 addresses of the gossip root peers that
 // non-validating nodes connect to.
-func (c *InfoClient) GossipRootIps(ctx context.Context) ([]string, error) {
+func (c *InfoClient) GossipRootIPs(ctx context.Context) ([]string, error) {
 	return infoRequest[[]string](ctx, c, "gossipRootIps", noParams{})
 }
 

@@ -2,7 +2,9 @@ package hyperliquid
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"testing"
 )
 
@@ -45,7 +47,7 @@ func TestTradingActionEncoding(t *testing.T) {
 		{"python createSubAccount", CreateSubAccountAction{Name: "sub1"}, `{"type":"createSubAccount","name":"sub1"}`},
 		{
 			"python subAccountTransfer",
-			SubAccountTransferAction{SubAccountUser: sub, IsDeposit: true, Usd: 1000000},
+			SubAccountTransferAction{SubAccountUser: sub, IsDeposit: true, USD: 1000000},
 			`{"type":"subAccountTransfer","subAccountUser":"0x5e9ee1089755c3435139848e47e6635505d5a13a","isDeposit":true,"usd":1000000}`,
 		},
 		{
@@ -55,11 +57,10 @@ func TestTradingActionEncoding(t *testing.T) {
 		},
 		{
 			"python vaultTransfer",
-			VaultTransferAction{VaultAddress: sub, IsDeposit: true, Usd: 5000000},
+			VaultTransferAction{VaultAddress: sub, IsDeposit: true, USD: 5000000},
 			`{"type":"vaultTransfer","vaultAddress":"0x5e9ee1089755c3435139848e47e6635505d5a13a","isDeposit":true,"usd":5000000}`,
 		},
-		{"python evmUserModify", EvmUserModifyAction{UsingBigBlocks: true}, `{"type":"evmUserModify","usingBigBlocks":true}`},
-		{"python agentEnableDexAbstraction", AgentEnableDexAbstractionAction{}, `{"type":"agentEnableDexAbstraction"}`},
+		{"python evmUserModify", EVMUserModifyAction{UsingBigBlocks: true}, `{"type":"evmUserModify","usingBigBlocks":true}`},
 		{"python agentSetAbstraction", AgentSetAbstractionAction{Abstraction: AbstractionUnifiedAccount}, `{"type":"agentSetAbstraction","abstraction":"u"}`},
 		{"python noop", NoopAction{}, `{"type":"noop"}`},
 		{
@@ -81,7 +82,7 @@ func TestTradingActionEncoding(t *testing.T) {
 		},
 		{
 			"createVault nonce",
-			CreateVaultAction{Name: "vault", Description: "description", InitialUsd: 100000000},
+			CreateVaultAction{Name: "vault", Description: "description", InitialUSD: 100000000},
 			`{"type":"createVault","name":"vault","description":"description","initialUsd":100000000,"nonce":1700000000000}`,
 		},
 		{
@@ -144,8 +145,24 @@ func TestTradingResponses(t *testing.T) {
 		t.Errorf("TwapCancel success = %v", err)
 	}
 	if err := newClient(`{"status":"ok","response":{"type":"twapCancel","data":{"status":{"error":"gone"}}}}`).
-		TwapCancel(ctx, TwapCancelAction{}); !errors.As(err, &se) || se.Message != "gone" {
+		TwapCancel(ctx, TwapCancelAction{}); fmt.Sprintf("%T", err) != "*hyperliquid.StatusError" || !errors.As(err, &se) || se.Message != "gone" {
 		t.Errorf("TwapCancel error = %v", err)
+	}
+	ms := func(resp string) error {
+		_, err := newClient(resp).MultiSig(ctx, Address{}, CancelAction{}, 1, nil)
+		return err
+	}
+	if err := ms(`{"status":"ok","response":{"type":"default","data":{"statuses":["success",{"error":"never placed"}]}}}`); !errors.As(err, &se) || se.Index != 1 {
+		t.Errorf("MultiSig batch error = %v", err)
+	}
+	if err := ms(`{"status":"ok","response":{"type":"default","data":"0x5e9ee1089755c3435139848e47e6635505d5a13a"}}`); err != nil {
+		t.Errorf("MultiSig string data = %v", err)
+	}
+	px := Decimal("1")
+	for _, r := range []Retracement{{}, {Pct: &px, Px: &px}} {
+		if _, err := json.Marshal(r); err == nil {
+			t.Errorf("Marshal(%+v): want error", r)
+		}
 	}
 	addr, err := newClient(`{"status":"ok","response":{"type":"createSubAccount","data":"0x5e9ee1089755c3435139848e47e6635505d5a13a"}}`).
 		CreateSubAccount(ctx, CreateSubAccountAction{Name: "x"})

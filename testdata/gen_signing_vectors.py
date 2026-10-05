@@ -173,11 +173,6 @@ USER_SIGNED = [
         {"type": "convertToMultiSigUser", "signers": "null", "nonce": NONCE},
     ),
     (
-        "userDexAbstraction",
-        sdk(s.sign_user_dex_abstraction_action),
-        {"type": "userDexAbstraction", "user": DEST, "enabled": True, "nonce": NONCE},
-    ),
-    (
         "userSetAbstraction",
         sdk(s.sign_user_set_abstraction_action),
         {"type": "userSetAbstraction", "user": DEST, "abstraction": "unifiedAccount", "nonce": NONCE},

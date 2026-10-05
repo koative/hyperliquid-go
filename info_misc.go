@@ -16,14 +16,14 @@ func (c *InfoClient) ExchangeStatus(ctx context.Context) (*ExchangeStatus, error
 	return infoRequest[*ExchangeStatus](ctx, c, "exchangeStatus", noParams{})
 }
 
-// UsdcRouting is how USDC moves between Hyperliquid and Arbitrum.
-type UsdcRouting struct {
+// USDCRouting is how USDC moves between Hyperliquid and Arbitrum.
+type USDCRouting struct {
 	// DepositRoute and WithdrawalRoute are "bridge" or "cctp".
 	DepositRoute    string `json:"depositRoute"`
 	WithdrawalRoute string `json:"withdrawalRoute"`
 }
 
-// UsdcRouting returns the current USDC deposit and withdrawal routes.
-func (c *InfoClient) UsdcRouting(ctx context.Context) (*UsdcRouting, error) {
-	return infoRequest[*UsdcRouting](ctx, c, "usdcRouting", noParams{})
+// USDCRouting returns the current USDC deposit and withdrawal routes.
+func (c *InfoClient) USDCRouting(ctx context.Context) (*USDCRouting, error) {
+	return infoRequest[*USDCRouting](ctx, c, "usdcRouting", noParams{})
 }

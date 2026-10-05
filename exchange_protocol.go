@@ -6,9 +6,9 @@ import (
 	"fmt"
 )
 
-// Hip3LiquidatorTransferAction deposits into or withdraws from a HIP-3 dex's
+// HIP3LiquidatorTransferAction deposits into or withdraws from a HIP-3 dex's
 // backstop liquidator.
-type Hip3LiquidatorTransferAction struct {
+type HIP3LiquidatorTransferAction struct {
 	Dex string `json:"dex"`
 	// Ntl is the amount in quote token units ×1e6; it must be a multiple of
 	// 1e9.
@@ -16,11 +16,11 @@ type Hip3LiquidatorTransferAction struct {
 	IsDeposit bool   `json:"isDeposit"`
 }
 
-func (Hip3LiquidatorTransferAction) actionType() string { return "hip3LiquidatorTransfer" }
+func (HIP3LiquidatorTransferAction) actionType() string { return "hip3LiquidatorTransfer" }
 
-// Hip3LiquidatorTransfer moves funds to or from a HIP-3 backstop
+// HIP3LiquidatorTransfer moves funds to or from a HIP-3 backstop
 // liquidator.
-func (c *ExchangeClient) Hip3LiquidatorTransfer(ctx context.Context, a Hip3LiquidatorTransferAction) error {
+func (c *ExchangeClient) HIP3LiquidatorTransfer(ctx context.Context, a HIP3LiquidatorTransferAction) error {
 	return c.do(ctx, a, nil)
 }
 
@@ -43,24 +43,24 @@ func (c *ExchangeClient) GossipPriorityBid(ctx context.Context, a GossipPriority
 	return c.do(ctx, a, nil)
 }
 
-// FinalizeEvmContractAction completes the link between a spot token and an
-// ERC-20 contract requested with [SpotDeployAction.RequestEvmContract]. It
+// FinalizeEVMContractAction completes the link between a spot token and an
+// ERC-20 contract requested with [SpotDeployAction.RequestEVMContract]. It
 // is signed by the contract's deployer.
-type FinalizeEvmContractAction struct {
+type FinalizeEVMContractAction struct {
 	Token int                      `json:"token"`
-	Input FinalizeEvmContractInput `json:"input"`
+	Input FinalizeEVMContractInput `json:"input"`
 }
 
-func (FinalizeEvmContractAction) actionType() string { return "finalizeEvmContract" }
+func (FinalizeEVMContractAction) actionType() string { return "finalizeEvmContract" }
 
-// FinalizeEvmContract finalizes a spot token's EVM contract link.
-func (c *ExchangeClient) FinalizeEvmContract(ctx context.Context, a FinalizeEvmContractAction) error {
+// FinalizeEVMContract finalizes a spot token's EVM contract link.
+func (c *ExchangeClient) FinalizeEVMContract(ctx context.Context, a FinalizeEVMContractAction) error {
 	return c.do(ctx, a, nil)
 }
 
-// FinalizeEvmContractInput is how the finalizer proves it deployed the
+// FinalizeEVMContractInput is how the finalizer proves it deployed the
 // contract.
-type FinalizeEvmContractInput struct {
+type FinalizeEVMContractInput struct {
 	slot  string
 	nonce uint64
 }
@@ -68,46 +68,46 @@ type FinalizeEvmContractInput struct {
 var (
 	// FinalizeFirstStorageSlot proves deployment by the finalizer address
 	// stored in the contract's first storage slot.
-	FinalizeFirstStorageSlot = FinalizeEvmContractInput{slot: "firstStorageSlot"}
+	FinalizeFirstStorageSlot = FinalizeEVMContractInput{slot: "firstStorageSlot"}
 	// FinalizeCustomStorageSlot proves deployment by the finalizer address
 	// stored at slot keccak256("HyperCore deployer").
-	FinalizeCustomStorageSlot = FinalizeEvmContractInput{slot: "customStorageSlot"}
+	FinalizeCustomStorageSlot = FinalizeEVMContractInput{slot: "customStorageSlot"}
 )
 
 // FinalizeCreate proves deployment of a contract created by the finalizer
 // account with the given transaction nonce.
-func FinalizeCreate(nonce uint64) FinalizeEvmContractInput {
-	return FinalizeEvmContractInput{nonce: nonce}
+func FinalizeCreate(nonce uint64) FinalizeEVMContractInput {
+	return FinalizeEVMContractInput{nonce: nonce}
 }
 
 // MarshalJSON encodes in as "firstStorageSlot", "customStorageSlot" or
 // {"create":{"nonce":n}}.
-func (in FinalizeEvmContractInput) MarshalJSON() ([]byte, error) {
+func (in FinalizeEVMContractInput) MarshalJSON() ([]byte, error) {
 	if in.slot != "" {
 		return json.Marshal(in.slot)
 	}
 	return fmt.Appendf(nil, `{"create":{"nonce":%d}}`, in.nonce), nil
 }
 
-// Aqav2Role is a role of an aligned quote asset (AQAv2) token.
-type Aqav2Role string
+// AQAv2Role is a role of an aligned quote asset (AQAv2) token.
+type AQAv2Role string
 
 // AQAv2 roles.
 const (
-	Aqav2RoleTechnical Aqav2Role = "technical"
-	Aqav2RoleTreasury  Aqav2Role = "treasury"
+	AQAv2RoleTechnical AQAv2Role = "technical"
+	AQAv2RoleTreasury  AQAv2Role = "treasury"
 )
 
-// AuthorizeAqav2RoleAction authorizes the signer for a role of an aligned
+// AuthorizeAQAv2RoleAction authorizes the signer for a role of an aligned
 // quote asset token.
-type AuthorizeAqav2RoleAction struct {
+type AuthorizeAQAv2RoleAction struct {
 	Token int       `json:"token"`
-	Role  Aqav2Role `json:"role"`
+	Role  AQAv2Role `json:"role"`
 }
 
-func (AuthorizeAqav2RoleAction) actionType() string { return "authorizeAqav2Role" }
+func (AuthorizeAQAv2RoleAction) actionType() string { return "authorizeAqav2Role" }
 
-// AuthorizeAqav2Role authorizes an aligned quote asset role.
-func (c *ExchangeClient) AuthorizeAqav2Role(ctx context.Context, a AuthorizeAqav2RoleAction) error {
+// AuthorizeAQAv2Role authorizes an aligned quote asset role.
+func (c *ExchangeClient) AuthorizeAQAv2Role(ctx context.Context, a AuthorizeAQAv2RoleAction) error {
 	return c.do(ctx, a, nil)
 }

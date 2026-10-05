@@ -48,12 +48,12 @@ func TestUnmarshalUnions(t *testing.T) {
 			`[["setOracle",["0x0000000000000000000000000000000000000001"]],[{"hip3Star":"order"},[]]]`,
 			new(TupleMap[SubDeployerVariant, []Address]), &TupleMap[SubDeployerVariant, []Address]{
 				{Name: "setOracle"}:             {MustParseAddress("0x0000000000000000000000000000000000000001")},
-				{Name: "order", Hip3Star: true}: {},
+				{Name: "order", HIP3Star: true}: {},
 			},
 		},
 		{
 			`["day",{"uptimeFraction":"1.0","predictedApr":"0.02","nSamples":1440}]`, new(ValidatorStats),
-			&ValidatorStats{Period: "day", UptimeFraction: "1.0", PredictedApr: "0.02", NSamples: 1440},
+			&ValidatorStats{Period: "day", UptimeFraction: "1.0", PredictedAPR: "0.02", NSamples: 1440},
 		},
 	} {
 		if err := json.Unmarshal([]byte(tt.in), tt.into); err != nil {

@@ -13,7 +13,10 @@ type Asset struct {
 	// ID is the asset ID: the universe index for main-dex perps,
 	// 100000 + 10000*dexIndex + index for builder-dex perps and
 	// 10000 + pair index for spot pairs.
-	ID   int
+	ID int
+	// Name is the coin that info endpoints and subscriptions accept: the
+	// perp name ("BTC", "xyz:TSLA") or the spot pair's own name ("PURR/USDC"
+	// for canonical pairs, "@107" otherwise).
 	Name string
 	// SzDecimals is the size precision; for spot pairs, the base token's.
 	SzDecimals int
@@ -25,6 +28,11 @@ type Asset struct {
 // FormatPrice rounds px to a valid price for a; see [FormatPrice].
 func (a Asset) FormatPrice(px Decimal) (Decimal, error) {
 	return FormatPrice(px, a.SzDecimals, a.Spot)
+}
+
+// FormatSize rounds sz to a valid size for a; see [FormatSize].
+func (a Asset) FormatSize(sz Decimal) (Decimal, error) {
+	return FormatSize(sz, a.SzDecimals)
 }
 
 // Markets resolves market names to [Asset]s. Build it with [LoadMarkets];
@@ -83,11 +91,12 @@ func newMarkets(dexs []*PerpDex, metas []Meta, spot *SpotMeta) (*Markets, error)
 		if !okb || !okq {
 			continue
 		}
-		a := Asset{ID: 10000 + p.Index, Name: b.Name + "/" + q.Name, SzDecimals: b.SzDecimals, Spot: true}
-		// The first pair wins a duplicate BASE/QUOTE name, as in the
-		// official SDKs.
-		if _, dup := m.assets[a.Name]; !dup {
-			m.assets[a.Name] = a
+		a := Asset{ID: 10000 + p.Index, Name: p.Name, SzDecimals: b.SzDecimals, Spot: true}
+		// BASE/QUOTE is only a lookup key; the first pair wins a duplicate,
+		// as in the official SDKs.
+		key := b.Name + "/" + q.Name
+		if _, dup := m.assets[key]; !dup {
+			m.assets[key] = a
 		}
 		m.assets[p.Name] = a
 		m.assets["@"+strconv.Itoa(p.Index)] = a

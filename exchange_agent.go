@@ -1,6 +1,9 @@
 package hyperliquid
 
-import "context"
+import (
+	"context"
+	"encoding/json"
+)
 
 // ApproveAgentAction authorizes an API (agent) wallet to sign L1 actions,
 // such as orders, on behalf of the signer. It must be signed by the
@@ -33,12 +36,25 @@ func (c *ExchangeClient) ApproveAgent(ctx context.Context, a ApproveAgentAction)
 // MaxFeeRate on orders that name it in [OrderAction.Builder]. It must be
 // signed by the account's own key.
 type ApproveBuilderFeeAction struct {
-	// MaxFeeRate is a percentage such as "0.001%".
-	MaxFeeRate string  `json:"maxFeeRate"`
+	// MaxFeeRate is the maximum fee as a percentage of notional, such as
+	// "0.001" for 0.001%. It is sent with the "%" suffix.
+	MaxFeeRate Decimal `json:"maxFeeRate"`
 	Builder    Address `json:"builder"`
 }
 
 func (ApproveBuilderFeeAction) actionType() string { return "approveBuilderFee" }
+
+// MarshalJSON encodes MaxFeeRate with the trailing "%" the exchange expects.
+func (a ApproveBuilderFeeAction) MarshalJSON() ([]byte, error) {
+	rate, err := percent(a.MaxFeeRate)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(struct {
+		MaxFeeRate string  `json:"maxFeeRate"`
+		Builder    Address `json:"builder"`
+	}{rate, a.Builder})
+}
 
 var approveBuilderFeeSpec = userSignedSpec{
 	PrimaryType: "HyperliquidTransaction:ApproveBuilderFee",

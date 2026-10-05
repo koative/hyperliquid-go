@@ -67,8 +67,11 @@
 // # Nonces, vaults and expiry
 //
 // Each action is signed with a nonce: the current time in milliseconds,
-// strictly increasing per [ExchangeClient]. Share one ExchangeClient per
-// signer so concurrent actions never reuse a nonce. [ExchangeClient.WithVault]
+// strictly increasing across every [ExchangeClient] in the process, so
+// concurrent actions never reuse a nonce even from separately constructed
+// clients for the same signer. Draw the explicit nonces of
+// [ExchangeClient.SignMultiSig], [ExchangeClient.MultiSig] and
+// [ExchangeClient.Noop] from [NextNonce]. [ExchangeClient.WithVault]
 // trades on behalf of a vault or sub-account, and
 // [ExchangeClient.WithExpiresAfter] makes the exchange reject actions that
 // arrive late.

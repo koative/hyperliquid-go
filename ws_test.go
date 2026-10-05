@@ -211,12 +211,12 @@ func TestWebSocketDispatch(t *testing.T) {
 	s.push(t, `{"channel":"clearinghouseState","data":{"dex":"xyz","user":"0x00000000000000000000000000000000000000aa"}}`)
 	s.push(t, `{"channel":"clearinghouseState","data":{"dex":"","user":"0x00000000000000000000000000000000000000aa","clearinghouseState":{"time":7}}}`)
 
-	if got := next(t, ethCh); got[0].TID != 1 {
-		t.Errorf("ETH got tid %d", got[0].TID)
+	if got := next(t, ethCh); got[0].Tid != 1 {
+		t.Errorf("ETH got tid %d", got[0].Tid)
 	}
 	for _, c := range []chan []Trade{btcACh, btcBCh} {
-		if a, b := next(t, c), next(t, c); a[0].TID != 2 || b[0].TID != 3 {
-			t.Errorf("BTC got tids %d, %d, want 2, 3 in order", a[0].TID, b[0].TID)
+		if a, b := next(t, c), next(t, c); a[0].Tid != 2 || b[0].Tid != 3 {
+			t.Errorf("BTC got tids %d, %d, want 2, 3 in order", a[0].Tid, b[0].Tid)
 		}
 	}
 	if got := next(t, candleCh); got.Trades != 2 {

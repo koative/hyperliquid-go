@@ -103,16 +103,16 @@ func (c *ExchangeClient) ReserveRequestWeight(ctx context.Context, a ReserveRequ
 	return c.do(ctx, a, nil)
 }
 
-// EvmUserModifyAction selects the HyperEVM block type of the user's
+// EVMUserModifyAction selects the HyperEVM block type of the user's
 // transactions.
-type EvmUserModifyAction struct {
+type EVMUserModifyAction struct {
 	UsingBigBlocks bool `json:"usingBigBlocks"`
 }
 
-func (EvmUserModifyAction) actionType() string { return "evmUserModify" }
+func (EVMUserModifyAction) actionType() string { return "evmUserModify" }
 
-// EvmUserModify toggles HyperEVM big blocks.
-func (c *ExchangeClient) EvmUserModify(ctx context.Context, a EvmUserModifyAction) error {
+// EVMUserModify toggles HyperEVM big blocks.
+func (c *ExchangeClient) EVMUserModify(ctx context.Context, a EVMUserModifyAction) error {
 	return c.do(ctx, a, nil)
 }
 
@@ -196,8 +196,8 @@ type SubAccountTransferAction struct {
 	SubAccountUser Address `json:"subAccountUser"`
 	// IsDeposit moves funds into the sub-account; otherwise out of it.
 	IsDeposit bool `json:"isDeposit"`
-	// Usd is the USDC amount times 1e6.
-	Usd uint64 `json:"usd"`
+	// USD is the USDC amount times 1e6.
+	USD uint64 `json:"usd"`
 }
 
 func (SubAccountTransferAction) actionType() string { return "subAccountTransfer" }
@@ -245,17 +245,7 @@ func (AgentSendAssetAction) l1Nonce()           {}
 
 // MarshalJSON encodes a nil FromSubAccount as "".
 func (a AgentSendAssetAction) MarshalJSON() ([]byte, error) {
-	from := ""
-	if a.FromSubAccount != nil {
-		from = a.FromSubAccount.String()
-	}
-	type plain AgentSendAssetAction
-	// The outer FromSubAccount shadows the embedded one and, being the last
-	// field, keeps the wire order.
-	return json.Marshal(struct {
-		plain
-		FromSubAccount string `json:"fromSubAccount"`
-	}{plain(a), from})
+	return json.Marshal(sendAssetWire{a.Destination, a.SourceDex, a.DestinationDex, a.Token, a.Amount, subAccountWire(a.FromSubAccount)})
 }
 
 // AgentSendAsset moves a token between perp dexes, spot and accounts.
@@ -281,20 +271,6 @@ func (a AgentSetAbstractionAction) MarshalJSON() ([]byte, error) {
 // AgentSetAbstraction sets the account abstraction mode.
 func (c *ExchangeClient) AgentSetAbstraction(ctx context.Context, a AgentSetAbstractionAction) error {
 	return c.do(ctx, a, nil)
-}
-
-// AgentEnableDexAbstractionAction enables HIP-3 dex abstraction.
-//
-// Deprecated: use [AgentSetAbstractionAction].
-type AgentEnableDexAbstractionAction struct{}
-
-func (AgentEnableDexAbstractionAction) actionType() string { return "agentEnableDexAbstraction" }
-
-// AgentEnableDexAbstraction enables HIP-3 dex abstraction.
-//
-// Deprecated: use [ExchangeClient.AgentSetAbstraction].
-func (c *ExchangeClient) AgentEnableDexAbstraction(ctx context.Context) error {
-	return c.do(ctx, AgentEnableDexAbstractionAction{}, nil)
 }
 
 // SpotUserAction changes spot account settings. Set exactly one field.

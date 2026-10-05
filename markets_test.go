@@ -31,8 +31,8 @@ func TestMarketsAssetIDs(t *testing.T) {
 		{"flx:COIN", Asset{ID: 120000, Name: "flx:COIN", SzDecimals: 2, Dex: "flx"}},
 		{"PURR/USDC", Asset{ID: 10000, Name: "PURR/USDC", Spot: true}},
 		{"@0", Asset{ID: 10000, Name: "PURR/USDC", Spot: true}},
-		{"HYPE/USDC", Asset{ID: 10107, Name: "HYPE/USDC", SzDecimals: 2, Spot: true}},
-		{"@107", Asset{ID: 10107, Name: "HYPE/USDC", SzDecimals: 2, Spot: true}},
+		{"HYPE/USDC", Asset{ID: 10107, Name: "@107", SzDecimals: 2, Spot: true}},
+		{"@107", Asset{ID: 10107, Name: "@107", SzDecimals: 2, Spot: true}},
 	} {
 		got, ok := m.Asset(tt.name)
 		if !ok || got != tt.want {
@@ -41,6 +41,9 @@ func TestMarketsAssetIDs(t *testing.T) {
 	}
 	if _, ok := m.Asset("@1"); ok {
 		t.Error("Asset(@1) found a nonexistent pair")
+	}
+	if got, err := (Asset{SzDecimals: 2}).FormatSize("1.239"); err != nil || got != "1.23" {
+		t.Errorf("FormatSize = %q, %v; want 1.23", got, err)
 	}
 
 	// A dex list that disagrees with the metas must not yield wrong IDs.

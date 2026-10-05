@@ -138,8 +138,8 @@ type FundingPayment struct {
 	// Time is in milliseconds since the Unix epoch.
 	Time int64  `json:"time"`
 	Coin string `json:"coin"`
-	// Usdc is the amount paid (negative) or received (positive).
-	Usdc        Decimal `json:"usdc"`
+	// USDC is the amount paid (negative) or received (positive).
+	USDC        Decimal `json:"usdc"`
 	Szi         Decimal `json:"szi"`
 	FundingRate Decimal `json:"fundingRate"`
 	// NSamples is the number of premium samples, or nil.

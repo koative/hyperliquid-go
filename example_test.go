@@ -43,8 +43,10 @@ func ExampleExchangeClient_Order() {
 		log.Printf("order %d rejected: %s", rejected.Index, rejected.Message)
 	case err != nil:
 		log.Fatal(err)
-	default:
+	case statuses[0].Resting != nil:
 		fmt.Println("resting oid:", statuses[0].Resting.Oid)
+	case statuses[0].Filled != nil:
+		fmt.Println("filled at", statuses[0].Filled.AvgPx)
 	}
 }
 

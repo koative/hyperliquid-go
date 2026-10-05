@@ -13,8 +13,8 @@ type PerpDex struct {
 	Deployer      Address  `json:"deployer"`
 	OracleUpdater *Address `json:"oracleUpdater"`
 	FeeRecipient  *Address `json:"feeRecipient"`
-	// AssetToStreamingOiCap maps coins to their streaming open interest cap.
-	AssetToStreamingOiCap TupleMap[string, Decimal] `json:"assetToStreamingOiCap"`
+	// AssetToStreamingOICap maps coins to their streaming open interest cap.
+	AssetToStreamingOICap TupleMap[string, Decimal] `json:"assetToStreamingOiCap"`
 	// SubDeployers maps delegated permissions to the addresses allowed to
 	// use them on the deployer's behalf.
 	SubDeployers               TupleMap[SubDeployerVariant, []Address] `json:"subDeployers"`
@@ -24,16 +24,16 @@ type PerpDex struct {
 }
 
 // SubDeployerVariant is a permission delegated by a deployer: an action
-// variant such as "setOracle" (the wire form "setOracle"), or, with Hip3Star
+// variant such as "setOracle" (the wire form "setOracle"), or, with HIP3Star
 // set, a trading action such as "order" (the wire form {"hip3Star":"order"}).
 type SubDeployerVariant struct {
 	Name     string
-	Hip3Star bool
+	HIP3Star bool
 }
 
 // MarshalJSON encodes v in its wire form.
 func (v SubDeployerVariant) MarshalJSON() ([]byte, error) {
-	if v.Hip3Star {
+	if v.HIP3Star {
 		return json.Marshal(map[string]string{"hip3Star": v.Name})
 	}
 	return json.Marshal(v.Name)
@@ -43,10 +43,10 @@ func (v SubDeployerVariant) MarshalJSON() ([]byte, error) {
 func (v *SubDeployerVariant) UnmarshalJSON(b []byte) error {
 	if len(b) > 0 && b[0] == '{' {
 		var o struct {
-			Hip3Star string `json:"hip3Star"`
+			HIP3Star string `json:"hip3Star"`
 		}
 		err := json.Unmarshal(b, &o)
-		*v = SubDeployerVariant{Name: o.Hip3Star, Hip3Star: true}
+		*v = SubDeployerVariant{Name: o.HIP3Star, HIP3Star: true}
 		return err
 	}
 	*v = SubDeployerVariant{}
@@ -66,11 +66,11 @@ type PerpDexLimitsRequest struct {
 
 // PerpDexLimits are the open interest and transfer limits of a builder dex.
 type PerpDexLimits struct {
-	TotalOiCap     Decimal `json:"totalOiCap"`
-	OiSzCapPerPerp Decimal `json:"oiSzCapPerPerp"`
+	TotalOICap     Decimal `json:"totalOiCap"`
+	OISzCapPerPerp Decimal `json:"oiSzCapPerPerp"`
 	MaxTransferNtl Decimal `json:"maxTransferNtl"`
-	// CoinToOiCap maps coins to their open interest cap.
-	CoinToOiCap TupleMap[string, Decimal] `json:"coinToOiCap"`
+	// CoinToOICap maps coins to their open interest cap.
+	CoinToOICap TupleMap[string, Decimal] `json:"coinToOiCap"`
 }
 
 // PerpDexLimits returns the limits of a builder dex, or nil for the main dex

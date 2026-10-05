@@ -139,9 +139,9 @@ type CandleSnapshotRequest struct {
 	Coin     string         `json:"coin"`
 	Interval CandleInterval `json:"interval"`
 	// StartTime and EndTime bound the candle open times in milliseconds
-	// since the Unix epoch. A nil EndTime means now.
-	StartTime int64  `json:"startTime"`
-	EndTime   *int64 `json:"endTime,omitempty"`
+	// since the Unix epoch. A zero EndTime means now.
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime,omitempty"`
 }
 
 // Candle is an OHLCV candle.
@@ -184,8 +184,8 @@ type Trade struct {
 	// Time is in milliseconds since the Unix epoch.
 	Time int64  `json:"time"`
 	Hash string `json:"hash"`
-	// TID is the trade ID.
-	TID int64 `json:"tid"`
+	// Tid is the trade ID.
+	Tid int64 `json:"tid"`
 	// Users holds the buyer and the seller.
 	Users [2]Address `json:"users"`
 }
@@ -198,10 +198,10 @@ func (c *InfoClient) RecentTrades(ctx context.Context, req RecentTradesRequest) 
 // FundingHistoryRequest is the request for [InfoClient.FundingHistory].
 type FundingHistoryRequest struct {
 	Coin string `json:"coin"`
-	// StartTime and EndTime are in milliseconds since the Unix epoch. A nil
+	// StartTime and EndTime are in milliseconds since the Unix epoch. A zero
 	// EndTime means now.
-	StartTime int64  `json:"startTime"`
-	EndTime   *int64 `json:"endTime,omitempty"`
+	StartTime int64 `json:"startTime"`
+	EndTime   int64 `json:"endTime,omitempty"`
 }
 
 // FundingRate is a historical funding rate of a perpetual asset.

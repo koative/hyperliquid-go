@@ -26,8 +26,8 @@ func (a CSignerAction) MarshalJSON() ([]byte, error) {
 	return nil, errors.New("hyperliquid: CSignerAction: set exactly one of JailSelf and UnjailSelf")
 }
 
-// CSignerAction submits a validator signer action.
-func (c *ExchangeClient) CSignerAction(ctx context.Context, a CSignerAction) error {
+// CSigner submits a validator signer action.
+func (c *ExchangeClient) CSigner(ctx context.Context, a CSignerAction) error {
 	return c.do(ctx, a, nil)
 }
 
@@ -50,8 +50,8 @@ func (a CValidatorAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(plain(a))
 }
 
-// CValidatorAction submits a validator action.
-func (c *ExchangeClient) CValidatorAction(ctx context.Context, a CValidatorAction) error {
+// CValidator submits a validator action.
+func (c *ExchangeClient) CValidator(ctx context.Context, a CValidatorAction) error {
 	return c.do(ctx, a, nil)
 }
 

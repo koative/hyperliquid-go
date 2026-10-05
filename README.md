@@ -75,32 +75,32 @@ if err != nil {
 ex := hyperliquid.NewExchangeClient(hyperliquid.Testnet, signer)
 info := hyperliquid.NewInfoClient(hyperliquid.Testnet)
 
-// Orders take asset IDs: a perp's ID is its index in Meta.Universe.
-meta, err := info.Meta(ctx, hyperliquid.MetaRequest{})
+// Orders take asset IDs; Markets resolves names such as "ETH", "PURR/USDC"
+// or "xyz:TSLA" and knows each asset's size decimals.
+markets, err := hyperliquid.LoadMarkets(ctx, info)
 if err != nil {
 	log.Fatal(err)
 }
-asset := slices.IndexFunc(meta.Universe, func(a hyperliquid.PerpAssetMeta) bool { return a.Name == "ETH" })
-szDecimals := meta.Universe[asset].SzDecimals
+eth, _ := markets.Asset("ETH")
 
 // Bid 5% below mid, rounded to the asset's tick and lot size.
 mids, err := info.AllMids(ctx, hyperliquid.AllMidsRequest{})
 if err != nil {
 	log.Fatal(err)
 }
-mid, _ := mids["ETH"].Float64()
-px, err := hyperliquid.FormatPrice(hyperliquid.DecimalFromFloat(mid*0.95), szDecimals, false)
+mid, _ := mids[eth.Name].Float64()
+px, err := eth.FormatPrice(hyperliquid.DecimalFromFloat(mid * 0.95))
 if err != nil {
 	log.Fatal(err)
 }
-sz, err := hyperliquid.FormatSize("0.01", szDecimals)
+sz, err := eth.FormatSize("0.01")
 if err != nil {
 	log.Fatal(err)
 }
 
-statuses, err := ex.Order(ctx, hyperliquid.OrderAction{
+results, err := ex.Order(ctx, hyperliquid.OrderAction{
 	Orders: []hyperliquid.Order{{
-		Asset: asset,
+		Asset: eth.ID,
 		IsBuy: true,
 		Price: px,
 		Size:  sz,
@@ -112,10 +112,12 @@ if rejected, ok := errors.AsType[*hyperliquid.StatusError](err); ok {
 } else if err != nil {
 	log.Fatal(err) // *hyperliquid.APIError, network error, ...
 }
-oid := statuses[0].Resting.Oid
+if results[0].Resting == nil {
+	return // filled immediately
+}
 
 err = ex.Cancel(ctx, hyperliquid.CancelAction{
-	Cancels: []hyperliquid.Cancel{{Asset: asset, Oid: oid}},
+	Cancels: []hyperliquid.Cancel{{Asset: eth.ID, Oid: results[0].Resting.Oid}},
 })
 if err != nil {
 	log.Fatal(err)
@@ -185,7 +187,7 @@ More examples are in the [package documentation](https://pkg.go.dev/github.com/k
   [Python SDK](https://github.com/hyperliquid-dex/hyperliquid-python-sdk),
   and every exchange action has been submitted to Testnet.
 - **Idiomatic Go.** `context.Context` on every call; clients are safe for
-  concurrent use; nonces are strictly increasing per client; errors are typed
+  concurrent use; nonces are strictly increasing per process; errors are typed
   (`*APIError` for rejected requests, `*StatusError` per failed item of a
   batch).
 

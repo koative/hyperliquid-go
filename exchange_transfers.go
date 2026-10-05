@@ -6,14 +6,14 @@ import (
 	"encoding/json"
 )
 
-// UsdSendAction sends USDC from the perp balance to another address on
+// USDSendAction sends USDC from the perp balance to another address on
 // Hyperliquid. It must be signed by the account's own key.
-type UsdSendAction struct {
+type USDSendAction struct {
 	Destination Address `json:"destination"`
 	Amount      Decimal `json:"amount"`
 }
 
-func (UsdSendAction) actionType() string { return "usdSend" }
+func (USDSendAction) actionType() string { return "usdSend" }
 
 var usdSendSpec = userSignedSpec{
 	PrimaryType: "HyperliquidTransaction:UsdSend",
@@ -21,10 +21,10 @@ var usdSendSpec = userSignedSpec{
 	NonceField:  "time",
 }
 
-func (UsdSendAction) userSignedSpec() *userSignedSpec { return &usdSendSpec }
+func (USDSendAction) userSignedSpec() *userSignedSpec { return &usdSendSpec }
 
-// UsdSend sends USDC to another address.
-func (c *ExchangeClient) UsdSend(ctx context.Context, a UsdSendAction) error {
+// USDSend sends USDC to another address.
+func (c *ExchangeClient) USDSend(ctx context.Context, a USDSendAction) error {
 	return c.do(ctx, a, nil)
 }
 
@@ -53,33 +53,33 @@ func (c *ExchangeClient) SpotSend(ctx context.Context, a SpotSendAction) error {
 	return c.do(ctx, a, nil)
 }
 
-// Withdraw3Action withdraws USDC from the perp balance to Arbitrum through
+// WithdrawAction withdraws USDC from the perp balance to Arbitrum through
 // the bridge; a fixed fee is deducted. It must be signed by the account's
 // own key.
-type Withdraw3Action struct {
+type WithdrawAction struct {
 	Destination Address `json:"destination"`
 	Amount      Decimal `json:"amount"`
 }
 
-func (Withdraw3Action) actionType() string { return "withdraw3" }
+func (WithdrawAction) actionType() string { return "withdraw3" }
 
-var withdraw3Spec = userSignedSpec{
+var withdrawSpec = userSignedSpec{
 	PrimaryType: "HyperliquidTransaction:Withdraw",
 	Fields:      []typedField{{"destination", "string"}, {"amount", "string"}},
 	NonceField:  "time",
 }
 
-func (Withdraw3Action) userSignedSpec() *userSignedSpec { return &withdraw3Spec }
+func (WithdrawAction) userSignedSpec() *userSignedSpec { return &withdrawSpec }
 
-// Withdraw3 withdraws USDC to Arbitrum.
-func (c *ExchangeClient) Withdraw3(ctx context.Context, a Withdraw3Action) error {
+// Withdraw withdraws USDC to Arbitrum.
+func (c *ExchangeClient) Withdraw(ctx context.Context, a WithdrawAction) error {
 	return c.do(ctx, a, nil)
 }
 
-// UsdClassTransferAction moves USDC between the spot and perp balances of
+// USDClassTransferAction moves USDC between the spot and perp balances of
 // the signer or, when SubAccount is set, of one of its sub-accounts. It must
 // be signed by the account's own key.
-type UsdClassTransferAction struct {
+type USDClassTransferAction struct {
 	Amount Decimal
 	// ToPerp moves spot to perp when true, perp to spot otherwise.
 	ToPerp bool
@@ -87,11 +87,11 @@ type UsdClassTransferAction struct {
 	SubAccount *Address
 }
 
-func (UsdClassTransferAction) actionType() string { return "usdClassTransfer" }
+func (USDClassTransferAction) actionType() string { return "usdClassTransfer" }
 
 // MarshalJSON encodes a in wire form, where a sub-account is appended to the
 // amount as "<amount> subaccount:<address>".
-func (a UsdClassTransferAction) MarshalJSON() ([]byte, error) {
+func (a USDClassTransferAction) MarshalJSON() ([]byte, error) {
 	amount, err := ParseDecimal(string(a.Amount))
 	if err != nil {
 		return nil, err
@@ -112,10 +112,10 @@ var usdClassTransferSpec = userSignedSpec{
 	NonceField:  "nonce",
 }
 
-func (UsdClassTransferAction) userSignedSpec() *userSignedSpec { return &usdClassTransferSpec }
+func (USDClassTransferAction) userSignedSpec() *userSignedSpec { return &usdClassTransferSpec }
 
-// UsdClassTransfer moves USDC between the spot and perp balances.
-func (c *ExchangeClient) UsdClassTransfer(ctx context.Context, a UsdClassTransferAction) error {
+// USDClassTransfer moves USDC between the spot and perp balances.
+func (c *ExchangeClient) USDClassTransfer(ctx context.Context, a USDClassTransferAction) error {
 	return c.do(ctx, a, nil)
 }
 
@@ -140,17 +140,27 @@ func (SendAssetAction) actionType() string { return "sendAsset" }
 // MarshalJSON encodes a in wire form, where the main account is
 // fromSubAccount "".
 func (a SendAssetAction) MarshalJSON() ([]byte, error) {
-	type plain SendAssetAction
-	from := ""
-	if a.FromSubAccount != nil {
-		from = a.FromSubAccount.String()
+	return json.Marshal(sendAssetWire{a.Destination, a.SourceDex, a.DestinationDex, a.Token, a.Amount, subAccountWire(a.FromSubAccount)})
+}
+
+// sendAssetWire is the wire form of [SendAssetAction] and
+// [AgentSendAssetAction], in wire field order.
+type sendAssetWire struct {
+	Destination    Address `json:"destination"`
+	SourceDex      string  `json:"sourceDex"`
+	DestinationDex string  `json:"destinationDex"`
+	Token          string  `json:"token"`
+	Amount         Decimal `json:"amount"`
+	FromSubAccount string  `json:"fromSubAccount"`
+}
+
+// subAccountWire encodes an optional sub-account, where nil (the main
+// account) is "".
+func subAccountWire(a *Address) string {
+	if a == nil {
+		return ""
 	}
-	// The outer field shadows plain's and, being declared after it, is
-	// encoded last, as on the wire.
-	return json.Marshal(struct {
-		plain
-		FromSubAccount string `json:"fromSubAccount"`
-	}{plain(a), from})
+	return a.String()
 }
 
 var sendAssetSpec = userSignedSpec{
@@ -183,10 +193,10 @@ const (
 	AddressEncodingBase58 AddressEncoding = "base58"
 )
 
-// SendToEvmWithDataAction sends a token from HyperCore to a contract
+// SendToEVMWithDataAction sends a token from HyperCore to a contract
 // implementing ICoreReceiveWithData, passing it Data. It must be signed by
 // the account's own key.
-type SendToEvmWithDataAction struct {
+type SendToEVMWithDataAction struct {
 	// Token is the token name, e.g. "USDC".
 	Token     string  `json:"token"`
 	Amount    Decimal `json:"amount"`
@@ -200,20 +210,23 @@ type SendToEvmWithDataAction struct {
 	Data []byte `json:"data"`
 }
 
-func (SendToEvmWithDataAction) actionType() string { return "sendToEvmWithData" }
+func (SendToEVMWithDataAction) actionType() string { return "sendToEvmWithData" }
 
 // MarshalJSON encodes a in wire form, where Data is 0x-prefixed hex.
-func (a SendToEvmWithDataAction) MarshalJSON() ([]byte, error) {
-	type plain SendToEvmWithDataAction
-	// The outer field shadows plain's and, being declared after it, is
-	// encoded last, as on the wire.
+func (a SendToEVMWithDataAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
-		plain
-		Data string `json:"data"`
-	}{plain(a), "0x" + hex.EncodeToString(a.Data)})
+		Token                string          `json:"token"`
+		Amount               Decimal         `json:"amount"`
+		SourceDex            string          `json:"sourceDex"`
+		DestinationRecipient string          `json:"destinationRecipient"`
+		AddressEncoding      AddressEncoding `json:"addressEncoding"`
+		DestinationChainID   uint32          `json:"destinationChainId"`
+		GasLimit             uint64          `json:"gasLimit"`
+		Data                 string          `json:"data"`
+	}{a.Token, a.Amount, a.SourceDex, a.DestinationRecipient, a.AddressEncoding, a.DestinationChainID, a.GasLimit, "0x" + hex.EncodeToString(a.Data)})
 }
 
-var sendToEvmWithDataSpec = userSignedSpec{
+var sendToEVMWithDataSpec = userSignedSpec{
 	PrimaryType: "HyperliquidTransaction:SendToEvmWithData",
 	Fields: []typedField{
 		{"token", "string"},
@@ -228,9 +241,9 @@ var sendToEvmWithDataSpec = userSignedSpec{
 	NonceField: "nonce",
 }
 
-func (SendToEvmWithDataAction) userSignedSpec() *userSignedSpec { return &sendToEvmWithDataSpec }
+func (SendToEVMWithDataAction) userSignedSpec() *userSignedSpec { return &sendToEVMWithDataSpec }
 
-// SendToEvmWithData sends a token to a contract with a data payload.
-func (c *ExchangeClient) SendToEvmWithData(ctx context.Context, a SendToEvmWithDataAction) error {
+// SendToEVMWithData sends a token to a contract with a data payload.
+func (c *ExchangeClient) SendToEVMWithData(ctx context.Context, a SendToEVMWithDataAction) error {
 	return c.do(ctx, a, nil)
 }
