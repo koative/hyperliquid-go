@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.2.0](https://github.com/koative/hyperliquid-go/compare/v0.1.0...v0.2.0) (2026-10-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* decode outcomeMetaUpdates messages as a list of updates ([#4](https://github.com/koative/hyperliquid-go/issues/4))
+
+### Bug Fixes
+
+* decode outcomeMetaUpdates messages as a list of updates ([#4](https://github.com/koative/hyperliquid-go/issues/4)) ([7071cae](https://github.com/koative/hyperliquid-go/commit/7071cae853d84562d43c9ac9ff6183424b945d21))
+
 ## 0.1.0 (2026-10-05)
 
 
