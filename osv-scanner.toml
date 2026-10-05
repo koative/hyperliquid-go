@@ -1,0 +1,9 @@
+# Read by OSV-Scanner and the OpenSSF Scorecard "Vulnerabilities" check.
+
+[[IgnoredVulns]]
+id = "GO-2026-5932"
+reason = """
+Affects only golang.org/x/crypto/openpgp, which this module never imports:
+x/crypto is used solely for sha3.NewLegacyKeccak256, and govulncheck (run in
+CI) reports the advisory as unreachable. The advisory has no fixed version.
+"""
