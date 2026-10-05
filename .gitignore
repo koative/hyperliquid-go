@@ -3,8 +3,11 @@
 *.test
 /coverage.*
 
-# Generated docs site (doc2go)
-/_site/
+# Docs site build output and the generated API reference (docs/gen-reference.sh)
+/docs/public/
+/docs/resources/
+/docs/.hugo_build.lock
+/docs/content/docs/reference/
 
 # Python virtualenv for testdata/gen_signing_vectors.py
 /.venv/

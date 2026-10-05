@@ -1,0 +1,4 @@
+/* Keep anchored API reference declarations clear of the fixed navbar. */
+[id] {
+  scroll-margin-top: 5rem;
+}

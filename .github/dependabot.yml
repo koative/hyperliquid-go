@@ -22,3 +22,11 @@ updates:
     groups:
       actions:
         patterns: ["*"]
+  - package-ecosystem: gomod
+    directory: /docs # Hugo modules (Hextra theme)
+    schedule:
+      interval: monthly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "docs(deps)"
