@@ -14,7 +14,7 @@ newer).
 
 ## Read market data
 
-[`InfoClient`](../reference/#InfoClient) needs no keys:
+[`InfoClient`](/docs/reference#InfoClient) needs no keys:
 
 ```go
 package main

@@ -58,6 +58,25 @@ python3 -m venv .venv
 go test -run 'MatchesPython' .
 ```
 
+## Documentation site
+
+The site in `docs/` is built with [Hugo](https://gohugo.io) (extended, see
+`HUGO_VERSION` in `.github/workflows/docs.yml`) and the
+[Hextra](https://imfing.github.io/hextra/) theme, and is deployed to GitHub
+Pages from `main`. Guides are Markdown under `docs/content/docs/`; the API
+reference page is generated from the Go doc comments by
+[doc2go](https://abhinav.github.io/doc2go/), so documenting an exported
+identifier in code is enough to publish it. Preview locally:
+
+```sh
+docs/gen-reference.sh
+hugo server --source docs
+```
+
+Link to API symbols with root-relative links such as
+`[ExchangeClient.Order](/docs/reference#ExchangeClient.Order)`, and keep Go
+snippets compilable.
+
 ## Pull requests
 
 Pull requests are squash-merged, and the PR title becomes the commit message.

@@ -18,9 +18,9 @@ The package is named `hyperliquid` and has three clients:
 
 | Client | Purpose | Needs a key |
 |---|---|---|
-| [`InfoClient`](reference/#InfoClient) | Market data, account state, explorer | No |
-| [`ExchangeClient`](reference/#ExchangeClient) | Orders, cancels, transfers and every other signed action | Yes |
-| [`WebSocketClient`](reference/#WebSocketClient) | Real-time subscriptions, requests over the socket | Only to send actions |
+| [`InfoClient`](/docs/reference#InfoClient) | Market data, account state, explorer | No |
+| [`ExchangeClient`](/docs/reference#ExchangeClient) | Orders, cancels, transfers and every other signed action | Yes |
+| [`WebSocketClient`](/docs/reference#WebSocketClient) | Real-time subscriptions, requests over the socket | Only to send actions |
 
 {{< callout type="warning" >}}
 This is an unofficial SDK, not affiliated with Hyperliquid Labs. Trading
