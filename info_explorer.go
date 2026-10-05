@@ -89,7 +89,7 @@ func explorerRequest[T any](ctx context.Context, c *InfoClient, typ string, req 
 	if json.Unmarshal(raw, &e) == nil && e.Type == "error" {
 		return out, &APIError{Message: e.Message}
 	}
-	if err := json.Unmarshal(raw, &out); err != nil {
+	if err := unmarshal(raw, &out); err != nil {
 		return out, fmt.Errorf("hyperliquid: decode %s response: %w", typ, err)
 	}
 	return out, nil

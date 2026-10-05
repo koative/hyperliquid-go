@@ -106,7 +106,7 @@ func (r *OutcomeTemplateRole) UnmarshalJSON(b []byte) error {
 	}
 	type plain OutcomeTemplateRole
 	*r = OutcomeTemplateRole{}
-	return json.Unmarshal(b, (*plain)(r))
+	return unmarshal(b, (*plain)(r))
 }
 
 // OutcomeTemplates returns the outcome templates.

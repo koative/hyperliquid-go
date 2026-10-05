@@ -134,7 +134,7 @@ func (s *OrderResult) UnmarshalJSON(b []byte) error {
 		return json.Unmarshal(b, &s.Status)
 	}
 	type plain OrderResult
-	return json.Unmarshal(b, (*plain)(s))
+	return unmarshal(b, (*plain)(s))
 }
 
 // RestingOrder is an order resting on the book.

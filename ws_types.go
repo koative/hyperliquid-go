@@ -50,7 +50,11 @@ func (m *FastAssetCtxs) UnmarshalJSON(b []byte) error {
 	}
 	r := flate.NewReader(base64.NewDecoder(base64.StdEncoding, strings.NewReader(s)))
 	defer r.Close()
-	return json.NewDecoder(r).Decode((*map[string]FastAssetCtx)(m))
+	dec := json.NewDecoder(r)
+	if strictDecoding {
+		dec.DisallowUnknownFields()
+	}
+	return dec.Decode((*map[string]FastAssetCtx)(m))
 }
 
 // ActiveAssetCtxEvent is a message of [WebSocketClient.ActiveAssetCtx].

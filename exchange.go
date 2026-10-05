@@ -217,7 +217,7 @@ func decodeExchangeResponse(raw json.RawMessage, out any) error {
 	if len(resp.Data) == 0 {
 		return nil
 	}
-	if err := json.Unmarshal(resp.Data, out); err != nil {
+	if err := unmarshal(resp.Data, out); err != nil {
 		return fmt.Errorf("hyperliquid: decode exchange response: %w", err)
 	}
 	return nil

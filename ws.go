@@ -614,7 +614,7 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 	l := &Subscription{c: c, wake: make(chan struct{}, 1), done: make(chan struct{})}
 	l.deliver = func(b json.RawMessage) {
 		var v T
-		if err := json.Unmarshal(b, &v); err != nil {
+		if err := unmarshal(b, &v); err != nil {
 			c.report(fmt.Errorf("hyperliquid: decode %s message: %w", channel, err))
 			return
 		}

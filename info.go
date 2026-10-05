@@ -45,7 +45,7 @@ func postTyped[T any](ctx context.Context, tr transport, endpoint, typ string, r
 	if err != nil {
 		return out, err
 	}
-	if err := json.Unmarshal(raw, &out); err != nil {
+	if err := unmarshal(raw, &out); err != nil {
 		return out, fmt.Errorf("hyperliquid: decode %s response: %w", typ, err)
 	}
 	return out, nil
@@ -62,7 +62,7 @@ func unmarshalTuple(b []byte, dst ...any) error {
 		return fmt.Errorf("hyperliquid: want %d-element array, got %d", len(dst), len(raw))
 	}
 	for i, r := range raw {
-		if err := json.Unmarshal(r, dst[i]); err != nil {
+		if err := unmarshal(r, dst[i]); err != nil {
 			return err
 		}
 	}

@@ -1,9 +1,6 @@
 package hyperliquid
 
-import (
-	"context"
-	"encoding/json"
-)
+import "context"
 
 // VaultRelationship is a vault's place in a vault hierarchy.
 type VaultRelationship struct {
@@ -62,7 +59,7 @@ func (d *VaultDetails) UnmarshalJSON(b []byte) error {
 			VaultFollower
 		} `json:"followers"`
 	}
-	if err := json.Unmarshal(b, &v); err != nil {
+	if err := unmarshal(b, &v); err != nil {
 		return err
 	}
 	*d = VaultDetails(v.plain)

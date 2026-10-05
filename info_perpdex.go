@@ -45,7 +45,7 @@ func (v *SubDeployerVariant) UnmarshalJSON(b []byte) error {
 		var o struct {
 			HIP3Star string `json:"hip3Star"`
 		}
-		err := json.Unmarshal(b, &o)
+		err := unmarshal(b, &o)
 		*v = SubDeployerVariant{Name: o.HIP3Star, HIP3Star: true}
 		return err
 	}
