@@ -153,7 +153,9 @@ func TestLiveWebSocket(t *testing.T) {
 	if recording() {
 		rawWS, rawExplorer = dial(t, Mainnet, false), dial(t, Mainnet, true)
 	}
-	user := activeTrader(t, NewInfoClient(Mainnet))
+	info := NewInfoClient(Mainnet)
+	info.tr = retryTransport{info.tr} // the parallel live tests share the rate limit
+	user := activeTrader(t, info)
 
 	for _, tc := range wsCases(user) {
 		t.Run(tc.name, func(t *testing.T) {
