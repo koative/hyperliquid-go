@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"slices"
 	"testing"
 	"time"
 )
@@ -398,10 +399,18 @@ func liveInfoArgs(t *testing.T, c *InfoClient) *infoArgs {
 			a.tokenID = tok.TokenID
 		}
 	}
-	latest, err := c.TokenDetails(ctx, TokenDetailsRequest{TokenID: spot.Tokens[len(spot.Tokens)-1].TokenID})
-	must(err)
-	if latest.Deployer != nil {
-		a.deployer = *latest.Deployer
+	// tokenDetails answers HTTP 500 "null" for some tokens, such as one still
+	// being deployed, so take the newest token that has details.
+	for _, tok := range slices.Backward(spot.Tokens) {
+		latest, err := c.TokenDetails(ctx, TokenDetailsRequest{TokenID: tok.TokenID})
+		if apiErr, ok := errors.AsType[*APIError](err); ok && apiErr.StatusCode == http.StatusInternalServerError {
+			continue
+		}
+		must(err)
+		if latest.Deployer != nil {
+			a.deployer = *latest.Deployer
+		}
+		break
 	}
 
 	orders, err := c.HistoricalOrders(ctx, HistoricalOrdersRequest{User: a.trader})
