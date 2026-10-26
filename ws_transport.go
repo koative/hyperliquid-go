@@ -38,6 +38,11 @@ func (c *WebSocketClient) request(ctx context.Context, endpoint string, body []b
 		ch   = make(chan wsResult, 1)
 	)
 	for conn == nil {
+		// A request whose context is done must not be sent: it would act on
+		// the exchange while reporting that it did not.
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
 		c.mu.Lock()
 		if c.ctx.Err() != nil {
 			c.mu.Unlock()

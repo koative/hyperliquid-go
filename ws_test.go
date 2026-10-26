@@ -27,9 +27,9 @@ type wsServer struct {
 	connected chan struct{}
 	mutePings atomic.Bool
 
-	mu   sync.Mutex
-	conn *websocket.Conn // latest
-	subs []string        // "subscribe {...}" frames received, in order
+	mu     sync.Mutex
+	conn   *websocket.Conn // latest
+	frames []string        // "subscribe {...}", "unsubscribe {...}" and "post <type>" frames received, in order
 }
 
 func newWSServer(t *testing.T) *wsServer {
@@ -76,7 +76,7 @@ func newWSServer(t *testing.T) *wsServer {
 			case "subscribe", "unsubscribe":
 				sub, _ := json.Marshal(m.Subscription)
 				s.mu.Lock()
-				s.subs = append(s.subs, m.Method+" "+string(sub))
+				s.frames = append(s.frames, m.Method+" "+string(sub))
 				s.mu.Unlock()
 				if m.Subscription["coin"] == "BAD" {
 					reply = map[string]any{"channel": "error", "data": "Invalid subscription " + string(sub)}
@@ -85,6 +85,9 @@ func newWSServer(t *testing.T) *wsServer {
 				m.Subscription["serverDefault"] = nil
 				reply = map[string]any{"channel": "subscriptionResponse", "data": map[string]any{"method": m.Method, "subscription": m.Subscription}}
 			case "post": //nolint:usestdlibvars // a WebSocket method, not HTTP
+				s.mu.Lock()
+				s.frames = append(s.frames, "post "+m.Request.Type)
+				s.mu.Unlock()
 				var resp map[string]any
 				switch {
 				case m.Request.Type == "action":
@@ -123,7 +126,7 @@ func (s *wsServer) push(t *testing.T, frame string) {
 func (s *wsServer) received() []string {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return append([]string(nil), s.subs...)
+	return append([]string(nil), s.frames...)
 }
 
 func dialTest(t *testing.T, s *wsServer, opts ...WebSocketOption) *WebSocketClient {
@@ -355,9 +358,21 @@ func TestWebSocketPost(t *testing.T) {
 	if !errors.As(err, &apiErr) || apiErr.Message != "unknown request" {
 		t.Fatalf("Meta error = %v, want the server's error", err)
 	}
+	// A request whose context is already done must not be sent: it would
+	// act on the exchange while reporting that it did not.
+	cancelled, cancel := context.WithCancel(ctx)
+	cancel()
+	if _, err := ws.request(cancelled, "exchange", []byte(`{"action":{}}`)); !errors.Is(err, context.Canceled) {
+		t.Fatalf("exchange post with a cancelled context = %v", err)
+	}
 	raw, err := ws.request(ctx, "exchange", []byte(`{"action":{}}`))
 	if err != nil || decodeExchangeResponse(raw, nil) != nil {
 		t.Fatalf("exchange post = %s, %v", raw, err)
+	}
+	// The server reads frames in order, so the answered last post shows
+	// that every earlier frame has been logged.
+	if got := strings.Join(s.received(), ", "); got != "post info, post info, post action" {
+		t.Errorf("server received %s", got)
 	}
 }
 
