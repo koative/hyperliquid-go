@@ -145,9 +145,6 @@ var infoCases = []infoCase{
 	{"legalCheck", "info", func(ctx context.Context, c *InfoClient, a *infoArgs) (any, error) {
 		return c.LegalCheck(ctx, LegalCheckRequest{User: a.trader})
 	}},
-	{"liquidatable", "info", func(ctx context.Context, c *InfoClient, _ *infoArgs) (any, error) {
-		return c.Liquidatable(ctx)
-	}},
 	{"marginTable", "info", func(ctx context.Context, c *InfoClient, a *infoArgs) (any, error) {
 		return c.MarginTable(ctx, MarginTableRequest{ID: a.margin})
 	}},

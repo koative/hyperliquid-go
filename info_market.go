@@ -303,30 +303,6 @@ func (c *InfoClient) PerpConciseAnnotations(ctx context.Context) (TupleMap[strin
 	return infoRequest[TupleMap[string, PerpConciseAnnotation]](ctx, c, "perpConciseAnnotations", noParams{})
 }
 
-// LiquidatablePosition is a position eligible for liquidation.
-type LiquidatablePosition struct {
-	User          Address       `json:"user"`
-	PositionIndex PositionIndex `json:"positionIndex"`
-	// MarginAvailable holds two margin figures whose meaning is undocumented.
-	MarginAvailable [2]Decimal `json:"marginAvailable"`
-}
-
-// PositionIndex locates a position. Only isolated positions have been
-// observed.
-type PositionIndex struct {
-	Isolated *IsolatedPositionIndex `json:"isolated,omitempty"`
-}
-
-// IsolatedPositionIndex locates an isolated-margin position.
-type IsolatedPositionIndex struct {
-	Asset int `json:"asset"`
-}
-
-// Liquidatable returns the positions currently eligible for liquidation.
-func (c *InfoClient) Liquidatable(ctx context.Context) ([]LiquidatablePosition, error) {
-	return infoRequest[[]LiquidatablePosition](ctx, c, "liquidatable", noParams{})
-}
-
 // L2BookRequest is the request for [InfoClient.L2Book].
 type L2BookRequest struct {
 	Coin string `json:"coin"`
