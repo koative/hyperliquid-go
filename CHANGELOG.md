@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/koative/hyperliquid-go/compare/v0.4.0...v0.4.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* reject empty batches and unset deployer actions before signing ([#28](https://github.com/koative/hyperliquid-go/issues/28)) ([c652b69](https://github.com/koative/hyperliquid-go/commit/c652b69fa29d2b9b4349b0083157f4f7ee027ae3))
+
 ## [0.4.0](https://github.com/koative/hyperliquid-go/compare/v0.3.0...v0.4.0) (2026-10-28)
 
 
