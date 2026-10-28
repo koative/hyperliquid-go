@@ -21,11 +21,14 @@ import (
 
 // wsServer is an in-process stand-in for the Hyperliquid WebSocket API. It
 // echoes subscriptions with an added field, as the real server adds
-// defaults, rejects subscriptions whose coin is "BAD", and answers posts.
+// defaults, rejects subscriptions whose coin is "BAD", drops the
+// connection on subscriptions whose coin is "KILL", as the real server
+// does for unknown coins, and answers posts.
 type wsServer struct {
 	*httptest.Server
 	connected chan struct{}
 	mutePings atomic.Bool
+	refuse    atomic.Bool // fail WebSocket upgrades
 
 	mu     sync.Mutex
 	conn   *websocket.Conn // latest
@@ -35,6 +38,10 @@ type wsServer struct {
 func newWSServer(t *testing.T) *wsServer {
 	s := &wsServer{connected: make(chan struct{}, 10)}
 	s.Server = httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if s.refuse.Load() {
+			http.Error(w, "unavailable", http.StatusServiceUnavailable)
+			return
+		}
 		c, err := websocket.Accept(w, r, nil)
 		if err != nil {
 			return
@@ -78,12 +85,15 @@ func newWSServer(t *testing.T) *wsServer {
 				s.mu.Lock()
 				s.frames = append(s.frames, m.Method+" "+string(sub))
 				s.mu.Unlock()
-				if m.Subscription["coin"] == "BAD" {
+				switch m.Subscription["coin"] {
+				case "KILL":
+					return
+				case "BAD":
 					reply = map[string]any{"channel": "error", "data": "Invalid subscription " + string(sub)}
-					break
+				default:
+					m.Subscription["serverDefault"] = nil
+					reply = map[string]any{"channel": "subscriptionResponse", "data": map[string]any{"method": m.Method, "subscription": m.Subscription}}
 				}
-				m.Subscription["serverDefault"] = nil
-				reply = map[string]any{"channel": "subscriptionResponse", "data": map[string]any{"method": m.Method, "subscription": m.Subscription}}
 			case "post": //nolint:usestdlibvars // a WebSocket method, not HTTP
 				s.mu.Lock()
 				s.frames = append(s.frames, "post "+m.Request.Type)
@@ -333,6 +343,41 @@ func TestWebSocketResubscribe(t *testing.T) {
 	}
 }
 
+func TestWebSocketSubscribeDropped(t *testing.T) {
+	s := newWSServer(t)
+	ws := dialTest(t, s)
+	h, mids := collect[AllMidsEvent]()
+	sub, err := ws.AllMids(t.Context(), AllMidsSubscription{}, h)
+	if err != nil {
+		t.Fatal(err)
+	}
+	ctx, cancel := context.WithTimeout(t.Context(), 5*time.Second)
+	defer cancel()
+	if _, err := ws.Trades(ctx, TradesSubscription{Coin: "KILL"}, func([]Trade) {}); !errors.Is(err, ErrWebSocketDisconnected) {
+		t.Fatalf("subscribe dropped by the server = %v, want ErrWebSocketDisconnected", err)
+	}
+	// The client still serves its other subscriptions and posts.
+	if _, err := NewInfoClient(s.network(), WithWebSocket(ws)).AllMids(ctx, AllMidsRequest{}); err != nil {
+		t.Fatalf("post after the drop: %v", err)
+	}
+	for strings.Count(strings.Join(s.received(), "\n"), `"allMids"`) < 2 {
+		if ctx.Err() != nil {
+			t.Fatalf("allMids not re-subscribed: %q", s.received())
+		}
+		time.Sleep(5 * time.Millisecond)
+	}
+	s.push(t, `{"channel":"allMids","data":{"mids":{"BTC":"1"}}}`)
+	if got := next(t, mids); got.Mids["BTC"] != "1" {
+		t.Fatalf("got %+v", got)
+	}
+	if sub.Err() != nil {
+		t.Fatalf("allMids ended: %v", sub.Err())
+	}
+	if n := strings.Count(strings.Join(s.received(), "\n"), "KILL"); n != 1 {
+		t.Fatalf("dropped subscribe sent %d times, want once", n)
+	}
+}
+
 func TestWebSocketPongTimeout(t *testing.T) {
 	s := newWSServer(t)
 	s.mutePings.Store(true)
@@ -373,6 +418,41 @@ func TestWebSocketPost(t *testing.T) {
 	// that every earlier frame has been logged.
 	if got := strings.Join(s.received(), ", "); got != "post info, post info, post action" {
 		t.Errorf("server received %s", got)
+	}
+}
+
+func TestWebSocketPostTimeout(t *testing.T) {
+	s := newWSServer(t)
+	ws := dialTest(t, s, func(c *wsConfig) { c.requestTimeout = 50 * time.Millisecond })
+	s.refuse.Store(true)
+	s.mu.Lock()
+	_ = s.conn.CloseNow()
+	s.mu.Unlock()
+	for disconnected := false; !disconnected; time.Sleep(time.Millisecond) {
+		ws.mu.Lock()
+		disconnected = ws.conn == nil
+		ws.mu.Unlock()
+	}
+	done := make(chan error, 1)
+	go func() {
+		_, err := ws.request(context.Background(), "exchange", []byte(`{"action":{}}`))
+		done <- err
+	}()
+	select {
+	case err := <-done:
+		if !errors.Is(err, context.DeadlineExceeded) {
+			t.Fatalf("post during an outage = %v, want a timeout", err)
+		}
+	case <-time.After(5 * time.Second):
+		t.Fatal("post without a deadline waited through the outage")
+	}
+	s.refuse.Store(false)
+	<-s.connected
+	if _, err := NewInfoClient(s.network(), WithWebSocket(ws)).AllMids(t.Context(), AllMidsRequest{}); err != nil {
+		t.Fatal(err)
+	}
+	if got := strings.Join(s.received(), ", "); got != "post info" {
+		t.Fatalf("server received %s, want only the later post", got)
 	}
 }
 
