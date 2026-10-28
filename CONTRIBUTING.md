@@ -5,7 +5,8 @@ For larger changes, open an issue first so we can agree on the API.
 
 ## Development setup
 
-You need Go 1.26 or newer (CI tests the two latest Go releases) and
+You need Go 1.26 or newer (CI tests the `go.mod` minimum and the latest
+release) and
 [golangci-lint v2](https://golangci-lint.run/docs/welcome/install/).
 
 ```sh
@@ -26,7 +27,8 @@ go mod tidy -diff
 go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 ```
 
-Unit tests never touch the network. Fuzz targets run nightly; run one locally
+Unit tests never touch the network. Fuzz targets run nightly, keep their
+corpus between runs and open a `fuzz` issue when they fail; run one locally
 with, for example:
 
 ```sh
@@ -96,6 +98,15 @@ identifier in code is enough to publish it. Preview locally:
 ```sh
 docs/gen-reference.sh
 hugo server --source docs
+```
+
+The theme is a Hugo module pinned in `docs/go.mod`. Dependabot does not
+update it (its `go mod tidy` drops the requirement, since no Go code imports
+the theme), so bump it by hand and check the preview:
+
+```sh
+cd docs
+hugo mod get -u github.com/imfing/hextra
 ```
 
 Link to API symbols with root-relative links such as
