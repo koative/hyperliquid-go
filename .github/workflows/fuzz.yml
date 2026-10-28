@@ -28,6 +28,15 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: stable
+          cache: false # its GOCACHE snapshot is never updated; the corpus is cached below
+      - id: corpus
+        run: echo "dir=$(go env GOCACHE)/fuzz" >> "$GITHUB_OUTPUT"
+      # Keep the generated corpus across nights so each run builds on the last.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.corpus.outputs.dir }}
+          key: fuzz-${{ matrix.target }}-${{ github.run_id }}
+          restore-keys: fuzz-${{ matrix.target }}-
       - run: go test -run='^$' -fuzz="^${TARGET}\$" -fuzztime=10m "$PKG"
         env:
           PKG: ${{ matrix.pkg }}
@@ -39,3 +48,24 @@ jobs:
         with:
           name: fuzz-${{ matrix.target }}
           path: "**/testdata/fuzz/"
+
+  report:
+    needs: fuzz
+    if: failure() && github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # open or update the fuzz issue
+    steps:
+      - name: Open or update the fuzz issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          number=$(gh issue list --label fuzz --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "Still failing: $RUN_URL"
+          else
+            gh issue create --label fuzz --title "Nightly fuzzing found a failure" \
+              --body "The nightly fuzz run failed: $RUN_URL. Download the fuzz-<target> artifact, commit the failing input under <pkg>/testdata/fuzz/<target>/ as a regression seed, and fix the bug."
+          fi

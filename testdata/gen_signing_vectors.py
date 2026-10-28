@@ -2,18 +2,26 @@
 
 Usage (from the repository root):
 
-    pip install hyperliquid-python-sdk
+    pip install hyperliquid-python-sdk==0.24.0
     python testdata/gen_signing_vectors.py > testdata/signing_vectors.json
 
 Every vector is produced by the SDK's own signing functions, so the Go tests
-prove byte-for-byte compatibility with the reference implementation.
+prove byte-for-byte compatibility with the reference implementation. The SDK
+version is pinned and recorded in the output, so a regenerated diff only
+reflects changes to this script; bump PYTHON_SDK_VERSION deliberately.
 """
 
+import importlib.metadata
 import json
 
 import eth_account
 from hyperliquid.exchange import _multi_sig_payload_action
 from hyperliquid.utils import signing as s
+
+PYTHON_SDK_VERSION = "0.24.0"
+_installed = importlib.metadata.version("hyperliquid-python-sdk")
+if _installed != PYTHON_SDK_VERSION:
+    raise SystemExit(f"need hyperliquid-python-sdk=={PYTHON_SDK_VERSION}, have {_installed}")
 
 KEY = "0x0123456789012345678901234567890123456789012345678901234567890123"
 WALLET = eth_account.Account.from_key(KEY)
@@ -340,6 +348,7 @@ def multi_sig_vectors():
 print(
     json.dumps(
         {
+            "pythonSdkVersion": PYTHON_SDK_VERSION,
             "privateKey": KEY,
             "address": WALLET.address.lower(),
             "l1": [l1_vector(n, a, v, e, m) for (n, a, v, e) in L1 for m in (True, False)],
