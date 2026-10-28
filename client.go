@@ -55,10 +55,14 @@ func newOptions(opts []Option) options {
 	return o
 }
 
-// WithHTTPClient sets the HTTP client used for requests. The default client
-// has a 10 second timeout.
+// WithHTTPClient sets the HTTP client used for requests. The default client,
+// also used when c is nil, has a 10 second timeout.
 func WithHTTPClient(c *http.Client) Option {
-	return func(o *options) { o.httpClient = c }
+	return func(o *options) {
+		if c != nil {
+			o.httpClient = c
+		}
+	}
 }
 
 // transport sends a JSON request to the /info or /exchange endpoint and
@@ -93,7 +97,9 @@ func (t *httpTransport) request(ctx context.Context, endpoint string, body []byt
 	return b, nil
 }
 
-// APIError is an error reported by the Hyperliquid API.
+// APIError is an error reported by the Hyperliquid API. The API answers
+// HTTP 500 with message "null" for unknown coins, dexes and tokens: a
+// not-found that retrying won't fix.
 type APIError struct {
 	// StatusCode is the HTTP status code. It is 0 only for errors reported
 	// inside an ok /exchange response body or over WebSocket.

@@ -334,8 +334,8 @@ type L2Level struct {
 	N int `json:"n"`
 }
 
-// L2Book returns an order book snapshot of at most 20 levels per side, or
-// nil if the coin does not exist.
+// L2Book returns an order book snapshot of at most 20 levels per side. An
+// unknown coin fails with an [*APIError] (HTTP 500, message "null").
 func (c *InfoClient) L2Book(ctx context.Context, req L2BookRequest) (*L2Book, error) {
 	return infoRequest[*L2Book](ctx, c, "l2Book", req)
 }

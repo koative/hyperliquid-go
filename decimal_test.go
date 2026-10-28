@@ -98,6 +98,16 @@ func TestFormatSize(t *testing.T) {
 	if _, err := FormatSize("0.009", 2); !errors.Is(err, ErrTruncatedToZero) {
 		t.Errorf("tiny size: got %v", err)
 	}
+	// Negative szDecimals mean whole units, not cutting integer digits.
+	for _, tc := range []struct {
+		sz         Decimal
+		szDecimals int
+		want       Decimal
+	}{{"1.5", -3, "1"}, {"1.5", -2, "1"}, {"12.5", -2, "12"}} {
+		if got, err := FormatSize(tc.sz, tc.szDecimals); err != nil || got != tc.want {
+			t.Errorf("FormatSize(%s, %d) = %s, %v; want %s", tc.sz, tc.szDecimals, got, err, tc.want)
+		}
+	}
 }
 
 func FuzzFormatPrice(f *testing.F) {

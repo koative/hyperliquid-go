@@ -1,10 +1,30 @@
 package hyperliquid
 
 import (
+	"context"
 	"encoding/json"
 	"reflect"
 	"testing"
 )
+
+// A missing startTime makes the server return newest first without the 500
+// cap, so a zero StartTime must still be sent.
+func TestZeroStartTimeIsSent(t *testing.T) {
+	tr := &recordTransport{resp: `[]`}
+	c := &InfoClient{tr: tr}
+	if _, err := c.UserFunding(context.Background(), UserFundingRequest{}); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := compact(t, tr.body), `{"type":"userFunding","user":"0x0000000000000000000000000000000000000000","startTime":0}`; got != want {
+		t.Errorf("body = %s, want %s", got, want)
+	}
+	if _, err := c.UserNonFundingLedgerUpdates(context.Background(), UserNonFundingLedgerUpdatesRequest{}); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := compact(t, tr.body), `{"type":"userNonFundingLedgerUpdates","user":"0x0000000000000000000000000000000000000000","startTime":0}`; got != want {
+		t.Errorf("body = %s, want %s", got, want)
+	}
+}
 
 func TestTupleMap(t *testing.T) {
 	var m TupleMap[int, Decimal]

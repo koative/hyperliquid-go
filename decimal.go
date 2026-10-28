@@ -175,7 +175,7 @@ func FormatPrice(px Decimal, szDecimals int, spot bool) (Decimal, error) {
 	if spot {
 		maxDecimals = 8
 	}
-	n, err := truncateDecimals(px, max(maxDecimals-szDecimals, 0))
+	n, err := truncateDecimals(px, maxDecimals-szDecimals)
 	if err != nil {
 		return "", err
 	}
@@ -207,8 +207,10 @@ func FormatSize(sz Decimal, szDecimals int) (Decimal, error) {
 	return Decimal(n), nil
 }
 
-// truncateDecimals normalizes d and truncates it to at most places decimals.
+// truncateDecimals normalizes d and truncates it to at most places decimals;
+// negative places count as 0.
 func truncateDecimals(d Decimal, places int) (string, error) {
+	places = max(places, 0)
 	n, ok := normalizeDecimal(string(d))
 	if !ok {
 		return "", fmt.Errorf("hyperliquid: invalid decimal %q", string(d))

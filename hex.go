@@ -68,11 +68,12 @@ func (c *Cloid) UnmarshalText(b []byte) error { return decodeHex(c[:], string(b)
 
 func decodeHex(dst []byte, s, what string) error {
 	s = strings.TrimPrefix(strings.TrimPrefix(s, "0x"), "0X")
+	// The input is not echoed: it may be a private key passed by mistake.
 	if len(s) != 2*len(dst) {
-		return fmt.Errorf("hyperliquid: invalid %s %q: want %d hex characters", what, s, 2*len(dst))
+		return fmt.Errorf("hyperliquid: invalid %s: got %d hex characters, want %d", what, len(s), 2*len(dst))
 	}
 	if _, err := hex.Decode(dst, []byte(s)); err != nil {
-		return fmt.Errorf("hyperliquid: invalid %s %q: %w", what, s, err)
+		return fmt.Errorf("hyperliquid: invalid %s: %w", what, err)
 	}
 	return nil
 }
