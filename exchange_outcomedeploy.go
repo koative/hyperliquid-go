@@ -55,6 +55,8 @@ type OutcomeDeployAction struct {
 
 func (OutcomeDeployAction) actionType() string { return "outcomeDeploy" }
 
+func (a OutcomeDeployAction) validate() error { return oneFieldSet(a.Operation) }
+
 // OutcomeDeploy submits an outcome deployer action.
 func (c *ExchangeClient) OutcomeDeploy(ctx context.Context, a OutcomeDeployAction) error {
 	return c.do(ctx, a, nil)

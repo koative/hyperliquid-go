@@ -52,6 +52,8 @@ type PerpDeployAction struct {
 
 func (PerpDeployAction) actionType() string { return "perpDeploy" }
 
+func (a PerpDeployAction) validate() error { return oneFieldSet(a) }
+
 // PerpDeploy submits a HIP-3 deployer action.
 func (c *ExchangeClient) PerpDeploy(ctx context.Context, a PerpDeployAction) error {
 	return c.do(ctx, a, nil)

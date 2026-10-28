@@ -48,8 +48,9 @@ if apiErr, ok := errors.AsType[*hyperliquid.APIError](err); ok {
 
 Responses that cannot be decoded return a plain wrapped error such as
 `hyperliquid: decode l2Book response: …`. Invalid input, such as an order
-with both or neither of `Limit` and `Trigger` or an empty `Price`, fails
-before signing with a plain error naming the field; nothing is sent.
+with both or neither of `Limit` and `Trigger` or an empty `Price`, an empty
+batch of orders or cancels, or a deployer action with no field set, fails
+before signing with a plain error naming the problem; nothing is sent.
 
 ## StatusError
 

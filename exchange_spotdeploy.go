@@ -47,6 +47,8 @@ type SpotDeployAction struct {
 
 func (SpotDeployAction) actionType() string { return "spotDeploy" }
 
+func (a SpotDeployAction) validate() error { return oneFieldSet(a) }
+
 // SpotDeploy submits a spot deployer action.
 func (c *ExchangeClient) SpotDeploy(ctx context.Context, a SpotDeployAction) error {
 	return c.do(ctx, a, nil)

@@ -155,7 +155,7 @@ func TestTradingResponses(t *testing.T) {
 		t.Errorf("TwapCancel error = %v", err)
 	}
 	ms := func(resp string) error {
-		_, err := newClient(resp).MultiSig(ctx, Address{}, CancelAction{}, 1, nil)
+		_, err := newClient(resp).MultiSig(ctx, Address{}, CancelAction{Cancels: []Cancel{{Oid: 1}}}, 1, nil)
 		return err
 	}
 	if err := ms(`{"status":"ok","response":{"type":"default","data":{"statuses":["success",{"error":"never placed"}]}}}`); !errors.As(err, &se) || se.Index != 1 {
@@ -220,5 +220,43 @@ func TestOrderValidation(t *testing.T) {
 		if _, err := encodeAction(OrderAction{Orders: []Order{o}}, 1, Testnet); err != nil {
 			t.Errorf("%+v: %v", o, err)
 		}
+	}
+}
+
+func TestActionValidation(t *testing.T) {
+	for name, a := range map[string]Action{
+		"no orders":            OrderAction{},
+		"no cancels":           CancelAction{Cancels: []Cancel{}},
+		"no cloid cancels":     CancelByCloidAction{},
+		"no modifies":          BatchModifyAction{},
+		"empty spotUser":       SpotUserAction{},
+		"empty userOutcome":    UserOutcomeAction{},
+		"two userOutcome ops":  UserOutcomeAction{SplitOutcome: &SplitOutcome{}, MergeOutcome: &MergeOutcome{}},
+		"empty CValidator":     CValidatorAction{},
+		"empty perpDeploy":     PerpDeployAction{SetFundingMultipliers: TupleMap[string, Decimal]{}},
+		"empty spotDeploy":     SpotDeployAction{},
+		"empty outcome deploy": OutcomeDeployAction{Venue: "v"},
+	} {
+		if _, err := encodeAction(a, 1, Testnet); err == nil {
+			t.Errorf("%s: encoded without error", name)
+		}
+	}
+	for _, a := range []Action{
+		SpotUserAction{ToggleSpotDusting: &ToggleSpotDusting{}},
+		CValidatorAction{Unregister: true},
+		PerpDeployAction{SetFundingMultipliers: TupleMap[string, Decimal]{"x:BTC": "1"}},
+		OutcomeDeployAction{Venue: "v", Operation: OutcomeOperation{SettleOutcome: &OutcomeSettlement{}}},
+	} {
+		if _, err := encodeAction(a, 1, Testnet); err != nil {
+			t.Errorf("%T: %v", a, err)
+		}
+	}
+	// Validation happens before signing: nothing reaches the exchange.
+	_, signer := loadSigningVectors(t)
+	rt := &recordTransport{resp: `{"status":"ok","response":{"type":"default"}}`}
+	c := NewExchangeClient(Testnet, signer)
+	c.tr = rt
+	if err := c.Cancel(context.Background(), CancelAction{}); err == nil || rt.body != nil {
+		t.Errorf("empty Cancel: err %v, sent %s", err, rt.body)
 	}
 }
