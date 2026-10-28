@@ -285,8 +285,10 @@ var sendMultiSigSpec = userSignedSpec{
 // signer as the leader (outer signer). signatures are the authorized users'
 // approvals from [ExchangeClient.SignMultiSig], made with the same nonce.
 // It returns the raw response data of the inner action, if any. When that
-// data is a batch result ({"statuses":[...]}), rejected items are also
-// returned as a joined [*StatusError] each, like [ExchangeClient.Order].
+// data reports failures, as a batch result ({"statuses":[...]}) or a single
+// status ({"status":{"error":...}}, e.g. from a wrapped TWAP order), they are
+// also returned as a joined [*StatusError] each, like [ExchangeClient.Order]
+// and [ExchangeClient.TwapOrder].
 func (c *ExchangeClient) MultiSig(ctx context.Context, multiSigUser Address, a Action, nonce uint64, signatures []Signature) (json.RawMessage, error) {
 	payload := a
 	if p, ok := a.(multiSigPayloader); ok {
@@ -328,10 +330,16 @@ func (c *ExchangeClient) MultiSig(ctx context.Context, multiSigUser Address, a A
 	err = c.post(ctx, wire, sig, nonce, multiSigAction{}, &data)
 	var st struct {
 		Statuses []OrderResult `json:"statuses"`
+		Status   struct {
+			Error string `json:"error"`
+		} `json:"status"`
 	}
-	// Only batch results decode; other data is returned as is.
+	// Only status results decode; other data is returned as is.
 	if err == nil && json.Unmarshal(data, &st) == nil {
 		err = orderResultErrors(st.Statuses)
+		if m := st.Status.Error; m != "" {
+			err = &StatusError{Message: m}
+		}
 	}
 	return data, err
 }
