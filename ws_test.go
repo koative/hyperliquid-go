@@ -23,7 +23,8 @@ import (
 // echoes subscriptions with an added field, as the real server adds
 // defaults, rejects subscriptions whose coin is "BAD", drops the
 // connection on subscriptions whose coin is "KILL", as the real server
-// does for unknown coins, and answers posts.
+// does for unknown coins, rejects subscribing twice and unsubscribing
+// what is not subscribed, and answers posts.
 type wsServer struct {
 	*httptest.Server
 	connected chan struct{}
@@ -55,6 +56,7 @@ func newWSServer(t *testing.T) *wsServer {
 		s.conn = c
 		s.mu.Unlock()
 		s.connected <- struct{}{}
+		subscribed := map[string]bool{}
 		for {
 			_, b, err := c.Read(ctx)
 			if err != nil {
@@ -85,12 +87,17 @@ func newWSServer(t *testing.T) *wsServer {
 				s.mu.Lock()
 				s.frames = append(s.frames, m.Method+" "+string(sub))
 				s.mu.Unlock()
-				switch m.Subscription["coin"] {
-				case "KILL":
+				switch {
+				case m.Subscription["coin"] == "KILL":
 					return
-				case "BAD":
+				case m.Subscription["coin"] == "BAD":
 					reply = map[string]any{"channel": "error", "data": "Invalid subscription " + string(sub)}
+				case m.Method == "subscribe" && subscribed[string(sub)]:
+					reply = map[string]any{"channel": "error", "data": "Already subscribed: " + string(sub)}
+				case m.Method == "unsubscribe" && !subscribed[string(sub)]:
+					reply = map[string]any{"channel": "error", "data": "Already unsubscribed: " + string(sub)}
 				default:
+					subscribed[string(sub)] = m.Method == "subscribe"
 					m.Subscription["serverDefault"] = nil
 					reply = map[string]any{"channel": "subscriptionResponse", "data": map[string]any{"method": m.Method, "subscription": m.Subscription}}
 				}
@@ -283,6 +290,52 @@ func TestWebSocketUnsubscribe(t *testing.T) {
 	<-a.Done()
 	if a.Err() != nil {
 		t.Fatalf("Err after Unsubscribe = %v", a.Err())
+	}
+}
+
+// TestWebSocketFrameOrder subscribes to a stream again while the
+// unsubscribe of it is still being written: the subscribe frame must not
+// overtake it, or the server answers "Already subscribed".
+func TestWebSocketFrameOrder(t *testing.T) {
+	s := newWSServer(t)
+	unsubscribing, release := make(chan struct{}), make(chan struct{})
+	ws := dialTest(t, s, func(c *wsConfig) {
+		c.beforeWrite = func(frame []byte) {
+			if bytes.HasPrefix(frame, []byte(`{"method":"unsubscribe"`)) {
+				close(unsubscribing)
+				<-release
+			}
+		}
+	})
+	ctx := t.Context()
+	req := TradesSubscription{Coin: "BTC"}
+	a, err := ws.Trades(ctx, req, func([]Trade) {})
+	if err != nil {
+		t.Fatal(err)
+	}
+	unsubscribed := make(chan error, 1)
+	go func() { unsubscribed <- a.Unsubscribe(ctx) }()
+	<-unsubscribing
+	subscribed := make(chan error, 1)
+	go func() {
+		_, err := ws.Trades(ctx, req, func([]Trade) {})
+		subscribed <- err
+	}()
+	select { // time for the subscribe to overtake the stalled unsubscribe
+	case err := <-subscribed:
+		subscribed <- err
+	case <-time.After(100 * time.Millisecond):
+	}
+	close(release)
+	if err := next(t, subscribed); err != nil {
+		t.Fatalf("subscribe after an unsubscribe of the same stream: %v", err)
+	}
+	if err := next(t, unsubscribed); err != nil {
+		t.Fatalf("unsubscribe: %v", err)
+	}
+	want := `subscribe {"coin":"BTC","type":"trades"}, unsubscribe {"coin":"BTC","type":"trades"}, subscribe {"coin":"BTC","type":"trades"}`
+	if got := strings.Join(s.received(), ", "); got != want {
+		t.Fatalf("server received %s, want %s", got, want)
 	}
 }
 
