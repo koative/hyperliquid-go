@@ -35,6 +35,35 @@ func (a Asset) FormatSize(sz Decimal) (Decimal, error) {
 	return FormatSize(sz, a.SzDecimals)
 }
 
+// MarketOrder returns an IOC limit order for a, the way Hyperliquid market
+// orders are placed: priced at mid*(1+slippage) for buys and
+// mid*(1-slippage) for sells, so slippage 0.05 allows 5%. Get mid from
+// [InfoClient.AllMids] with AllMidsRequest{Dex: a.Dex}. Price and size are
+// rounded toward zero with [Asset.FormatPrice] and [Asset.FormatSize]; the
+// Python SDK's market_open rounds the price to nearest instead, so a buy
+// here may be up to one tick closer to mid and a sell one tick further.
+func (a Asset) MarketOrder(isBuy bool, size, mid Decimal, slippage float64) (Order, error) {
+	m, err := mid.Float64()
+	if err != nil || !(m > 0) {
+		return Order{}, fmt.Errorf("hyperliquid: market order: mid %q is not a positive number", string(mid))
+	}
+	if !(slippage >= 0) || !isBuy && slippage >= 1 {
+		return Order{}, fmt.Errorf("hyperliquid: market order: invalid slippage %v", slippage)
+	}
+	if !isBuy {
+		slippage = -slippage
+	}
+	px, err := a.FormatPrice(DecimalFromFloat(m * (1 + slippage)))
+	if err != nil {
+		return Order{}, err
+	}
+	sz, err := a.FormatSize(size)
+	if err != nil {
+		return Order{}, err
+	}
+	return Order{Asset: a.ID, IsBuy: isBuy, Price: px, Size: sz, Type: OrderType{Limit: &LimitOrder{Tif: TifIoc}}}, nil
+}
+
 // Markets resolves market names to [Asset]s. Build it with [LoadMarkets];
 // it is a snapshot and is safe for concurrent reads.
 type Markets struct {

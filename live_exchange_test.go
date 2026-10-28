@@ -80,6 +80,10 @@ func TestLiveExchange(t *testing.T) {
 		{"order/builder", func() error {
 			return errOf(c.Order(ctx, OrderAction{Orders: []Order{ord}, Builder: &Builder{Address: other, Fee: 10}}))
 		}},
+		{"order/builder splits", func() error {
+			b := &Builder{Address: other, Fee: 10, Splits: []BuilderSplit{{Address: sub, Share: 50000}}}
+			return errOf(c.Order(ctx, OrderAction{Orders: []Order{ord}, Builder: b}))
+		}},
 		{"order/priority", func() error {
 			ioc := ord
 			ioc.Type = OrderType{Limit: &LimitOrder{Tif: TifIoc}}
@@ -202,6 +206,7 @@ func TestLiveExchange(t *testing.T) {
 			return c.ApproveBuilderFee(ctx, ApproveBuilderFeeAction{MaxFeeRate: "0.001", Builder: other})
 		}},
 		{"cDeposit", func() error { return c.CDeposit(ctx, CDepositAction{Wei: 100000000}) }},
+		{"cDeposit2", func() error { return c.AgentCDeposit(ctx, AgentCDepositAction{Wei: 100000000}) }},
 		{"cWithdraw", func() error { return c.CWithdraw(ctx, CWithdrawAction{Wei: 100000000}) }},
 		{"tokenDelegate", func() error { return c.TokenDelegate(ctx, TokenDelegateAction{Validator: other, Wei: 100000000}) }},
 		{"linkStakingUser", func() error { return c.LinkStakingUser(ctx, LinkStakingUserAction{User: other}) }},

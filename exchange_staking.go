@@ -25,6 +25,20 @@ func (c *ExchangeClient) CDeposit(ctx context.Context, a CDepositAction) error {
 	return c.do(ctx, a, nil)
 }
 
+// AgentCDepositAction moves HYPE from the spot balance into staking like
+// [CDepositAction], but is the L1 form that an API wallet may sign.
+type AgentCDepositAction struct {
+	// Wei is the amount in units of 1e-8 HYPE.
+	Wei uint64 `json:"wei"`
+}
+
+func (AgentCDepositAction) actionType() string { return "cDeposit2" }
+
+// AgentCDeposit moves HYPE from spot into staking.
+func (c *ExchangeClient) AgentCDeposit(ctx context.Context, a AgentCDepositAction) error {
+	return c.do(ctx, a, nil)
+}
+
 // CWithdrawAction moves undelegated HYPE from staking back to the spot
 // balance, after an unstaking queue. It must be signed by the account's own
 // key.
