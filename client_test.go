@@ -50,3 +50,14 @@ func TestHTTPTransport(t *testing.T) {
 		})
 	}
 }
+
+func TestWithHTTPClientNil(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		_, _ = io.WriteString(w, `{"BTC":"1"}`)
+	}))
+	defer srv.Close()
+	c := NewInfoClient(Network{APIURL: srv.URL}, WithHTTPClient(nil))
+	if mids, err := c.AllMids(context.Background(), AllMidsRequest{}); err != nil || mids["BTC"] != "1" {
+		t.Fatalf("got %v, %v", mids, err)
+	}
+}

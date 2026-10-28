@@ -218,9 +218,11 @@ func (c *InfoClient) ActiveAssetData(ctx context.Context, req ActiveAssetDataReq
 // UserFundingRequest is the request for [InfoClient.UserFunding].
 type UserFundingRequest struct {
 	User Address `json:"user"`
-	// StartTime and EndTime bound the results, in milliseconds since the
-	// Unix epoch. Zero leaves the bound open.
-	StartTime int64 `json:"startTime,omitempty"`
+	// StartTime (inclusive) and EndTime bound the results, in milliseconds
+	// since the Unix epoch; a zero StartTime means from the epoch and a zero
+	// EndTime means now. Results are oldest first, at most 500 per call: page
+	// by passing the last returned Time as the next StartTime.
+	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime,omitempty"`
 }
 
@@ -254,9 +256,11 @@ func (c *InfoClient) UserFunding(ctx context.Context, req UserFundingRequest) ([
 // [InfoClient.UserNonFundingLedgerUpdates].
 type UserNonFundingLedgerUpdatesRequest struct {
 	User Address `json:"user"`
-	// StartTime and EndTime bound the results, in milliseconds since the
-	// Unix epoch. Zero leaves the bound open.
-	StartTime int64 `json:"startTime,omitempty"`
+	// StartTime (inclusive) and EndTime bound the results, in milliseconds
+	// since the Unix epoch; a zero StartTime means from the epoch and a zero
+	// EndTime means now. Results are oldest first, at most 500 per call: page
+	// by passing the last returned Time as the next StartTime.
+	StartTime int64 `json:"startTime"`
 	EndTime   int64 `json:"endTime,omitempty"`
 }
 
@@ -412,7 +416,8 @@ type BorrowLendInterest struct {
 	Token  string  `json:"token"`
 	Borrow Decimal `json:"borrow"`
 	Supply Decimal `json:"supply"`
-	// NSamples is the number of interest samples aggregated in the entry.
+	// NSamples is the number of interest samples aggregated in the entry,
+	// or 0 on hourly entries, which the server does not aggregate.
 	NSamples int `json:"nSamples"`
 }
 
