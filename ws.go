@@ -78,6 +78,8 @@ type WebSocketClient struct {
 	stop context.CancelFunc
 	done chan struct{} // closed when run returns
 
+	wmu sync.Mutex // held while writing the outbox, so that its frames go out in order
+
 	mu   sync.Mutex
 	conn *websocket.Conn // nil while disconnected
 	up   chan struct{}   // closed while conn is set
@@ -88,6 +90,7 @@ type WebSocketClient struct {
 	lastID       int64
 	posts        map[int64]chan wsResult
 	pending      []*wsRequest      // subscribe/unsubscribe awaiting the server's echo
+	outbox       []subFrame        // their frames still to write, in the same order
 	subs         map[string]*wsSub // by wire subscription payload
 }
 
@@ -98,7 +101,8 @@ type wsConfig struct {
 	onError                   func(error)
 	pingInterval, pongTimeout time.Duration
 	minBackoff, maxBackoff    time.Duration
-	requestTimeout            time.Duration // for post requests whose ctx has no deadline
+	requestTimeout            time.Duration      // for post requests whose ctx has no deadline
+	beforeWrite               func(frame []byte) // test hook, run before each outbox frame is written
 }
 
 // WithWebSocketErrorHandler sets a function that receives errors that
@@ -397,10 +401,8 @@ func (c *WebSocketClient) dispatch(channel string, data json.RawMessage, probe *
 			}
 		}
 		for l := range s.listeners {
-			if !l.push(data) {
-				if f, _ := c.detachLocked(l); f.conn != nil {
-					go f.write() // the reader must not block
-				}
+			if !l.push(data) && c.detachLocked(l) != nil {
+				go c.flush() // the reader must not block
 			}
 		}
 	}
@@ -550,12 +552,12 @@ func (l *Subscription) Err() error {
 // [Subscription] shares it. The handler is not called after Unsubscribe
 // returns, except for a call already in progress.
 func (l *Subscription) Unsubscribe(ctx context.Context) error {
-	f, r := l.c.detach(l)
+	r := l.c.detach(l)
 	l.finish(nil)
 	if r == nil {
 		return nil
 	}
-	f.write()
+	l.c.flush()
 	select {
 	case err := <-r.done:
 		return err
@@ -640,7 +642,7 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 		return nil, ErrWebSocketClosed
 	}
 	s := c.subs[string(wire)]
-	var f subFrame
+	queued := false
 	if s == nil {
 		var p struct {
 			User string `json:"user"`
@@ -661,7 +663,8 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 		c.subs[string(wire)] = s
 		if c.conn != nil {
 			c.pending = append(c.pending, &wsRequest{method: "subscribe", payload: decodeAny(wire), sub: s})
-			f = subFrame{c.conn, c.resubscribed, wsFrame("subscribe", wire)}
+			c.outbox = append(c.outbox, subFrame{c.conn, c.resubscribed, wsFrame("subscribe", wire)})
+			queued = true
 		}
 	}
 	s.listeners[l] = struct{}{}
@@ -669,7 +672,9 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 	c.mu.Unlock()
 
 	go l.loop()
-	f.write()
+	if queued {
+		c.flush()
+	}
 	select {
 	case <-s.ready:
 		if s.err != nil {
@@ -677,8 +682,9 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 		}
 		return l, nil
 	case <-ctx.Done():
-		f, _ := c.detach(l)
-		f.write()
+		if c.detach(l) != nil {
+			c.flush()
+		}
 		l.finish(nil)
 		return nil, ctx.Err()
 	}
@@ -687,19 +693,30 @@ func subscribe[T any](ctx context.Context, c *WebSocketClient, typ, channel stri
 // subFrame is a subscribe or unsubscribe frame for conn, written once the
 // re-subscribe burst of conn is out so that it cannot overtake it.
 type subFrame struct {
-	conn  *websocket.Conn // nil: nothing to write
+	conn  *websocket.Conn
 	after <-chan struct{}
 	frame []byte
 }
 
-func (f subFrame) write() {
-	if f.conn == nil {
-		return
+// flush writes the outbox. Frames are queued under c.mu in the order of
+// c.pending and written under c.wmu, so they reach the server in that
+// order: a subscribe cannot overtake the unsubscribe of the same stream.
+func (c *WebSocketClient) flush() {
+	c.wmu.Lock()
+	defer c.wmu.Unlock()
+	c.mu.Lock()
+	q := c.outbox
+	c.outbox = nil
+	c.mu.Unlock()
+	for _, f := range q {
+		if c.cfg.beforeWrite != nil {
+			c.cfg.beforeWrite(f.frame)
+		}
+		<-f.after
+		// On failure the connection drops: confirmed subscribes are re-sent
+		// on the next one, and the other pending requests are answered.
+		_ = writeFrame(f.conn, f.frame)
 	}
-	<-f.after
-	// On failure the connection drops: confirmed subscribes are re-sent on
-	// the next one, and the other pending requests are answered.
-	_ = writeFrame(f.conn, f.frame)
 }
 
 func (c *WebSocketClient) checkLimits(user string) error {
@@ -722,31 +739,32 @@ func (c *WebSocketClient) checkLimits(user string) error {
 }
 
 // detach removes l from its server subscription. When l was the last
-// listener and the client is connected, it returns the unsubscribe frame
-// to write and the request awaiting its answer.
-func (c *WebSocketClient) detach(l *Subscription) (subFrame, *wsRequest) {
+// listener and the client is connected, it queues the unsubscribe frame
+// for [WebSocketClient.flush] and returns the request awaiting its answer.
+func (c *WebSocketClient) detach(l *Subscription) *wsRequest {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 	return c.detachLocked(l)
 }
 
 // detachLocked is [WebSocketClient.detach] with c.mu held.
-func (c *WebSocketClient) detachLocked(l *Subscription) (subFrame, *wsRequest) {
+func (c *WebSocketClient) detachLocked(l *Subscription) *wsRequest {
 	s := l.sub
 	if _, ok := s.listeners[l]; !ok {
-		return subFrame{}, nil
+		return nil
 	}
 	delete(s.listeners, l)
 	if len(s.listeners) > 0 || c.subs[string(s.payload)] != s {
-		return subFrame{}, nil
+		return nil
 	}
 	delete(c.subs, string(s.payload))
 	if c.conn == nil {
-		return subFrame{}, nil
+		return nil
 	}
 	r := &wsRequest{method: "unsubscribe", payload: decodeAny(s.payload), done: make(chan error, 1)}
 	c.pending = append(c.pending, r)
-	return subFrame{c.conn, c.resubscribed, wsFrame("unsubscribe", s.payload)}, r
+	c.outbox = append(c.outbox, subFrame{c.conn, c.resubscribed, wsFrame("unsubscribe", s.payload)})
+	return r
 }
 
 // failSub ends s and its listeners with err. c.mu must be held.
