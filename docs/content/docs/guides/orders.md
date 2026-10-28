@@ -100,36 +100,29 @@ response was lost.
 
 ## Market orders
 
-Hyperliquid has no market order type. Send an IOC limit order with a price
-far enough through the book to fill, which also caps your slippage:
+A market order is an IOC limit order priced far enough through the book to
+fill, which also caps your slippage.
+[`Asset.MarketOrder`](/docs/reference#Asset.MarketOrder) builds one from the
+mid price, like the Python SDK's `market_open`:
 
 ```go
-mids, err := info.AllMids(ctx, hyperliquid.AllMidsRequest{})
+mids, err := info.AllMids(ctx, hyperliquid.AllMidsRequest{Dex: eth.Dex})
 if err != nil {
 	log.Fatal(err)
 }
-mid, err := mids[eth.Name].Float64()
+// Buy 0.01 ETH, paying at most 5% above mid.
+order, err := eth.MarketOrder(true, "0.01", mids[eth.Name], 0.05)
 if err != nil {
 	log.Fatal(err)
 }
-const slippage = 0.01 // accept up to 1% worse than mid
-px, err := eth.FormatPrice(hyperliquid.DecimalFromFloat(mid * (1 + slippage)))
-if err != nil {
-	log.Fatal(err)
-}
-results, err := ex.Order(ctx, hyperliquid.OrderAction{
-	Orders: []hyperliquid.Order{{
-		Asset: eth.ID,
-		IsBuy: true,
-		Price: px,
-		Size:  "0.01",
-		Type:  hyperliquid.OrderType{Limit: &hyperliquid.LimitOrder{Tif: hyperliquid.TifIoc}},
-	}},
-})
+results, err := ex.Order(ctx, hyperliquid.OrderAction{Orders: []hyperliquid.Order{order}})
 ```
 
-For a sell, use `mid * (1 - slippage)`. An IOC order that finds no liquidity
-within its price is rejected rather than left resting.
+An IOC order that finds no liquidity within its price is rejected rather than
+left resting. To close a position, send the opposite side for its size with
+`order.ReduceOnly = true`, so the order cannot open a position the other
+way. `TifFrontendMarket` is the time in force the Hyperliquid UI sends for
+its market orders; it executes like `TifIoc`.
 
 ## Client order IDs
 
@@ -219,7 +212,11 @@ for _, ap := range state.AssetPositions {
 		continue
 	}
 	long := !strings.HasPrefix(string(p.Szi), "-")
-	stopPx, err := eth.FormatPrice("2400") // below the entry of a long
+	stop := hyperliquid.Decimal("2400") // below the price, for a long
+	if !long {
+		stop = "2800" // above the price, for a short
+	}
+	stopPx, err := eth.FormatPrice(stop)
 	if err != nil {
 		log.Fatal(err)
 	}

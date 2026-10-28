@@ -11,7 +11,9 @@ Approvals are user-signed: the account's own key must sign them.
 
 An API wallet signs L1 actions (orders, cancels, leverage, vault and
 sub-account trading through `WithVault`) for the account that approved it.
-It cannot sign user-signed actions, so it cannot transfer or withdraw funds.
+It cannot sign user-signed actions, so it cannot withdraw or send funds to
+another address; it can only move funds between the account's own balances
+with `AgentSendAsset`.
 
 ### Approve an agent
 
@@ -113,6 +115,20 @@ if err != nil {
 	log.Fatal(err)
 }
 fmt.Println(results[0])
+```
+
+`Builder.Splits` passes part of the builder fee on to up to five
+sub-builders. Each [`BuilderSplit`](/docs/reference#BuilderSplit) `Share` is
+in units of 0.001% of the fee (`50_000` is half of it), and the builder keeps
+the rest:
+
+```go
+results, err := ex.Order(ctx, hyperliquid.OrderAction{
+	Orders: []hyperliquid.Order{order},
+	Builder: &hyperliquid.Builder{Address: builder, Fee: 50, Splits: []hyperliquid.BuilderSplit{
+		{Address: partner, Share: 20_000}, // 20% of the fee
+	}},
+})
 ```
 
 Check an approval before attaching a fee:

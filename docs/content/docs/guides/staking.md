@@ -5,13 +5,15 @@ weight: 7
 
 HYPE staking happens on HyperCore: move HYPE from spot into your staking
 balance, delegate it to validators, and move it back when you are done.
-Every staking action is user-signed, so the client must sign with the
-account's own key, not an API wallet.
+Staking actions are user-signed, so the client must sign with the account's
+own key, not an API wallet. The one exception is
+[`AgentCDeposit`](/docs/reference#ExchangeClient.AgentCDeposit), an L1
+version of `CDeposit` that an API wallet may sign.
 
 {{< callout type="info" >}}
 Staking amounts are integer `Wei` fields in units of 10⁻⁸ HYPE:
 `100_000_000` is 1 HYPE. Info results report amounts as decimal HYPE
-strings.
+strings, except `ValidatorSummary.Stake`, which is in the same wei.
 {{< /callout >}}
 
 ## Stake and delegate

@@ -75,7 +75,10 @@ fmt.Println(results[0])
 
 `WithVault` returns a copy, so `ex` keeps trading for the master. It applies
 to L1 actions (orders, cancels, leverage, ...) only; user-signed actions
-such as transfers always act for the signer.
+such as `USDSend` always act for the signer. `SubAccountTransfer`,
+`SubAccountSpotTransfer`, `VaultTransfer` and `VaultDistribute` are L1
+actions too, so call them on the master's client (`ex`), not on a
+`WithVault` copy, which would send them for the sub-account or vault.
 
 Nonces are tracked per signing key, so one API wallet trading several
 sub-accounts shares one nonce set across them. Hyperliquid recommends a
