@@ -283,6 +283,8 @@ type SpotUserAction struct {
 
 func (SpotUserAction) actionType() string { return "spotUser" }
 
+func (a SpotUserAction) validate() error { return oneFieldSet(a) }
+
 // ToggleSpotDusting opts the account out of (or back into) the automatic
 // conversion of spot dust.
 type ToggleSpotDusting struct {
@@ -304,6 +306,8 @@ type UserOutcomeAction struct {
 }
 
 func (UserOutcomeAction) actionType() string { return "userOutcome" }
+
+func (a UserOutcomeAction) validate() error { return oneFieldSet(a) }
 
 // SplitOutcome splits Amount quote tokens into Amount Yes and Amount No
 // shares of an outcome.

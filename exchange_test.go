@@ -165,7 +165,7 @@ func TestExchangeErrors(t *testing.T) {
 	}
 
 	rt.resp = `{"status":"ok","response":{"type":"cancel","data":{"statuses":["success",{"error":"Order was never placed"}]}}}`
-	if err := c.Cancel(context.Background(), CancelAction{}); !errors.As(err, &se) || se.Index != 1 {
+	if err := c.Cancel(context.Background(), CancelAction{Cancels: []Cancel{{Oid: 1}, {Oid: 2}}}); !errors.As(err, &se) || se.Index != 1 {
 		t.Errorf("cancel error: got %v", err)
 	}
 }

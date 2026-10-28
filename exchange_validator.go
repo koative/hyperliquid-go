@@ -41,6 +41,8 @@ type CValidatorAction struct {
 
 func (CValidatorAction) actionType() string { return "CValidatorAction" }
 
+func (a CValidatorAction) validate() error { return oneFieldSet(a) }
+
 // MarshalJSON encodes Unregister as {"unregister":null}.
 func (a CValidatorAction) MarshalJSON() ([]byte, error) {
 	type plain CValidatorAction

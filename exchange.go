@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"reflect"
 	"strconv"
 	"sync/atomic"
 	"time"
@@ -105,10 +106,52 @@ type l1NonceAction interface {
 	l1Nonce()
 }
 
+// validatedAction is implemented by actions that check their fields before
+// they are encoded, so a mistake fails with a clear error instead of the
+// exchange's opaque HTTP 422 "Failed to deserialize the JSON body".
+type validatedAction interface {
+	Action
+	validate() error
+}
+
+// nonEmpty fails when a batch action has no items: the exchange rejects a
+// null list.
+func nonEmpty(field string, n int) error {
+	if n == 0 {
+		return fmt.Errorf("hyperliquid: %s is empty", field)
+	}
+	return nil
+}
+
+// oneFieldSet fails unless exactly one field of the struct v is set: non-zero,
+// and non-empty for slices and maps, which encode as omitted.
+func oneFieldSet(v any) error {
+	rv := reflect.ValueOf(v)
+	n := 0
+	for _, f := range rv.Fields() {
+		if f.Kind() == reflect.Map || f.Kind() == reflect.Slice {
+			if f.Len() > 0 {
+				n++
+			}
+		} else if !f.IsZero() {
+			n++
+		}
+	}
+	if n != 1 {
+		return fmt.Errorf("hyperliquid: %s: set exactly one field, got %d", rv.Type().Name(), n)
+	}
+	return nil
+}
+
 // encodeAction returns the wire JSON of a: {"type", …fields[, nonce]} for L1
 // actions, and {"type", "signatureChainId", "hyperliquidChain", …fields,
 // nonce} for user-signed actions.
 func encodeAction(a Action, nonce uint64, network Network) ([]byte, error) {
+	if v, ok := a.(validatedAction); ok {
+		if err := v.validate(); err != nil {
+			return nil, err
+		}
+	}
 	typ := `"type":` + strconv.Quote(a.actionType())
 	us, ok := a.(userSignedAction)
 	if !ok {

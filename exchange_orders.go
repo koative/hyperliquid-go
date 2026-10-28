@@ -20,6 +20,8 @@ type OrderAction struct {
 
 func (OrderAction) actionType() string { return "order" }
 
+func (a OrderAction) validate() error { return nonEmpty("OrderAction.Orders", len(a.Orders)) }
+
 // Order is a single order of an [OrderAction]. Encoding it fails, before
 // anything is signed, unless exactly one of Type.Limit and Type.Trigger is
 // set, Price and Size are set and not negative, a limit order has a Tif and
@@ -241,6 +243,8 @@ type CancelAction struct {
 
 func (CancelAction) actionType() string { return "cancel" }
 
+func (a CancelAction) validate() error { return nonEmpty("CancelAction.Cancels", len(a.Cancels)) }
+
 // Cancel identifies an order to cancel.
 type Cancel struct {
 	Asset int   `json:"a"`
@@ -275,6 +279,10 @@ type CancelByCloidAction struct {
 }
 
 func (CancelByCloidAction) actionType() string { return "cancelByCloid" }
+
+func (a CancelByCloidAction) validate() error {
+	return nonEmpty("CancelByCloidAction.Cancels", len(a.Cancels))
+}
 
 // CancelByCloid identifies an order to cancel by its client order ID.
 type CancelByCloid struct {
@@ -328,6 +336,10 @@ type BatchModifyAction struct {
 }
 
 func (BatchModifyAction) actionType() string { return "batchModify" }
+
+func (a BatchModifyAction) validate() error {
+	return nonEmpty("BatchModifyAction.Modifies", len(a.Modifies))
+}
 
 // Modify is one replacement of a [BatchModifyAction].
 type Modify struct {
