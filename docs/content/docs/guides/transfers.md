@@ -11,9 +11,9 @@ check the result with `InfoClient.ClearinghouseState`,
 ## Which key signs
 
 Transfers are *user-signed* actions: they must be signed by the account's own
-key, not an API (agent) wallet. An agent wallet can trade but cannot move
-funds; the exchange rejects a transfer it signs. See
-[Signing and keys](/docs/concepts/signing).
+key, not an API (agent) wallet. An agent wallet can trade but cannot withdraw
+or send funds to another address; the exchange rejects a transfer it signs.
+See [Signing and keys](/docs/concepts/signing).
 
 ```go
 owner, err := hyperliquid.NewPrivateKeySigner(os.Getenv("HL_ACCOUNT_KEY"))
@@ -165,7 +165,9 @@ if err != nil {
 ```
 
 [`AgentSendAsset`](/docs/reference#ExchangeClient.AgentSendAsset)
-takes the same fields but is an L1 action that an API wallet may sign.
+takes the same fields but is an L1 action that an API wallet may sign. Its
+`Destination` must be the account itself: it only moves funds between the
+account's own perp dexes and spot balance.
 
 Sub-account USDC and spot transfers have their own actions; see
 [Vaults and sub-accounts](/docs/guides/vaults-and-subaccounts).

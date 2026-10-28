@@ -93,6 +93,8 @@ from a sub-account from the master account with
 or [`SubAccountSpotTransfer`](/docs/reference#ExchangeClient.SubAccountSpotTransfer),
 and to or from a vault with
 [`VaultTransfer`](/docs/reference#ExchangeClient.VaultTransfer).
+These are L1 actions, so call them on the master's client, not on a
+`WithVault` copy, which would send them for the vault.
 Query a sub-account's or vault's state with its own address.
 
 ## Expiring actions

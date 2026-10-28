@@ -129,22 +129,29 @@ returns the latest 2000 orders with their status.
 [`UserFills`](/docs/reference#InfoClient.UserFills) returns
 up to 2000 of the most recent fills, newest first.
 [`UserFillsByTime`](/docs/reference#InfoClient.UserFillsByTime)
-returns up to 2000 fills in a time range, oldest first; page forward from the
-last fill:
+returns up to 2000 fills in a time range, oldest first. Page forward from the
+last fill's `Time`: fills of one order can share a millisecond, so restart at
+that time rather than after it and skip the fills already seen:
 
 ```go
 start := time.Now().Add(-7 * 24 * time.Hour).UnixMilli()
 var fills []hyperliquid.UserFill
+seen := make(map[int64]bool) // by Tid
 for {
 	page, err := info.UserFillsByTime(ctx, hyperliquid.UserFillsByTimeRequest{User: user, StartTime: start})
 	if err != nil {
 		log.Fatal(err)
 	}
-	fills = append(fills, page...)
+	for _, f := range page {
+		if !seen[f.Tid] {
+			seen[f.Tid] = true
+			fills = append(fills, f)
+		}
+	}
 	if len(page) < 2000 {
 		break
 	}
-	start = page[len(page)-1].Time + 1
+	start = page[len(page)-1].Time
 }
 for _, f := range fills {
 	fmt.Println(f.Coin, f.Dir, f.Sz, "@", f.Px, "fee", f.Fee, f.FeeToken, "pnl", f.ClosedPnl)
@@ -177,6 +184,8 @@ for _, p := range payments {
 
 Deposits, withdrawals, transfers and liquidations are in
 [`UserNonFundingLedgerUpdates`](/docs/reference#InfoClient.UserNonFundingLedgerUpdates).
+Both return at most 500 entries per call, oldest first, from `StartTime` (zero
+means from the Unix epoch); page forward from the last entry's `Time`.
 
 ## Portfolio history
 

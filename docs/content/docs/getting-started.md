@@ -50,7 +50,8 @@ func main() {
 1. Create a Testnet account at [app.hyperliquid-testnet.xyz](https://app.hyperliquid-testnet.xyz)
    and claim test USDC from the faucet.
 2. Create an API wallet under **More → API** and copy its private key. An API
-   (agent) wallet can trade for your account but cannot move funds.
+   (agent) wallet can trade for your account but cannot withdraw or send
+   funds to another address.
 3. Run:
 
 ```go

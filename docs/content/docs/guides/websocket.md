@@ -54,7 +54,10 @@ func main() {
 once the connection is open. Every subscription method takes a request
 struct (when the stream has parameters) and a typed handler, and returns a
 [`*Subscription`](/docs/reference#Subscription) once the
-server confirms it.
+server confirms it. The server answers some invalid subscriptions, such as
+`Trades`, `L2Book` or `Bbo` of an unknown coin, by dropping the connection;
+the call then fails with an error wrapping
+[`ErrWebSocketDisconnected`](/docs/reference#ErrWebSocketDisconnected).
 
 {{< callout type="info" >}}
 The `ctx` passed to a subscription method bounds only the subscribe
@@ -171,7 +174,9 @@ fmt.Println(sub.Err()) // nil after Unsubscribe
 ```
 
 [`Unsubscribe`](/docs/reference#Subscription.Unsubscribe)
-waits for the server's confirmation (bounded by `ctx`). After it returns the
+waits for the server's confirmation (bounded by `ctx`), unless another
+subscription shares the stream or the client is disconnected, and returns
+`nil` after `Close`. After it returns the
 handler is not called again, except for a call already in progress.
 [`Err`](/docs/reference#Subscription.Err) reports why a
 subscription ended: `nil` while live or after `Unsubscribe`,
@@ -275,9 +280,10 @@ fmt.Println(book.Levels[0][0].Px)
 _ = ex // ex.Order, ex.Cancel, ... now go over ws
 ```
 
-The methods and their results are the same as over HTTP. Explorer requests
-(`BlockDetails`, `TxDetails`, ...) still use HTTP. After `ws.Close()`, these
-clients fail with `ErrWebSocketClosed`.
+The methods and their results are the same as over HTTP, and like the
+default HTTP client, a request whose `ctx` has no deadline times out after
+10 seconds. Explorer requests (`BlockDetails`, `TxDetails`, ...) still use
+HTTP. After `ws.Close()`, these clients fail with `ErrWebSocketClosed`.
 
 ## Explorer streams
 

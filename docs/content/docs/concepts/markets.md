@@ -116,8 +116,12 @@ fmt.Println("xyz:TSLA mid:", mids["xyz:TSLA"])
 Orders on a builder dex are ordinary orders with the builder-dex asset ID.
 Each builder dex margins positions from its own balance: move collateral to
 it with [`SendAsset`](/docs/reference#ExchangeClient.SendAsset),
-or let it use the main dex's collateral with dex abstraction (see
-[`InfoClient.UserDexAbstraction`](/docs/reference#InfoClient.UserDexAbstraction)).
+or let it share the account's collateral through an account abstraction mode
+such as `AbstractionUnifiedAccount`, set with
+[`ExchangeClient.UserSetAbstraction`](/docs/reference#ExchangeClient.UserSetAbstraction)
+or [`AgentSetAbstraction`](/docs/reference#ExchangeClient.AgentSetAbstraction)
+and read with
+[`InfoClient.UserAbstraction`](/docs/reference#InfoClient.UserAbstraction).
 
 ## Decimal
 

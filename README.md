@@ -63,7 +63,8 @@ func main() {
 
 Trade with an API (agent) wallet: a separate key that your account approves
 with `ExchangeClient.ApproveAgent` (or in the Hyperliquid UI under *API*). It
-can trade for the account but cannot withdraw or transfer funds.
+can trade for the account and move funds between the account's own balances,
+but cannot withdraw or send funds to another address.
 
 ```go
 ctx := context.Background()
@@ -81,10 +82,13 @@ markets, err := hyperliquid.LoadMarkets(ctx, info)
 if err != nil {
 	log.Fatal(err)
 }
-eth, _ := markets.Asset("ETH")
+eth, ok := markets.Asset("ETH")
+if !ok {
+	log.Fatal("ETH not listed")
+}
 
 // Bid 5% below mid, rounded to the asset's tick and lot size.
-mids, err := info.AllMids(ctx, hyperliquid.AllMidsRequest{})
+mids, err := info.AllMids(ctx, hyperliquid.AllMidsRequest{Dex: eth.Dex})
 if err != nil {
 	log.Fatal(err)
 }

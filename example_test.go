@@ -22,15 +22,26 @@ func ExampleInfoClient_L2Book() {
 
 func ExampleExchangeClient_Order() {
 	// Trade with an API (agent) wallet approved for the account.
+	ctx := context.Background()
 	signer, err := hyperliquid.NewPrivateKeySigner(os.Getenv("HL_AGENT_KEY"))
 	if err != nil {
 		log.Fatal(err)
 	}
 	ex := hyperliquid.NewExchangeClient(hyperliquid.Testnet, signer)
 
-	statuses, err := ex.Order(context.Background(), hyperliquid.OrderAction{
+	// Asset IDs differ between networks: resolve them by name.
+	markets, err := hyperliquid.LoadMarkets(ctx, hyperliquid.NewInfoClient(hyperliquid.Testnet))
+	if err != nil {
+		log.Fatal(err)
+	}
+	btc, ok := markets.Asset("BTC")
+	if !ok {
+		log.Fatal("BTC not listed")
+	}
+
+	statuses, err := ex.Order(ctx, hyperliquid.OrderAction{
 		Orders: []hyperliquid.Order{{
-			Asset: 0, // BTC
+			Asset: btc.ID,
 			IsBuy: true,
 			Price: "50000",
 			Size:  "0.001",

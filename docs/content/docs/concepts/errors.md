@@ -47,7 +47,9 @@ if apiErr, ok := errors.AsType[*hyperliquid.APIError](err); ok {
 ```
 
 Responses that cannot be decoded return a plain wrapped error such as
-`hyperliquid: decode l2Book response: …`.
+`hyperliquid: decode l2Book response: …`. Invalid input, such as an order
+with both or neither of `Limit` and `Trigger` or an empty `Price`, fails
+before signing with a plain error naming the field; nothing is sent.
 
 ## StatusError
 
@@ -63,6 +65,7 @@ type StatusError struct {
 ```
 
 [`ExchangeClient.Order`](/docs/reference#ExchangeClient.Order),
+[`Modify`](/docs/reference#ExchangeClient.Modify),
 [`BatchModify`](/docs/reference#ExchangeClient.BatchModify),
 [`Cancel`](/docs/reference#ExchangeClient.Cancel),
 [`CancelByCloid`](/docs/reference#ExchangeClient.CancelByCloid)
@@ -74,9 +77,10 @@ items that succeeded are not lost:
 
 ```go
 results, err := ex.Order(ctx, action)
-var apiErr *hyperliquid.APIError
-if errors.As(err, &apiErr) {
-	log.Fatalf("whole action rejected: %s", apiErr.Message) // nothing was placed
+if _, rejected := errors.AsType[*hyperliquid.StatusError](err); err != nil && !rejected {
+	// An *APIError (rejected, or unknown on HTTP 5xx) or a transport error
+	// (unknown): see "Did the action execute?" below.
+	log.Fatal(err)
 }
 for i, r := range results {
 	switch {
@@ -119,7 +123,7 @@ The WebSocket client defines three sentinel errors. Test them with
 | Error | Returned by | Meaning |
 |---|---|---|
 | [`ErrWebSocketClosed`](/docs/reference#ErrWebSocketClosed) | any method after `Close`, `Subscription.Err` | The client was closed. Final. |
-| [`ErrWebSocketDisconnected`](/docs/reference#ErrWebSocketDisconnected) | requests in flight when the connection dropped | The connection was lost while waiting for the response. The client reconnects on its own. |
+| [`ErrWebSocketDisconnected`](/docs/reference#ErrWebSocketDisconnected) | requests and new subscriptions in flight when the connection dropped | The connection was lost while waiting for the response. The client reconnects on its own. The server also drops the connection for some invalid subscriptions, such as `Trades` of an unknown coin. |
 | [`ErrSubscriptionOverflow`](/docs/reference#ErrSubscriptionOverflow) | `Subscription.Err` | The handler fell more than 4096 messages behind and the subscription was ended. Subscribe again, and keep handlers fast. |
 
 A subscription can also end with the server's `*APIError` if the server
@@ -171,8 +175,8 @@ whose response never arrived may or may not have been executed:
 | `*APIError` with an HTTP 4xx status | No, the request was refused before processing. |
 | `*APIError` with an HTTP 5xx status, from the API or a proxy | Unknown. |
 | `ErrWebSocketDisconnected` (with `WithWebSocket`) | Unknown: the request may or may not have been executed. |
-| Context deadline or cancellation, client timeout, connection reset | Unknown once the request was sent. The default HTTP client times out after 10 seconds. |
-| Signing or encoding error (invalid `Decimal`, KMS failure) | No, nothing was sent. |
+| Context deadline or cancellation, client timeout, connection reset | Unknown once the request was sent. The default HTTP client, and WebSocket requests whose `ctx` has no deadline, time out after 10 seconds. |
+| Signing or encoding error (invalid order fields or `Decimal`, KMS failure) | No, nothing was sent. |
 
 When the outcome is unknown, do not resend blindly: every call is signed with
 a new nonce, so a resent order is a new order. Check the state first.

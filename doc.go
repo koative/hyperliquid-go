@@ -26,9 +26,10 @@
 //
 // # Networks
 //
-// [Mainnet] and [Testnet] hold the API URLs of each network and select the
-// signature domain. Declare a [Network] value for other deployments, such as
-// a local node.
+// [Mainnet] and [Testnet] hold the API URLs of each network and select what
+// is signed for it (the phantom-agent source of L1 actions and the
+// hyperliquidChain of user-signed actions; the EIP-712 domain is the same).
+// Declare a [Network] value for other deployments, such as a local node.
 //
 // # Signing
 //
@@ -49,14 +50,15 @@
 // Prices, sizes and amounts are [Decimal] strings, exactly as Hyperliquid
 // sends them, so no precision is lost. Round order prices and sizes with
 // [FormatPrice] and [FormatSize] (or [Asset.FormatPrice]). Timestamps are
-// milliseconds since the Unix epoch.
+// milliseconds since the Unix epoch, except [TwapHistoryEntry].Time and the
+// fields named in seconds.
 //
 // # Errors
 //
 // Requests rejected by the API return an [*APIError]. Batch actions such as
 // [ExchangeClient.Order] and [ExchangeClient.Cancel] are accepted or
 // rejected per item; failed items are reported as a joined [*StatusError]
-// per item, alongside the per-item results:
+// per item. Order and BatchModify return it alongside the per-item results:
 //
 //	statuses, err := ex.Order(ctx, action)
 //	var rejected *hyperliquid.StatusError

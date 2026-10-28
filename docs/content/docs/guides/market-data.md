@@ -9,7 +9,8 @@ keys. Coins are named as in [Markets](/docs/concepts/markets):
 `"BTC"` for perps, `"PURR/USDC"` or `"@107"` for spot pairs and `"xyz:TSLA"`
 for builder-dex perps. Prices and sizes are
 [`Decimal`](/docs/concepts/markets#decimal) strings and
-timestamps are Unix milliseconds.
+timestamps are Unix milliseconds (`TwapHistoryEntry.Time` and fields named
+in seconds excepted).
 
 ```go
 info := hyperliquid.NewInfoClient(hyperliquid.Mainnet)
@@ -63,17 +64,15 @@ with them the asset IDs, do not shift.
 ## Order book
 
 [`L2Book`](/docs/reference#InfoClient.L2Book) returns up to
-20 levels per side, best first: bids in `Levels[0]`, asks in `Levels[1]`. It
-returns `nil` for a coin that does not exist. Set `NSigFigs` (2 to 5) to
-aggregate levels into coarser price buckets:
+20 levels per side, best first: bids in `Levels[0]`, asks in `Levels[1]`. A
+coin that does not exist fails with an `*APIError` (HTTP 500, message
+`"null"`), as do other lookups of unknown coins or dexes; do not retry it.
+Set `NSigFigs` (2 to 5) to aggregate levels into coarser price buckets:
 
 ```go
 book, err := info.L2Book(ctx, hyperliquid.L2BookRequest{Coin: "ETH"})
 if err != nil {
 	log.Fatal(err)
-}
-if book == nil {
-	log.Fatal("unknown coin")
 }
 bids, asks := book.Levels[0], book.Levels[1]
 fmt.Printf("bid %s x %s | ask %s x %s\n", bids[0].Px, bids[0].Sz, asks[0].Px, asks[0].Sz)

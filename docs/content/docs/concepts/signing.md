@@ -47,8 +47,11 @@ The client computes the EIP-712 digest itself; a signer only ever sees a
 [`Testnet`](/docs/reference#Testnet) are
 [`Network`](/docs/reference#Network) values holding the API,
 WebSocket and explorer URLs of each network. `Network.Mainnet` also selects
-the signature domain: a signature made for one network is rejected by the
-other, so an order signed for Testnet can never execute on Mainnet.
+what is signed: the phantom-agent `source` of L1 actions (`"a"` on Mainnet,
+`"b"` on Testnet) and the `hyperliquidChain` field of user-signed actions.
+The EIP-712 domain is the same on both networks, yet a signature made for one
+network is rejected by the other, so an order signed for Testnet can never
+execute on Mainnet.
 
 Declare your own `Network` for other deployments, such as a gateway in front
 of the public API. Keep `Mainnet` set to the network the gateway forwards to:
@@ -93,17 +96,20 @@ The user-signed actions are:
 | Staking | [`CDeposit`](/docs/reference#ExchangeClient.CDeposit), [`CWithdraw`](/docs/reference#ExchangeClient.CWithdraw), [`TokenDelegate`](/docs/reference#ExchangeClient.TokenDelegate), [`LinkStakingUser`](/docs/reference#ExchangeClient.LinkStakingUser), [`StakingLinkDisableTradingUser`](/docs/reference#ExchangeClient.StakingLinkDisableTradingUser) |
 | Account | [`ConvertToMultiSigUser`](/docs/reference#ExchangeClient.ConvertToMultiSigUser), [`UserSetAbstraction`](/docs/reference#ExchangeClient.UserSetAbstraction), [`UserPortfolioMargin`](/docs/reference#ExchangeClient.UserPortfolioMargin) |
 
-[`AgentSendAsset`](/docs/reference#ExchangeClient.AgentSendAsset)
-and [`AgentSetAbstraction`](/docs/reference#ExchangeClient.AgentSetAbstraction)
-are L1 counterparts of `SendAsset` and `UserSetAbstraction` that an API wallet
-may sign.
+[`AgentSendAsset`](/docs/reference#ExchangeClient.AgentSendAsset),
+[`AgentSetAbstraction`](/docs/reference#ExchangeClient.AgentSetAbstraction)
+and [`AgentCDeposit`](/docs/reference#ExchangeClient.AgentCDeposit)
+are L1 counterparts of `SendAsset`, `UserSetAbstraction` and `CDeposit` that
+an API wallet may sign; `AgentSendAsset` only moves funds between the
+account's own balances.
 
 ## API wallets
 
 An API wallet (also called an agent wallet) is a separate key that an account
-authorizes to sign L1 actions for it. It can trade, but it cannot sign
-user-signed actions, so it cannot withdraw or transfer funds. Run bots with an
-API wallet and keep the account key offline.
+authorizes to sign L1 actions for it. It can trade and move funds between the
+account's own balances (spot and perp dexes, with `AgentSendAsset`), but it
+cannot sign user-signed actions, so it cannot withdraw or send funds to
+another address. Run bots with an API wallet and keep the account key offline.
 
 You can create one in the Hyperliquid app under **More → API**, or from code
 with the account key:
