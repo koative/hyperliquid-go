@@ -10,8 +10,9 @@ import (
 
 // WithWebSocket sends the requests of an [InfoClient] or [ExchangeClient]
 // as WebSocket post requests over ws instead of HTTP. Explorer requests
-// still use HTTP. Closing ws fails later requests with
-// [ErrWebSocketClosed].
+// still use HTTP. A request whose ctx has no deadline times out after 10
+// seconds, like an HTTP request, including the time spent waiting for ws
+// to reconnect. Closing ws fails later requests with [ErrWebSocketClosed].
 func WithWebSocket(ws *WebSocketClient) Option {
 	return func(o *options) { o.transport = ws }
 }
@@ -31,6 +32,11 @@ func (c *WebSocketClient) request(ctx context.Context, endpoint string, body []b
 		typ = "action"
 	default:
 		return nil, fmt.Errorf("hyperliquid: %s requests are not supported over websocket", endpoint)
+	}
+	if _, ok := ctx.Deadline(); !ok {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithTimeout(ctx, c.cfg.requestTimeout)
+		defer cancel()
 	}
 	var (
 		conn *websocket.Conn

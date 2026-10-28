@@ -170,7 +170,7 @@ type NonUserCancel struct {
 type UserFillsEvent struct {
 	User  Address    `json:"user"`
 	Fills []UserFill `json:"fills"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 
@@ -178,7 +178,7 @@ type UserFillsEvent struct {
 type UserFundingsEvent struct {
 	User     Address          `json:"user"`
 	Fundings []FundingPayment `json:"fundings"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 
@@ -187,7 +187,7 @@ type UserFundingsEvent struct {
 type UserNonFundingLedgerUpdatesEvent struct {
 	User                    Address        `json:"user"`
 	NonFundingLedgerUpdates []LedgerUpdate `json:"nonFundingLedgerUpdates"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 
@@ -196,7 +196,7 @@ type UserNonFundingLedgerUpdatesEvent struct {
 type UserHistoricalOrdersEvent struct {
 	User         Address           `json:"user"`
 	OrderHistory []OrderWithStatus `json:"orderHistory"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 
@@ -204,7 +204,7 @@ type UserHistoricalOrdersEvent struct {
 type UserTwapHistoryEvent struct {
 	User    Address            `json:"user"`
 	History []TwapHistoryEntry `json:"history"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 
@@ -213,7 +213,7 @@ type UserTwapHistoryEvent struct {
 type UserTwapSliceFillsEvent struct {
 	User           Address         `json:"user"`
 	TwapSliceFills []TwapSliceFill `json:"twapSliceFills"`
-	// IsSnapshot is set on the first message, which holds recent history.
+	// IsSnapshot marks recent history, sent on subscribe and again after each reconnect.
 	IsSnapshot bool `json:"isSnapshot,omitempty"`
 }
 

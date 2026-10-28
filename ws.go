@@ -57,6 +57,10 @@ const maxSubscriptionQueue = 4096
 //
 // Subscription methods return once the server confirms the subscription;
 // their ctx bounds only that handshake, not the subscription's lifetime.
+// If the connection drops before the server confirms, they fail with
+// [ErrWebSocketDisconnected]: the server closes the connection on some
+// invalid subscriptions, such as trades of an unknown coin, so they are
+// not re-sent. Confirmed subscriptions are re-sent after every reconnect.
 // Subscriptions with an identical request share one server subscription.
 // A subscription that joins a live one does not receive the stream's
 // initial snapshot, such as the first full frame of
@@ -94,6 +98,7 @@ type wsConfig struct {
 	onError                   func(error)
 	pingInterval, pongTimeout time.Duration
 	minBackoff, maxBackoff    time.Duration
+	requestTimeout            time.Duration // for post requests whose ctx has no deadline
 }
 
 // WithWebSocketErrorHandler sets a function that receives errors that
@@ -123,10 +128,11 @@ func dialWebSocket(ctx context.Context, url string, opts []WebSocketOption) (*We
 	c := &WebSocketClient{
 		url: url,
 		cfg: wsConfig{
-			pingInterval: 30 * time.Second,
-			pongTimeout:  10 * time.Second,
-			minBackoff:   500 * time.Millisecond,
-			maxBackoff:   30 * time.Second,
+			pingInterval:   30 * time.Second,
+			pongTimeout:    10 * time.Second,
+			minBackoff:     500 * time.Millisecond,
+			maxBackoff:     30 * time.Second,
+			requestTimeout: 10 * time.Second,
 		},
 		done:  make(chan struct{}),
 		up:    make(chan struct{}),
@@ -261,11 +267,16 @@ func (c *WebSocketClient) serve(conn *websocket.Conn) {
 		ch <- wsResult{err: lost}
 		delete(c.posts, id)
 	}
-	// The server forgets every subscription with the connection; subscribes
-	// are re-sent on the next one.
+	// The server forgets every subscription with the connection; confirmed
+	// ones are re-sent on the next. A first subscribe still unanswered
+	// fails instead: the server drops the connection on some invalid
+	// subscriptions, so re-sending it would drop every connection.
 	for _, r := range c.pending {
-		if r.done != nil {
+		switch {
+		case r.done != nil:
 			r.done <- nil
+		case !r.sub.settled:
+			c.failSub(r.sub, lost)
 		}
 	}
 	c.pending = nil
@@ -318,8 +329,10 @@ func (c *WebSocketClient) read(conn *websocket.Conn, pongs chan struct{}) error 
 		if err != nil {
 			return err
 		}
+		// Frames other than [...] and {...}, such as the greeting
+		// "Websocket connection established.", match no case and are ignored.
 		switch b = bytes.TrimSpace(b); {
-		case len(b) == 0: // the greeting "Websocket connection established." and other non-JSON text
+		case len(b) == 0:
 		case b[0] == '[': // explorer pushes arrays without an envelope
 			var p wsProbe
 			if json.Unmarshal(b, &p) == nil {
@@ -684,8 +697,8 @@ func (f subFrame) write() {
 		return
 	}
 	<-f.after
-	// On failure the connection drops: subscribes are re-sent on the next
-	// one and pending unsubscribes are answered.
+	// On failure the connection drops: confirmed subscribes are re-sent on
+	// the next one, and the other pending requests are answered.
 	_ = writeFrame(f.conn, f.frame)
 }
 
