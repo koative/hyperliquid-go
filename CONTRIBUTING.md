@@ -109,6 +109,10 @@ cd docs
 hugo mod get -u github.com/imfing/hextra
 ```
 
+The site footer shows the released version it documents, read from
+`.release-please-manifest.json` by the Docs workflow. Preview it with
+`HUGO_PARAMS_VERSION=0.3.0 hugo server --source docs`.
+
 Link to API symbols with root-relative links such as
 `[ExchangeClient.Order](/docs/reference#ExchangeClient.Order)`, and keep Go
 snippets compilable.

@@ -3,9 +3,9 @@ name: Docs
 on:
   push:
     branches: [main]
-    paths: ["docs/**", "**.go", ".github/workflows/docs.yml"]
+    paths: ["docs/**", "**.go", ".release-please-manifest.json", ".github/workflows/docs.yml"]
   pull_request:
-    paths: ["docs/**", "**.go", ".github/workflows/docs.yml"]
+    paths: ["docs/**", "**.go", ".release-please-manifest.json", ".github/workflows/docs.yml"]
   workflow_dispatch:
 
 permissions: {}
@@ -40,7 +40,12 @@ jobs:
           tar -xzf "$RUNNER_TEMP/hugo.tar.gz" -C "$RUNNER_TEMP" hugo
           echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
       - run: docs/gen-reference.sh
-      - run: hugo --source docs --gc --minify
+      - name: Build the site
+        # The footer names the released version the site documents.
+        run: |
+          HUGO_PARAMS_VERSION=$(jq -er '."."' .release-please-manifest.json)
+          export HUGO_PARAMS_VERSION
+          hugo --source docs --gc --minify
       - if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:

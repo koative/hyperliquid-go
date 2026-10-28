@@ -1,0 +1,9 @@
+{{- /* Replaces Hextra's copyright block (params.footer.displayCopyright is
+  false) to add the released version the site documents. The Docs workflow
+  sets params.version from .release-please-manifest.json. */ -}}
+<div class="hx:flex hx:w-full hx:flex-col hx:items-center hx:py-12 hx:text-xs hx:sm:items-start">
+  <div>{{ T "copyright" | markdownify }}</div>
+  {{- with site.Params.version }}
+  <div class="hx:mt-2">Documents v{{ . }} · main may be ahead</div>
+  {{- end }}
+</div>

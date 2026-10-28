@@ -75,7 +75,7 @@ params:
     displayToggle: true
   footer:
     enable: true
-    displayCopyright: true
+    displayCopyright: false # rendered with the version by layouts/_partials/custom/footer.html
     displayPoweredBy: false
   displayUpdatedDate: true
   dateFormat: "January 2, 2006"
