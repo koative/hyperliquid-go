@@ -158,6 +158,14 @@ func TestTradingResponses(t *testing.T) {
 	if err := ms(`{"status":"ok","response":{"type":"default","data":"0x5e9ee1089755c3435139848e47e6635505d5a13a"}}`); err != nil {
 		t.Errorf("MultiSig string data = %v", err)
 	}
+	if err := ms(`{"status":"ok","response":{"type":"default","data":{"status":{"error":"Invalid TWAP duration"}}}}`); !errors.As(err, &se) || se.Message != "Invalid TWAP duration" {
+		t.Errorf("MultiSig status error = %v", err)
+	}
+	for _, data := range []string{`{"status":"success"}`, `{"status":{"running":{"twapId":1}}}`} {
+		if err := ms(`{"status":"ok","response":{"type":"default","data":` + data + `}}`); err != nil {
+			t.Errorf("MultiSig %s = %v", data, err)
+		}
+	}
 	px := Decimal("1")
 	for _, r := range []Retracement{{}, {Pct: &px, Px: &px}} {
 		if _, err := json.Marshal(r); err == nil {
@@ -168,5 +176,43 @@ func TestTradingResponses(t *testing.T) {
 		CreateSubAccount(ctx, CreateSubAccountAction{Name: "x"})
 	if err != nil || addr != MustParseAddress("0x5e9ee1089755c3435139848e47e6635505d5a13a") {
 		t.Errorf("CreateSubAccount = %v, %v", addr, err)
+	}
+}
+
+// TestOrderValidation checks that orders the exchange would reject with an
+// opaque HTTP 422 fail before anything is signed or sent.
+func TestOrderValidation(t *testing.T) {
+	ctx := context.Background()
+	_, signer := loadSigningVectors(t)
+	limit := OrderType{Limit: &LimitOrder{Tif: TifGtc}}
+	trigger := OrderType{Trigger: &TriggerOrder{TriggerPx: "1", Tpsl: TpslTakeProfit}}
+	for name, o := range map[string]Order{
+		"no type":       {Price: "1", Size: "1"},
+		"both types":    {Price: "1", Size: "1", Type: OrderType{Limit: limit.Limit, Trigger: trigger.Trigger}},
+		"empty tif":     {Price: "1", Size: "1", Type: OrderType{Limit: &LimitOrder{}}},
+		"empty price":   {Size: "1", Type: limit},
+		"empty size":    {Price: "1", Type: limit},
+		"negative size": {Price: "1", Size: "-1", Type: limit},
+		"negative px":   {Price: "-1", Size: "1", Type: limit},
+		"empty trigger": {Price: "1", Size: "1", Type: OrderType{Trigger: &TriggerOrder{Tpsl: TpslStopLoss}}},
+		"empty tpsl":    {Price: "1", Size: "1", Type: OrderType{Trigger: &TriggerOrder{TriggerPx: "1"}}},
+	} {
+		rt := &recordTransport{resp: `{"status":"ok","response":{"type":"default"}}`}
+		c := NewExchangeClient(Testnet, signer)
+		c.tr = rt
+		_, errOrder := c.Order(ctx, OrderAction{Orders: []Order{o}})
+		errModify := c.Modify(ctx, ModifyAction{Order: o})
+		_, errBatch := c.BatchModify(ctx, BatchModifyAction{Modifies: []Modify{{Order: o}}})
+		if errOrder == nil || errModify == nil || errBatch == nil || rt.body != nil {
+			t.Errorf("%s: Order %v, Modify %v, BatchModify %v, sent %s", name, errOrder, errModify, errBatch, rt.body)
+		}
+	}
+	for _, o := range []Order{
+		{Price: "1", Size: "0", Type: limit},
+		{Price: "0", Size: "1", Type: trigger},
+	} {
+		if _, err := encodeAction(OrderAction{Orders: []Order{o}}, 1, Testnet); err != nil {
+			t.Errorf("%+v: %v", o, err)
+		}
 	}
 }

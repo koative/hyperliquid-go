@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 // OrderAction places one or more orders.
@@ -19,11 +20,15 @@ type OrderAction struct {
 
 func (OrderAction) actionType() string { return "order" }
 
-// Order is a single order of an [OrderAction].
+// Order is a single order of an [OrderAction]. Encoding it fails, before
+// anything is signed, unless exactly one of Type.Limit and Type.Trigger is
+// set, Price and Size are set and not negative, a limit order has a Tif and
+// a trigger order has a TriggerPx and Tpsl.
 type Order struct {
 	// Asset is the asset ID: the index in [Meta] universe for perps,
-	// 10000 + spot pair index for spot, and 100000 + 10000*dexIndex + index
-	// for builder-deployed perp dexes.
+	// 10000 + spot pair index for spot, 100000 + 10000*dexIndex + index
+	// for builder-deployed perp dexes, and 100000000 + 10*outcome + side
+	// for HIP-4 outcome sides.
 	Asset int  `json:"a"`
 	IsBuy bool `json:"b"`
 	// Price is the limit price. Round it with [FormatPrice].
@@ -34,6 +39,41 @@ type Order struct {
 	Type       OrderType `json:"t"`
 	// Cloid is an optional client order ID.
 	Cloid *Cloid `json:"c,omitempty"`
+}
+
+// MarshalJSON encodes o after checking the fields the exchange would
+// otherwise reject with an opaque deserialization error.
+func (o Order) MarshalJSON() ([]byte, error) {
+	if err := o.validate(); err != nil {
+		return nil, err
+	}
+	type plain Order
+	return json.Marshal(plain(o))
+}
+
+func (o Order) validate() error {
+	t := o.Type
+	switch {
+	case (t.Limit == nil) == (t.Trigger == nil):
+		return errors.New("hyperliquid: order: set exactly one of OrderType.Limit and OrderType.Trigger")
+	case t.Limit != nil && t.Limit.Tif == "":
+		return errors.New("hyperliquid: order: LimitOrder.Tif is empty")
+	case t.Trigger != nil && t.Trigger.Tpsl == "":
+		return errors.New("hyperliquid: order: TriggerOrder.Tpsl is empty")
+	}
+	triggerPx := Decimal("0")
+	if t.Trigger != nil {
+		triggerPx = t.Trigger.TriggerPx
+	}
+	for _, f := range [...]struct {
+		name string
+		d    Decimal
+	}{{"Price", o.Price}, {"Size", o.Size}, {"TriggerOrder.TriggerPx", triggerPx}} {
+		if f.d == "" || strings.HasPrefix(string(f.d), "-") {
+			return fmt.Errorf("hyperliquid: order: %s must be a non-negative decimal, got %q", f.name, string(f.d))
+		}
+	}
+	return nil
 }
 
 // OrderType is either a limit or a trigger order; set exactly one field.
@@ -67,7 +107,8 @@ const (
 	TifIoc Tif = "Ioc"
 	// TifAlo (add liquidity only) is canceled instead of taking liquidity.
 	TifAlo Tif = "Alo"
-	// TifFrontendMarket is the market order type used by the Hyperliquid UI.
+	// TifFrontendMarket behaves like [TifIoc] and still needs a limit Price;
+	// the Hyperliquid UI uses it to tag its market orders.
 	TifFrontendMarket Tif = "FrontendMarket"
 )
 
@@ -180,7 +221,9 @@ func orderResultErrors(statuses []OrderResult) error {
 // CancelAction cancels orders by order ID.
 type CancelAction struct {
 	Cancels []Cancel `json:"cancels"`
-	// Fast prioritizes the cancel in the mempool.
+	// Fast marks the cancel for mempool priority in a future upgrade. It
+	// currently has no effect, except that a fast cancel of a trigger order
+	// is rejected.
 	Fast bool `json:"f,omitempty"`
 }
 
@@ -213,7 +256,9 @@ func (c *ExchangeClient) doStatuses(ctx context.Context, a Action) error {
 // CancelByCloidAction cancels orders by client order ID.
 type CancelByCloidAction struct {
 	Cancels []CancelByCloid `json:"cancels"`
-	// Fast prioritizes the cancel in the mempool.
+	// Fast marks the cancel for mempool priority in a future upgrade. It
+	// currently has no effect, except that a fast cancel of a trigger order
+	// is rejected.
 	Fast bool `json:"f,omitempty"`
 }
 
@@ -251,8 +296,8 @@ type ModifyAction struct {
 	Oid   OrderRef `json:"oid"`
 	Order Order    `json:"order"`
 	// AlwaysPlace places the new order even if canceling the old one fails.
-	// Otherwise the new order must be a non-trigger ALO order or a
-	// non-marketable GTC order.
+	// Otherwise the new order must not be a trigger order and must be ALO
+	// or a non-marketable GTC order, whose Tif the exchange turns into ALO.
 	AlwaysPlace bool `json:"a,omitempty"`
 }
 

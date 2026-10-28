@@ -23,7 +23,8 @@ func (c *ExchangeClient) UpdateLeverage(ctx context.Context, a UpdateLeverageAct
 // isolated position.
 type UpdateIsolatedMarginAction struct {
 	Asset int `json:"asset"`
-	// IsBuy is the position side; the official SDKs always send true.
+	// IsBuy has no effect until hedge mode is introduced; the official SDKs
+	// always send true.
 	IsBuy bool `json:"isBuy"`
 	// Ntli is the signed USDC amount to add (positive) or remove (negative),
 	// times 1e6.
@@ -225,8 +226,10 @@ func (c *ExchangeClient) SubAccountSpotTransfer(ctx context.Context, a SubAccoun
 	return c.do(ctx, a, nil)
 }
 
-// AgentSendAssetAction moves a token between perp dexes, spot and accounts,
-// like [SendAssetAction], but may be signed by an API wallet.
+// AgentSendAssetAction moves a token between perp dexes and spot like
+// [SendAssetAction], but may be signed by an API wallet. Destination must be
+// the source account itself, so it only moves the token between that
+// account's own balances.
 type AgentSendAssetAction struct {
 	Destination Address `json:"destination"`
 	// SourceDex and DestinationDex are perp dex names; "" is the default
@@ -248,7 +251,7 @@ func (a AgentSendAssetAction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(sendAssetWire{a.Destination, a.SourceDex, a.DestinationDex, a.Token, a.Amount, subAccountWire(a.FromSubAccount)})
 }
 
-// AgentSendAsset moves a token between perp dexes, spot and accounts.
+// AgentSendAsset moves a token between the account's perp dexes and spot.
 func (c *ExchangeClient) AgentSendAsset(ctx context.Context, a AgentSendAssetAction) error {
 	return c.do(ctx, a, nil)
 }
