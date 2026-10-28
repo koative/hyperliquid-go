@@ -69,6 +69,12 @@ func TestTradingActionEncoding(t *testing.T) {
 			`{"type":"modify","oid":"0x00000000000000000000000000000001","order":{"a":4,"b":true,"p":"1670.1","s":"0.0147","r":false,"t":{"limit":{"tif":"Ioc"}}},"a":true}`,
 		},
 		{"cancel fast", CancelAction{Cancels: []Cancel{{Asset: 1, Oid: 2}}, Fast: true}, `{"type":"cancel","cancels":[{"a":1,"o":2}],"f":true}`},
+		{
+			"order builder splits",
+			OrderAction{Orders: vectorOrder.Orders, Builder: &Builder{Address: sub, Fee: 10, Splits: []BuilderSplit{{Address: vectorVault, Share: 50000}}}},
+			`{"type":"order","orders":[{"a":4,"b":true,"p":"1670.1","s":"0.0147","r":false,"t":{"limit":{"tif":"Ioc"}}}],"grouping":"na","builder":{"b":"0x5e9ee1089755c3435139848e47e6635505d5a13a","f":10,"s":[{"b":"0x1719884eb866cb12b2287399b15f7db5e7d775ea","s":50000}]}}`,
+		},
+		{"cDeposit2", AgentCDepositAction{Wei: 100000000}, `{"type":"cDeposit2","wei":100000000}`},
 		{"twapOrder details", TwapOrderAction{
 			Twap:    Twap{Asset: 3, IsBuy: true, Size: "10", Minutes: 30, Randomize: true},
 			Details: &TwapDetails{Trigger: &TwapActivation{Price: "100", Above: true}},

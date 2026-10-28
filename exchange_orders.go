@@ -156,6 +156,18 @@ type Builder struct {
 	Address Address `json:"b"`
 	// Fee is in tenths of a basis point: 10 means 0.01%.
 	Fee int `json:"f"`
+	// Splits optionally passes shares of the fee on to up to 5
+	// sub-builders; the builder keeps the remainder.
+	Splits []BuilderSplit `json:"s,omitempty"`
+}
+
+// BuilderSplit is a sub-builder's share of a [Builder] fee.
+type BuilderSplit struct {
+	// Address receives the share; it must be an existing user.
+	Address Address `json:"b"`
+	// Share is in units of 0.001% of the builder fee: 50000 sends half.
+	// Shares must be positive and sum to at most 100000 (100%).
+	Share int `json:"s"`
 }
 
 // OrderResult is the outcome of one order. Exactly one of Resting, Filled,
