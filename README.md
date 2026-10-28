@@ -196,7 +196,7 @@ More examples are in the [package documentation](https://pkg.go.dev/github.com/k
 
 ## Documentation
 
-- Guides and API reference: [koative.github.io/hyperliquid-go](https://koative.github.io/hyperliquid-go/)
+- Guides and API reference: [hyperliquid-go.koative.com](https://hyperliquid-go.koative.com/)
   (concepts, guides for orders, transfers, WebSocket, vaults, staking,
   multi-sig and deployers; rebuilt from `main` on every change)
 - API reference on [pkg.go.dev](https://pkg.go.dev/github.com/koative/hyperliquid-go)
