@@ -46,6 +46,9 @@ go test -run='^$' -fuzz='^FuzzFromJSON$' -fuzztime=1m ./internal/msgpack
   (`live_info_test.go`, `live_ws_test.go`, `live_exchange_test.go`) and,
   for exchange actions, a golden vector from the official Python SDK where
   it supports the action.
+- Every change in behaviour comes with tests: new functionality adds unit
+  tests, and a bug fix adds a regression test that fails without the fix.
+  Pull requests without them are not merged.
 
 ## Live API checks
 
