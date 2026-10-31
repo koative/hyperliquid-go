@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0](https://github.com/koative/hyperliquid-go/compare/v0.4.1...v0.5.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove InfoClient.UserDexAbstraction ([#34](https://github.com/koative/hyperliquid-go/issues/34))
+
+### Bug Fixes
+
+* remove InfoClient.UserDexAbstraction ([#34](https://github.com/koative/hyperliquid-go/issues/34)) ([7dab731](https://github.com/koative/hyperliquid-go/commit/7dab7315f8c7fc70e54da154efef1e92023232a9))
+
 ## [0.4.1](https://github.com/koative/hyperliquid-go/compare/v0.4.0...v0.4.1) (2026-10-28)
 
 
