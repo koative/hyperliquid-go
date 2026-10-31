@@ -227,4 +227,4 @@ vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
 [Apache License 2.0](LICENSE). Copyright 2026 Koative.
 
-Made by [Koray Güler](https://koray.dev) at [koative](https://koative.com)
+Made by [koative](https://koative.com)
