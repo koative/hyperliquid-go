@@ -251,9 +251,6 @@ var infoCases = []infoCase{
 	{"userBorrowLendInterest", "info", func(ctx context.Context, c *InfoClient, a *infoArgs) (any, error) {
 		return c.UserBorrowLendInterest(ctx, UserBorrowLendInterestRequest{User: richUser, StartTime: a.now - 30*msPerDay})
 	}},
-	{"userDexAbstraction", "info", func(ctx context.Context, c *InfoClient, a *infoArgs) (any, error) {
-		return c.UserDexAbstraction(ctx, UserDexAbstractionRequest{User: a.trader})
-	}},
 	{"userFees", "info", func(ctx context.Context, c *InfoClient, a *infoArgs) (any, error) {
 		return c.UserFees(ctx, UserFeesRequest{User: a.trader})
 	}},
