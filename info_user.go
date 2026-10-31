@@ -114,17 +114,6 @@ func (c *InfoClient) UserAbstraction(ctx context.Context, req UserAbstractionReq
 	return infoRequest[Abstraction](ctx, c, "userAbstraction", req)
 }
 
-// UserDexAbstractionRequest is the request for [InfoClient.UserDexAbstraction].
-type UserDexAbstractionRequest struct {
-	User Address `json:"user"`
-}
-
-// UserDexAbstraction reports whether a user has enabled dex abstraction,
-// which lets builder perp dexes use the main dex's collateral.
-func (c *InfoClient) UserDexAbstraction(ctx context.Context, req UserDexAbstractionRequest) (bool, error) {
-	return infoRequest[bool](ctx, c, "userDexAbstraction", req)
-}
-
 // ReferralRequest is the request for [InfoClient.Referral].
 type ReferralRequest struct {
 	User Address `json:"user"`
