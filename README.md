@@ -226,3 +226,5 @@ vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 ## License
 
 [Apache License 2.0](LICENSE). Copyright 2026 Koative.
+
+Made by [koative](https://koative.com)

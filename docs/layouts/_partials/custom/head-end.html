@@ -1,0 +1,15 @@
+{{- if .IsHome }}
+{{- $ld := dict
+  "@context" "https://schema.org"
+  "@type" "SoftwareSourceCode"
+  "name" site.Title
+  "url" site.BaseURL
+  "description" "A Go SDK for the Hyperliquid API."
+  "codeRepository" "https://github.com/koative/hyperliquid-go"
+  "programmingLanguage" "Go"
+  "license" "https://www.apache.org/licenses/LICENSE-2.0"
+  "publisher" (dict "@type" "Organization" "@id" "https://koative.com/#org" "name" "koative" "url" "https://koative.com/")
+  "author" (dict "@type" "Person" "@id" "https://koray.dev/#person" "name" "Koray Güler" "url" "https://koray.dev/")
+}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
+{{- end }}
